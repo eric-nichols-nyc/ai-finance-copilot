@@ -2,116 +2,138 @@
 // learn more about it in the docs: https://pris.ly/d/prisma-schema
 
 generator client {
-  provider = "prisma-client-js"
+  provider = "prisma-client"
+  output   = "../lib/generated/prisma"
 }
 
 datasource db {
-  provider = "sqlite"
-  url      = env("DATABASE_URL")
+  provider = "postgresql"
 }
 
+// User model
 model User {
   id        String   @id @default(cuid())
   email     String   @unique
-  name      String
+  name      String?
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
   accounts     Account[]
   transactions Transaction[]
   categories   Category[]
+  budgets      Budget[]
   recurring    RecurringCharge[]
 }
 
+// Financial Account (bank account, credit card, etc.)
 model Account {
-  id             String      @id @default(cuid())
-  name           String
-  type           String      // CREDIT_CARD or BANK_ACCOUNT
-  balance        Float       @default(0)
-
+  id        String   @id @default(cuid())
+  name      String
+  type      String   // checking, savings, credit, investment
+  balance   Decimal  @default(0)
+  currency  String   @default("USD")
+  
   // Credit card specific fields
-  creditLimit    Float?
-  apr            Float?      // Annual Percentage Rate
+  creditLimit Decimal?
+  apr         Decimal? // Annual Percentage Rate
+  
+  userId    String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
-  userId         String
-  user           User        @relation(fields: [userId], references: [id], onDelete: Cascade)
-
-  transactions   Transaction[]
-  recurring      RecurringCharge[]
-
-  createdAt      DateTime    @default(now())
-  updatedAt      DateTime    @updatedAt
+  user         User              @relation(fields: [userId], references: [id], onDelete: Cascade)
+  transactions Transaction[]
+  recurring    RecurringCharge[]
 
   @@index([userId])
 }
 
+// Transaction
+model Transaction {
+  id          String   @id @default(cuid())
+  amount      Decimal
+  description String?
+  date        DateTime @default(now())
+  type        String   // income, expense, transfer
+  notes       String?
+  isRecurring Boolean  @default(false)
+  
+  accountId   String
+  categoryId  String?
+  userId      String
+  recurringId String?
+  
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  user      User             @relation(fields: [userId], references: [id], onDelete: Cascade)
+  account   Account          @relation(fields: [accountId], references: [id], onDelete: Cascade)
+  category  Category?        @relation(fields: [categoryId], references: [id], onDelete: SetNull)
+  recurring RecurringCharge? @relation(fields: [recurringId], references: [id], onDelete: SetNull)
+
+  @@index([userId])
+  @@index([accountId])
+  @@index([categoryId])
+  @@index([date])
+}
+
+// Category for transactions
 model Category {
-  id           String        @id @default(cuid())
-  name         String
-  color        String?       // For UI display
+  id        String   @id @default(cuid())
+  name      String
+  color     String?
+  icon      String?
+  userId    String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
-  userId       String
-  user         User          @relation(fields: [userId], references: [id], onDelete: Cascade)
-
+  user         User              @relation(fields: [userId], references: [id], onDelete: Cascade)
   transactions Transaction[]
+  budgets      Budget[]
   recurring    RecurringCharge[]
-
-  createdAt    DateTime      @default(now())
-  updatedAt    DateTime      @updatedAt
 
   @@unique([userId, name])
   @@index([userId])
 }
 
-model Transaction {
-  id          String          @id @default(cuid())
-  name        String
-  amount      Float
-  type        String          // INCOME or EXPENSE
-  date        DateTime        @default(now())
-  notes       String?
-  isRecurring Boolean         @default(false)
+// Budget
+model Budget {
+  id         String    @id @default(cuid())
+  amount     Decimal
+  period     String    // monthly, weekly, yearly
+  categoryId String?
+  userId     String
+  startDate  DateTime
+  endDate    DateTime?
+  createdAt  DateTime  @default(now())
+  updatedAt  DateTime  @updatedAt
 
-  accountId   String
-  account     Account         @relation(fields: [accountId], references: [id], onDelete: Cascade)
+  user     User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  category Category? @relation(fields: [categoryId], references: [id], onDelete: SetNull)
 
-  categoryId  String
-  category    Category        @relation(fields: [categoryId], references: [id], onDelete: Cascade)
-
-  userId      String
-  user        User            @relation(fields: [userId], references: [id], onDelete: Cascade)
-
-  recurringId String?
-  recurring   RecurringCharge? @relation(fields: [recurringId], references: [id], onDelete: SetNull)
-
-  createdAt   DateTime        @default(now())
-  updatedAt   DateTime        @updatedAt
-
-  @@index([userId, date])
-  @@index([accountId])
+  @@index([userId])
   @@index([categoryId])
 }
 
+// Recurring Charges/Subscriptions
 model RecurringCharge {
-  id           String             @id @default(cuid())
-  name         String
-  amount       Float
-  frequency    String             // WEEKLY, BIWEEKLY, MONTHLY, QUARTERLY, YEARLY
-  nextDueDate  DateTime
+  id          String   @id @default(cuid())
+  name        String
+  amount      Decimal
+  frequency   String   // weekly, biweekly, monthly, quarterly, yearly
+  nextDueDate DateTime
 
-  accountId    String
-  account      Account            @relation(fields: [accountId], references: [id], onDelete: Cascade)
+  accountId  String
+  categoryId String
+  userId     String
 
-  categoryId   String
-  category     Category           @relation(fields: [categoryId], references: [id], onDelete: Cascade)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
-  userId       String
-  user         User               @relation(fields: [userId], references: [id], onDelete: Cascade)
-
+  account      Account       @relation(fields: [accountId], references: [id], onDelete: Cascade)
+  category     Category      @relation(fields: [categoryId], references: [id], onDelete: Cascade)
+  user         User          @relation(fields: [userId], references: [id], onDelete: Cascade)
   transactions Transaction[]
-
-  createdAt    DateTime           @default(now())
-  updatedAt    DateTime           @updatedAt
 
   @@index([userId, nextDueDate])
 }

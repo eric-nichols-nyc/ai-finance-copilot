@@ -1,3 +1,10 @@
+import { clsx, type ClassValue } from "clsx"
+import { twMerge } from "tailwind-merge"
+
+export function cn(...inputs: ClassValue[]) {
+  return twMerge(clsx(inputs))
+}
+
 /**
  * Format a number as USD currency
  */
@@ -73,11 +80,4 @@ export function getUtilizationColor(utilization: number): string {
   if (utilization >= 70) return 'text-orange-600'
   if (utilization >= 50) return 'text-yellow-600'
   return 'text-green-600'
-}
-
-/**
- * Combine class names
- */
-export function cn(...classes: (string | boolean | undefined)[]): string {
-  return classes.filter(Boolean).join(' ')
 }

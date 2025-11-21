@@ -1,0 +1,134 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model User {
+  id        String   @id @default(cuid())
+  email     String   @unique
+  name      String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  accounts     Account[]
+  transactions Transaction[]
+  categories   Category[]
+  recurring    RecurringCharge[]
+}
+
+enum AccountType {
+  CREDIT_CARD
+  BANK_ACCOUNT
+}
+
+model Account {
+  id             String      @id @default(cuid())
+  name           String
+  type           AccountType
+  balance        Float       @default(0)
+
+  // Credit card specific fields
+  creditLimit    Float?
+  apr            Float?      // Annual Percentage Rate
+
+  userId         String
+  user           User        @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  transactions   Transaction[]
+  recurring      RecurringCharge[]
+
+  createdAt      DateTime    @default(now())
+  updatedAt      DateTime    @updatedAt
+
+  @@index([userId])
+}
+
+model Category {
+  id           String        @id @default(cuid())
+  name         String
+  color        String?       // For UI display
+
+  userId       String
+  user         User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  transactions Transaction[]
+  recurring    RecurringCharge[]
+
+  createdAt    DateTime      @default(now())
+  updatedAt    DateTime      @updatedAt
+
+  @@unique([userId, name])
+  @@index([userId])
+}
+
+enum TransactionType {
+  INCOME
+  EXPENSE
+}
+
+model Transaction {
+  id          String          @id @default(cuid())
+  name        String
+  amount      Float
+  type        TransactionType
+  date        DateTime        @default(now())
+  notes       String?
+  isRecurring Boolean         @default(false)
+
+  accountId   String
+  account     Account         @relation(fields: [accountId], references: [id], onDelete: Cascade)
+
+  categoryId  String
+  category    Category        @relation(fields: [categoryId], references: [id], onDelete: Cascade)
+
+  userId      String
+  user        User            @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  recurringId String?
+  recurring   RecurringCharge? @relation(fields: [recurringId], references: [id], onDelete: SetNull)
+
+  createdAt   DateTime        @default(now())
+  updatedAt   DateTime        @updatedAt
+
+  @@index([userId, date])
+  @@index([accountId])
+  @@index([categoryId])
+}
+
+enum RecurringFrequency {
+  WEEKLY
+  BIWEEKLY
+  MONTHLY
+  QUARTERLY
+  YEARLY
+}
+
+model RecurringCharge {
+  id           String             @id @default(cuid())
+  name         String
+  amount       Float
+  frequency    RecurringFrequency
+  nextDueDate  DateTime
+
+  accountId    String
+  account      Account            @relation(fields: [accountId], references: [id], onDelete: Cascade)
+
+  categoryId   String
+  category     Category           @relation(fields: [categoryId], references: [id], onDelete: Cascade)
+
+  userId       String
+  user         User               @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  transactions Transaction[]
+
+  createdAt    DateTime           @default(now())
+  updatedAt    DateTime           @updatedAt
+
+  @@index([userId, nextDueDate])
+}

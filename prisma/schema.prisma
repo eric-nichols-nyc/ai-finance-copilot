@@ -6,7 +6,8 @@ generator client {
 }
 
 datasource db {
-  provider = "postgresql"
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
 }
 
 model User {
@@ -22,15 +23,10 @@ model User {
   recurring    RecurringCharge[]
 }
 
-enum AccountType {
-  CREDIT_CARD
-  BANK_ACCOUNT
-}
-
 model Account {
   id             String      @id @default(cuid())
   name           String
-  type           AccountType
+  type           String      // CREDIT_CARD or BANK_ACCOUNT
   balance        Float       @default(0)
 
   // Credit card specific fields
@@ -67,16 +63,11 @@ model Category {
   @@index([userId])
 }
 
-enum TransactionType {
-  INCOME
-  EXPENSE
-}
-
 model Transaction {
   id          String          @id @default(cuid())
   name        String
   amount      Float
-  type        TransactionType
+  type        String          // INCOME or EXPENSE
   date        DateTime        @default(now())
   notes       String?
   isRecurring Boolean         @default(false)
@@ -101,19 +92,11 @@ model Transaction {
   @@index([categoryId])
 }
 
-enum RecurringFrequency {
-  WEEKLY
-  BIWEEKLY
-  MONTHLY
-  QUARTERLY
-  YEARLY
-}
-
 model RecurringCharge {
   id           String             @id @default(cuid())
   name         String
   amount       Float
-  frequency    RecurringFrequency
+  frequency    String             // WEEKLY, BIWEEKLY, MONTHLY, QUARTERLY, YEARLY
   nextDueDate  DateTime
 
   accountId    String

@@ -1,6 +1,25 @@
-import { PrismaClient, AccountType, TransactionType, RecurringFrequency } from '@prisma/client'
+import { PrismaClient } from '@prisma/client'
 
 const prisma = new PrismaClient()
+
+// Type constants for SQLite (since enums aren't supported)
+const AccountType = {
+  CREDIT_CARD: 'CREDIT_CARD',
+  BANK_ACCOUNT: 'BANK_ACCOUNT'
+} as const
+
+const TransactionType = {
+  INCOME: 'INCOME',
+  EXPENSE: 'EXPENSE'
+} as const
+
+const RecurringFrequency = {
+  WEEKLY: 'WEEKLY',
+  BIWEEKLY: 'BIWEEKLY',
+  MONTHLY: 'MONTHLY',
+  QUARTERLY: 'QUARTERLY',
+  YEARLY: 'YEARLY'
+} as const
 
 async function main() {
   console.log('🌱 Starting database seed...')

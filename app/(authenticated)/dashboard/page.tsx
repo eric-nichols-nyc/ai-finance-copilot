@@ -5,36 +5,7 @@ import { TopCategoriesCard } from "./_components/TopCategoriesCard"
 import { NetThisMonthCard } from "./_components/NetThisMonthCard"
 import { NextTwoWeeksCard } from "./_components/NextTwoWeeksCard"
 import { GoalsCard } from "./_components/GoalsCard"
-import { getExpenseMetricsWithComparison } from "@/lib/expenseUtils"
-import { prisma } from "@/lib/prisma"
-
-async function getDashboardData() {
-  // Get the first user (demo user)
-  const user = await prisma.user.findFirst()
-  if (!user) {
-    // Return default metrics if no user found
-    return {
-      expenseMetrics: {
-        totalExpenses: 0,
-        interestPaid: 0,
-        recurringCharges: 0,
-        creditCardSpending: 0,
-        loanPayments: 0,
-        totalExpensesChange: 0,
-        interestPaidChange: 0,
-        recurringChargesChange: 0,
-        creditCardSpendingChange: 0,
-        loanPaymentsChange: 0,
-      }
-    }
-  }
-
-  const expenseMetrics = await getExpenseMetricsWithComparison(user.id)
-
-  return {
-    expenseMetrics
-  }
-}
+import { getDashboardData } from "@/actions/get-dashboard-data"
 
 export default async function DashboardPage() {
   const data = await getDashboardData()

@@ -41,6 +41,7 @@ import { Badge } from "@/components/ui/badge"
 import { Input } from "@/components/ui/input"
 import { createClient } from "@/utils/supabase/server"
 import { ThemeSwitcher } from "@/components/theme-switcher"
+import { SettingsButton } from "@/components/SettingsButton"
 
 const navigationItems = [
   {
@@ -230,12 +231,16 @@ export default async function AuthenticatedLayout({
                 <SidebarMenu>
                   {bottomItems.map((item) => (
                     <SidebarMenuItem key={item.href}>
-                      <SidebarMenuButton asChild>
-                        <Link href={item.href}>
-                          <item.icon className="h-4 w-4" />
-                          <span>{item.title}</span>
-                        </Link>
-                      </SidebarMenuButton>
+                      {item.title === "Settings" ? (
+                        <SettingsButton userEmail={user.email} />
+                      ) : (
+                        <SidebarMenuButton asChild>
+                          <Link href={item.href}>
+                            <item.icon className="h-4 w-4" />
+                            <span>{item.title}</span>
+                          </Link>
+                        </SidebarMenuButton>
+                      )}
                     </SidebarMenuItem>
                   ))}
                 </SidebarMenu>

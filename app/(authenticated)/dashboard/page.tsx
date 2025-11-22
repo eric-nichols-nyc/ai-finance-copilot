@@ -5,6 +5,7 @@ import { TopCategoriesCard } from "./_components/TopCategoriesCard"
 import { NetThisMonthCard } from "./_components/NetThisMonthCard"
 import { NextTwoWeeksCard } from "./_components/NextTwoWeeksCard"
 import { GoalsCard } from "./_components/GoalsCard"
+import { DashboardDebugger } from "./_components/DashboardDebugger"
 import { getDashboardData } from "@/actions/get-dashboard-data"
 
 export default async function DashboardPage() {
@@ -39,6 +40,9 @@ export default async function DashboardPage() {
         <NextTwoWeeksCard />
         <GoalsCard />
       </div>
+
+      {/* Debug Component (Development Only) */}
+      <DashboardDebugger data={data} />
     </div>
   )
 }

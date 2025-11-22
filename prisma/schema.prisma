@@ -18,53 +18,62 @@ model User {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  accounts     Account[]
-  transactions Transaction[]
-  categories   Category[]
-  budgets      Budget[]
-  recurring    RecurringCharge[]
+  accounts        Account[]
+  transactions    Transaction[]
+  categories      Category[]
+  budgets         Budget[]
+  recurring       RecurringCharge[]
+  interestPayments InterestPayment[]
 }
 
-// Financial Account (bank account, credit card, etc.)
+// Financial Account (bank account, credit card, loan, etc.)
 model Account {
-  id        String   @id @default(cuid())
+  id        String      @id @default(cuid())
   name      String
-  type      String   // checking, savings, credit, investment
-  balance   Decimal  @default(0)
-  currency  String   @default("USD")
+  type      String      // CHECKING, SAVINGS, CREDIT_CARD, LOAN, INVESTMENT
+  balance   Decimal     @default(0)
+  currency  String      @default("USD")
 
   // Credit card specific fields
   creditLimit Decimal?
   apr         Decimal? // Annual Percentage Rate
 
+  // Loan specific fields
+  loanAmount       Decimal? // Original loan amount
+  remainingBalance Decimal? // Remaining balance on loan
+  loanTerm         Int?     // Term in months
+  monthlyPayment   Decimal? // Fixed monthly payment amount
+
   userId    String
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  user         User              @relation(fields: [userId], references: [id], onDelete: Cascade)
-  transactions Transaction[]
-  recurring    RecurringCharge[]
+  user             User              @relation(fields: [userId], references: [id], onDelete: Cascade)
+  transactions     Transaction[]
+  recurring        RecurringCharge[]
+  interestPayments InterestPayment[]
 
   @@index([userId])
+  @@index([type])
 }
 
 // Transaction
 model Transaction {
-  id          String   @id @default(cuid())
+  id          String          @id @default(cuid())
   amount      Decimal
   description String?
-  date        DateTime @default(now())
-  type        String   // income, expense, transfer
+  date        DateTime        @default(now())
+  type        String          // INCOME, EXPENSE, TRANSFER, INTEREST_CHARGE, LOAN_PAYMENT
   notes       String?
-  isRecurring Boolean  @default(false)
+  isRecurring Boolean         @default(false)
 
   accountId   String
   categoryId  String?
   userId      String
   recurringId String?
 
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
   user      User             @relation(fields: [userId], references: [id], onDelete: Cascade)
   account   Account          @relation(fields: [accountId], references: [id], onDelete: Cascade)
@@ -75,6 +84,7 @@ model Transaction {
   @@index([accountId])
   @@index([categoryId])
   @@index([date])
+  @@index([type])
 }
 
 // Category for transactions
@@ -136,4 +146,26 @@ model RecurringCharge {
   transactions Transaction[]
 
   @@index([userId, nextDueDate])
+}
+
+// Interest Payment tracking (for credit cards and loans)
+model InterestPayment {
+  id        String   @id @default(cuid())
+  amount    Decimal
+  date      DateTime
+  month     Int      // Month number (1-12)
+  year      Int      // Year
+
+  accountId String
+  userId    String
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  account Account @relation(fields: [accountId], references: [id], onDelete: Cascade)
+  user    User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@index([accountId])
+  @@index([year, month])
 }

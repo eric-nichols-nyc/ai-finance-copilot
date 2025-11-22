@@ -13,7 +13,10 @@ const prisma = new PrismaClient({
 // Type constants for SQLite (since enums aren't supported)
 const AccountType = {
   CREDIT_CARD: 'CREDIT_CARD',
-  BANK_ACCOUNT: 'BANK_ACCOUNT'
+  BANK_ACCOUNT: 'BANK_ACCOUNT',
+  CHECKING: 'CHECKING',
+  SAVINGS: 'SAVINGS',
+  LOAN: 'LOAN'
 } as const
 
 const TransactionType = {
@@ -104,8 +107,17 @@ async function main() {
   const checkingAccount = await prisma.account.create({
     data: {
       name: 'Chase Checking',
-      type: AccountType.BANK_ACCOUNT,
+      type: AccountType.CHECKING,
       balance: 5420.50,
+      userId: user.id,
+    },
+  })
+
+  const savingsAccount = await prisma.account.create({
+    data: {
+      name: 'Marcus Savings',
+      type: AccountType.SAVINGS,
+      balance: 15000.00,
       userId: user.id,
     },
   })
@@ -143,7 +155,72 @@ async function main() {
     },
   })
 
-  console.log('✅ Created accounts: 4')
+  const creditCard4 = await prisma.account.create({
+    data: {
+      name: 'Discover It',
+      type: AccountType.CREDIT_CARD,
+      balance: 892.45,
+      creditLimit: 4000,
+      apr: 20.24,
+      userId: user.id,
+    },
+  })
+
+  const creditCard5 = await prisma.account.create({
+    data: {
+      name: 'Citi Double Cash',
+      type: AccountType.CREDIT_CARD,
+      balance: 1567.89,
+      creditLimit: 7500,
+      apr: 17.99,
+      userId: user.id,
+    },
+  })
+
+  // Create loan accounts
+  const carLoan = await prisma.account.create({
+    data: {
+      name: 'Honda Civic Auto Loan',
+      type: AccountType.LOAN,
+      balance: -18450.00, // Negative balance indicates money owed
+      loanAmount: 25000.00,
+      remainingBalance: 18450.00,
+      loanTerm: 60, // 5 years in months
+      monthlyPayment: 465.23,
+      apr: 4.9,
+      userId: user.id,
+    },
+  })
+
+  const studentLoan = await prisma.account.create({
+    data: {
+      name: 'Federal Student Loan',
+      type: AccountType.LOAN,
+      balance: -32780.00, // Negative balance indicates money owed
+      loanAmount: 45000.00,
+      remainingBalance: 32780.00,
+      loanTerm: 120, // 10 years in months
+      monthlyPayment: 350.00,
+      apr: 5.5,
+      userId: user.id,
+    },
+  })
+
+  const personalLoan = await prisma.account.create({
+    data: {
+      name: 'Personal Loan - Debt Consolidation',
+      type: AccountType.LOAN,
+      balance: -8920.00, // Negative balance indicates money owed
+      loanAmount: 12000.00,
+      remainingBalance: 8920.00,
+      loanTerm: 36, // 3 years in months
+      monthlyPayment: 315.67,
+      apr: 8.99,
+      userId: user.id,
+    },
+  })
+
+  console.log('✅ Created accounts: 10 (2 bank, 5 credit cards, 3 loans)')
 
   // Helper to get dates
   const today = new Date()
@@ -207,7 +284,67 @@ async function main() {
     },
   })
 
-  console.log('✅ Created recurring charges: 4')
+  const internetRecurring = await prisma.recurringCharge.create({
+    data: {
+      name: 'Internet Service',
+      amount: 79.99,
+      frequency: RecurringFrequency.MONTHLY,
+      nextDueDate: getDateDaysFromNow(3),
+      accountId: checkingAccount.id,
+      categoryId: categories.find(c => c.name === 'Utilities')!.id,
+      userId: user.id,
+    },
+  })
+
+  const phoneRecurring = await prisma.recurringCharge.create({
+    data: {
+      name: 'Verizon Phone Plan',
+      amount: 85.00,
+      frequency: RecurringFrequency.MONTHLY,
+      nextDueDate: getDateDaysFromNow(20),
+      accountId: creditCard1.id,
+      categoryId: categories.find(c => c.name === 'Utilities')!.id,
+      userId: user.id,
+    },
+  })
+
+  const carLoanRecurring = await prisma.recurringCharge.create({
+    data: {
+      name: 'Car Loan Payment',
+      amount: 465.23,
+      frequency: RecurringFrequency.MONTHLY,
+      nextDueDate: getDateDaysFromNow(1),
+      accountId: checkingAccount.id,
+      categoryId: categories.find(c => c.name === 'Transportation')!.id,
+      userId: user.id,
+    },
+  })
+
+  const studentLoanRecurring = await prisma.recurringCharge.create({
+    data: {
+      name: 'Student Loan Payment',
+      amount: 350.00,
+      frequency: RecurringFrequency.MONTHLY,
+      nextDueDate: getDateDaysFromNow(10),
+      accountId: checkingAccount.id,
+      categoryId: categories.find(c => c.name === 'Shopping')!.id,
+      userId: user.id,
+    },
+  })
+
+  const insuranceRecurring = await prisma.recurringCharge.create({
+    data: {
+      name: 'Car Insurance',
+      amount: 145.00,
+      frequency: RecurringFrequency.MONTHLY,
+      nextDueDate: getDateDaysFromNow(7),
+      accountId: checkingAccount.id,
+      categoryId: categories.find(c => c.name === 'Transportation')!.id,
+      userId: user.id,
+    },
+  })
+
+  console.log('✅ Created recurring charges: 10')
 
   // Create transactions for the current month
   const transactions = [

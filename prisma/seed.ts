@@ -1,6 +1,14 @@
-import { PrismaClient } from '@prisma/client'
+import { PrismaClient, Prisma } from "../app/generated/prisma/client";
+import { PrismaPg } from '@prisma/adapter-pg'
+import 'dotenv/config'
 
-const prisma = new PrismaClient()
+const adapter = new PrismaPg({
+  connectionString: process.env.DATABASE_URL,
+})
+
+const prisma = new PrismaClient({
+  adapter,
+});
 
 // Type constants for SQLite (since enums aren't supported)
 const AccountType = {
@@ -205,7 +213,7 @@ async function main() {
   const transactions = [
     // Income
     {
-      name: 'Monthly Salary',
+      description: 'Monthly Salary',
       amount: 5500.00,
       type: TransactionType.INCOME,
       date: getDateDaysAgo(25),
@@ -214,7 +222,7 @@ async function main() {
       isRecurring: false,
     },
     {
-      name: 'Freelance Project',
+      description: 'Freelance Project',
       amount: 1200.00,
       type: TransactionType.INCOME,
       date: getDateDaysAgo(15),
@@ -224,7 +232,7 @@ async function main() {
     },
     // Expenses - Groceries
     {
-      name: 'Whole Foods',
+      description: 'Whole Foods',
       amount: 127.45,
       type: TransactionType.EXPENSE,
       date: getDateDaysAgo(2),
@@ -233,7 +241,7 @@ async function main() {
       isRecurring: false,
     },
     {
-      name: 'Trader Joes',
+      description: 'Trader Joes',
       amount: 84.32,
       type: TransactionType.EXPENSE,
       date: getDateDaysAgo(7),
@@ -242,7 +250,7 @@ async function main() {
       isRecurring: false,
     },
     {
-      name: 'Costco',
+      description: 'Costco',
       amount: 234.67,
       type: TransactionType.EXPENSE,
       date: getDateDaysAgo(14),
@@ -252,7 +260,7 @@ async function main() {
     },
     // Dining
     {
-      name: 'Chipotle',
+      description: 'Chipotle',
       amount: 15.67,
       type: TransactionType.EXPENSE,
       date: getDateDaysAgo(1),
@@ -261,7 +269,7 @@ async function main() {
       isRecurring: false,
     },
     {
-      name: 'Starbucks',
+      description: 'Starbucks',
       amount: 6.75,
       type: TransactionType.EXPENSE,
       date: getDateDaysAgo(3),
@@ -270,7 +278,7 @@ async function main() {
       isRecurring: false,
     },
     {
-      name: 'Local Restaurant',
+      description: 'Local Restaurant',
       amount: 67.89,
       type: TransactionType.EXPENSE,
       date: getDateDaysAgo(5),
@@ -279,7 +287,7 @@ async function main() {
       isRecurring: false,
     },
     {
-      name: 'Pizza Place',
+      description: 'Pizza Place',
       amount: 32.50,
       type: TransactionType.EXPENSE,
       date: getDateDaysAgo(9),
@@ -289,7 +297,7 @@ async function main() {
     },
     // Entertainment
     {
-      name: 'Movie Tickets',
+      description: 'Movie Tickets',
       amount: 28.00,
       type: TransactionType.EXPENSE,
       date: getDateDaysAgo(6),
@@ -298,7 +306,7 @@ async function main() {
       isRecurring: false,
     },
     {
-      name: 'Concert Tickets',
+      description: 'Concert Tickets',
       amount: 120.00,
       type: TransactionType.EXPENSE,
       date: getDateDaysAgo(18),
@@ -308,7 +316,7 @@ async function main() {
     },
     // Transportation
     {
-      name: 'Gas Station',
+      description: 'Gas Station',
       amount: 52.34,
       type: TransactionType.EXPENSE,
       date: getDateDaysAgo(4),
@@ -317,7 +325,7 @@ async function main() {
       isRecurring: false,
     },
     {
-      name: 'Uber',
+      description: 'Uber',
       amount: 23.45,
       type: TransactionType.EXPENSE,
       date: getDateDaysAgo(8),
@@ -326,7 +334,7 @@ async function main() {
       isRecurring: false,
     },
     {
-      name: 'Parking',
+      description: 'Parking',
       amount: 15.00,
       type: TransactionType.EXPENSE,
       date: getDateDaysAgo(11),
@@ -336,7 +344,7 @@ async function main() {
     },
     // Utilities
     {
-      name: 'Electric Bill',
+      description: 'Electric Bill',
       amount: 125.00,
       type: TransactionType.EXPENSE,
       date: getDateDaysAgo(20),
@@ -346,7 +354,7 @@ async function main() {
       recurringId: electricRecurring.id,
     },
     {
-      name: 'Internet Bill',
+      description: 'Internet Bill',
       amount: 79.99,
       type: TransactionType.EXPENSE,
       date: getDateDaysAgo(22),
@@ -356,7 +364,7 @@ async function main() {
     },
     // Shopping
     {
-      name: 'Amazon',
+      description: 'Amazon',
       amount: 89.99,
       type: TransactionType.EXPENSE,
       date: getDateDaysAgo(10),
@@ -365,7 +373,7 @@ async function main() {
       isRecurring: false,
     },
     {
-      name: 'Target',
+      description: 'Target',
       amount: 156.78,
       type: TransactionType.EXPENSE,
       date: getDateDaysAgo(13),
@@ -375,7 +383,7 @@ async function main() {
     },
     // Healthcare
     {
-      name: 'Gym Membership',
+      description: 'Gym Membership',
       amount: 49.99,
       type: TransactionType.EXPENSE,
       date: getDateDaysAgo(23),
@@ -385,7 +393,7 @@ async function main() {
       recurringId: gymRecurring.id,
     },
     {
-      name: 'Pharmacy',
+      description: 'Pharmacy',
       amount: 25.50,
       type: TransactionType.EXPENSE,
       date: getDateDaysAgo(16),
@@ -395,7 +403,7 @@ async function main() {
     },
     // Subscriptions
     {
-      name: 'Netflix Subscription',
+      description: 'Netflix Subscription',
       amount: 15.99,
       type: TransactionType.EXPENSE,
       date: getDateDaysAgo(26),
@@ -405,7 +413,7 @@ async function main() {
       recurringId: netflixRecurring.id,
     },
     {
-      name: 'Spotify Premium',
+      description: 'Spotify Premium',
       amount: 10.99,
       type: TransactionType.EXPENSE,
       date: getDateDaysAgo(19),

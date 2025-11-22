@@ -3,7 +3,7 @@
 
 generator client {
   provider = "prisma-client"
-  output   = "../lib/generated/prisma"
+  output   = "../app/generated/prisma"
 }
 
 datasource db {
@@ -32,11 +32,11 @@ model Account {
   type      String   // checking, savings, credit, investment
   balance   Decimal  @default(0)
   currency  String   @default("USD")
-  
+
   // Credit card specific fields
   creditLimit Decimal?
   apr         Decimal? // Annual Percentage Rate
-  
+
   userId    String
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -57,12 +57,12 @@ model Transaction {
   type        String   // income, expense, transfer
   notes       String?
   isRecurring Boolean  @default(false)
-  
+
   accountId   String
   categoryId  String?
   userId      String
   recurringId String?
-  
+
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
 

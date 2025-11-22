@@ -4,7 +4,30 @@ import { createClient } from '@/utils/supabase/server'
 import { prisma } from '@/lib/prisma'
 import { getExpenseMetricsWithComparison } from '@/lib/expenseUtils'
 
-export async function getDashboardData() {
+type DashboardDataSuccess = {
+  success: true
+  expenseMetrics: {
+    totalExpenses: number
+    interestPaid: number
+    recurringCharges: number
+    creditCardSpending: number
+    loanPayments: number
+    totalExpensesChange: number
+    interestPaidChange: number
+    recurringChargesChange: number
+    creditCardSpendingChange: number
+    loanPaymentsChange: number
+  }
+}
+
+type DashboardDataError = {
+  success: false
+  error: string
+}
+
+export type DashboardDataResult = DashboardDataSuccess | DashboardDataError
+
+export async function getDashboardData(): Promise<DashboardDataResult> {
   const supabase = await createClient()
 
   // Get the authenticated Supabase user
@@ -13,20 +36,9 @@ export async function getDashboardData() {
   } = await supabase.auth.getUser()
 
   if (!supabaseUser?.email) {
-    // Return default metrics if no user found
     return {
-      expenseMetrics: {
-        totalExpenses: 0,
-        interestPaid: 0,
-        recurringCharges: 0,
-        creditCardSpending: 0,
-        loanPayments: 0,
-        totalExpensesChange: 0,
-        interestPaidChange: 0,
-        recurringChargesChange: 0,
-        creditCardSpendingChange: 0,
-        loanPaymentsChange: 0,
-      }
+      success: false,
+      error: 'No authenticated user found. Please sign in to view your dashboard.',
     }
   }
 
@@ -38,26 +50,16 @@ export async function getDashboardData() {
   })
 
   if (!user) {
-    // Return default metrics if no user found in database
     return {
-      expenseMetrics: {
-        totalExpenses: 0,
-        interestPaid: 0,
-        recurringCharges: 0,
-        creditCardSpending: 0,
-        loanPayments: 0,
-        totalExpensesChange: 0,
-        interestPaidChange: 0,
-        recurringChargesChange: 0,
-        creditCardSpendingChange: 0,
-        loanPaymentsChange: 0,
-      }
+      success: false,
+      error: 'User not found in database. Please contact support if this issue persists.',
     }
   }
 
   const expenseMetrics = await getExpenseMetricsWithComparison(user.id)
 
   return {
+    success: true,
     expenseMetrics
   }
 }

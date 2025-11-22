@@ -5,16 +5,9 @@ import {
   Wallet,
   TrendingUp,
   Settings,
+  User,
+  LogOut,
   CreditCard,
-  Target,
-  DollarSign,
-  PieChart,
-  Repeat,
-  Search,
-  ChevronRight,
-  HelpCircle,
-  Compass,
-  ExternalLink,
 } from "lucide-react"
 import {
   SidebarProvider,
@@ -32,13 +25,15 @@ import {
   SidebarGroupLabel,
 } from "@/components/ui/sidebar"
 import {
-  Collapsible,
-  CollapsibleContent,
-  CollapsibleTrigger,
-} from "@/components/ui/collapsible"
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu"
 import { Separator } from "@/components/ui/separator"
-import { Badge } from "@/components/ui/badge"
-import { Input } from "@/components/ui/input"
+import { Avatar, AvatarFallback } from "@/components/ui/avatar"
 import { createClient } from "@/utils/supabase/server"
 import { ThemeSwitcher } from "@/components/theme-switcher"
 
@@ -52,57 +47,24 @@ const navigationItems = [
     title: "Transactions",
     href: "/transactions",
     icon: CreditCard,
-    badge: 4,
   },
   {
-    title: "Goals",
-    href: "/goals",
-    icon: Target,
-  },
-  {
-    title: "Cash flow",
-    href: "/cash-flow",
-    icon: DollarSign,
-  },
-  {
-    title: "Accounts",
-    href: "/accounts",
+    title: "Budgets",
+    href: "/budgets",
     icon: Wallet,
   },
   {
-    title: "Investments",
-    href: "/investments",
+    title: "Analytics",
+    href: "/analytics",
     icon: TrendingUp,
-  },
-  {
-    title: "Categories",
-    href: "/categories",
-    icon: PieChart,
-  },
-  {
-    title: "Recurrings",
-    href: "/recurrings",
-    icon: Repeat,
   },
 ]
 
-const accountsData = {
-  creditCards: [
-    { name: "Chase Credit Card", balance: 7244 },
-    { name: "Cash Rewards", balance: 4995 },
-  ],
-}
-
-const bottomItems = [
+const settingsItems = [
   {
-    title: "Explore",
-    href: "/explore",
-    icon: Compass,
-  },
-  {
-    title: "Get help",
-    href: "/help",
-    icon: HelpCircle,
+    title: "Account",
+    href: "/account",
+    icon: User,
   },
   {
     title: "Settings",
@@ -125,36 +87,52 @@ export default async function AuthenticatedLayout({
     return redirect("/sign-in")
   }
 
+  const signOut = async () => {
+    "use server"
+    const supabase = await createClient()
+    await supabase.auth.signOut()
+    return redirect("/sign-in")
+  }
+
+  const userInitials = user.email
+    ?.split("@")[0]
+    .slice(0, 2)
+    .toUpperCase() || "U"
+
   return (
     <SidebarProvider>
       <Sidebar>
-        <SidebarHeader className="border-b border-sidebar-border p-4">
-          <div className="relative">
-            <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
-            <Input
-              placeholder="Search"
-              className="pl-9 h-9 bg-sidebar-accent/50"
-            />
-          </div>
+        <SidebarHeader className="border-b border-sidebar-border">
+          <SidebarMenu>
+            <SidebarMenuItem>
+              <SidebarMenuButton size="lg" asChild>
+                <Link href="/dashboard">
+                  <div className="flex aspect-square size-8 items-center justify-center rounded-lg bg-sidebar-primary text-sidebar-primary-foreground">
+                    <Wallet className="size-4" />
+                  </div>
+                  <div className="flex flex-col gap-0.5 leading-none">
+                    <span className="font-semibold">Finance Manager</span>
+                    <span className="text-xs text-muted-foreground">
+                      AI-Powered
+                    </span>
+                  </div>
+                </Link>
+              </SidebarMenuButton>
+            </SidebarMenuItem>
+          </SidebarMenu>
         </SidebarHeader>
 
         <SidebarContent>
           <SidebarGroup>
+            <SidebarGroupLabel>Navigation</SidebarGroupLabel>
             <SidebarGroupContent>
               <SidebarMenu>
                 {navigationItems.map((item) => (
                   <SidebarMenuItem key={item.href}>
                     <SidebarMenuButton asChild>
-                      <Link href={item.href} className="flex items-center justify-between">
-                        <div className="flex items-center gap-2">
-                          <item.icon className="h-4 w-4" />
-                          <span>{item.title}</span>
-                        </div>
-                        {item.badge && (
-                          <Badge variant="secondary" className="ml-auto h-5 px-1.5 text-xs">
-                            {item.badge}
-                          </Badge>
-                        )}
+                      <Link href={item.href}>
+                        <item.icon />
+                        <span>{item.title}</span>
                       </Link>
                     </SidebarMenuButton>
                   </SidebarMenuItem>
@@ -164,91 +142,87 @@ export default async function AuthenticatedLayout({
           </SidebarGroup>
 
           <SidebarGroup>
-            <SidebarGroupLabel className="text-xs font-semibold text-muted-foreground uppercase tracking-wider px-2">
-              MY ACCOUNTS
-            </SidebarGroupLabel>
+            <SidebarGroupLabel>Settings</SidebarGroupLabel>
             <SidebarGroupContent>
               <SidebarMenu>
-                <Collapsible defaultOpen className="group/collapsible">
-                  <SidebarMenuItem>
-                    <CollapsibleTrigger asChild>
-                      <SidebarMenuButton className="w-full">
-                        <CreditCard className="h-4 w-4" />
-                        <span>Credit cards</span>
-                        <ChevronRight className="ml-auto h-4 w-4 transition-transform group-data-[state=open]/collapsible:rotate-90" />
-                      </SidebarMenuButton>
-                    </CollapsibleTrigger>
-                    <CollapsibleContent>
-                      <SidebarMenu className="ml-4 mt-1">
-                        {accountsData.creditCards.map((card) => (
-                          <SidebarMenuItem key={card.name}>
-                            <SidebarMenuButton asChild size="sm">
-                              <Link href={`/accounts/${card.name.toLowerCase().replace(/\s+/g, "-")}`} className="flex items-center justify-between">
-                                <span className="text-sm">{card.name}</span>
-                                <span className="text-xs text-muted-foreground">
-                                  ${card.balance.toLocaleString()}
-                                </span>
-                              </Link>
-                            </SidebarMenuButton>
-                          </SidebarMenuItem>
-                        ))}
-                      </SidebarMenu>
-                    </CollapsibleContent>
+                {settingsItems.map((item) => (
+                  <SidebarMenuItem key={item.href}>
+                    <SidebarMenuButton asChild>
+                      <Link href={item.href}>
+                        <item.icon />
+                        <span>{item.title}</span>
+                      </Link>
+                    </SidebarMenuButton>
                   </SidebarMenuItem>
-                </Collapsible>
-
-                <Collapsible className="group/collapsible">
-                  <SidebarMenuItem>
-                    <CollapsibleTrigger asChild>
-                      <SidebarMenuButton className="w-full">
-                        <Wallet className="h-4 w-4" />
-                        <span>Depository</span>
-                        <ChevronRight className="ml-auto h-4 w-4 transition-transform group-data-[state=open]/collapsible:rotate-90" />
-                      </SidebarMenuButton>
-                    </CollapsibleTrigger>
-                  </SidebarMenuItem>
-                </Collapsible>
-
-                <Collapsible className="group/collapsible">
-                  <SidebarMenuItem>
-                    <CollapsibleTrigger asChild>
-                      <SidebarMenuButton className="w-full">
-                        <TrendingUp className="h-4 w-4" />
-                        <span>Investment</span>
-                        <ChevronRight className="ml-auto h-4 w-4 transition-transform group-data-[state=open]/collapsible:rotate-90" />
-                      </SidebarMenuButton>
-                    </CollapsibleTrigger>
-                  </SidebarMenuItem>
-                </Collapsible>
+                ))}
               </SidebarMenu>
             </SidebarGroupContent>
           </SidebarGroup>
-
-          <div className="mt-auto">
-            <SidebarGroup>
-              <SidebarGroupContent>
-                <SidebarMenu>
-                  {bottomItems.map((item) => (
-                    <SidebarMenuItem key={item.href}>
-                      <SidebarMenuButton asChild>
-                        <Link href={item.href}>
-                          <item.icon className="h-4 w-4" />
-                          <span>{item.title}</span>
-                        </Link>
-                      </SidebarMenuButton>
-                    </SidebarMenuItem>
-                  ))}
-                </SidebarMenu>
-              </SidebarGroupContent>
-            </SidebarGroup>
-          </div>
         </SidebarContent>
 
-        <SidebarFooter className="border-t border-sidebar-border p-3">
-          <div className="flex items-center gap-2 rounded-lg bg-muted/50 px-3 py-2 text-sm">
-            <span className="text-muted-foreground">You are in demo mode</span>
-            <ExternalLink className="ml-auto h-3.5 w-3.5 text-muted-foreground" />
-          </div>
+        <SidebarFooter className="border-t border-sidebar-border">
+          <SidebarMenu>
+            <SidebarMenuItem>
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <SidebarMenuButton size="lg" className="data-[state=open]:bg-sidebar-accent">
+                    <Avatar className="h-8 w-8 rounded-lg">
+                      <AvatarFallback className="rounded-lg">
+                        {userInitials}
+                      </AvatarFallback>
+                    </Avatar>
+                    <div className="grid flex-1 text-left text-sm leading-tight">
+                      <span className="truncate font-semibold">
+                        {user.email?.split("@")[0]}
+                      </span>
+                      <span className="truncate text-xs text-muted-foreground">
+                        {user.email}
+                      </span>
+                    </div>
+                  </SidebarMenuButton>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent
+                  className="w-56"
+                  align="end"
+                  side="top"
+                  sideOffset={4}
+                >
+                  <DropdownMenuLabel className="font-normal">
+                    <div className="flex flex-col space-y-1">
+                      <p className="text-sm font-medium leading-none">
+                        {user.email?.split("@")[0]}
+                      </p>
+                      <p className="text-xs leading-none text-muted-foreground">
+                        {user.email}
+                      </p>
+                    </div>
+                  </DropdownMenuLabel>
+                  <DropdownMenuSeparator />
+                  <DropdownMenuItem asChild>
+                    <Link href="/account">
+                      <User className="mr-2 h-4 w-4" />
+                      Account
+                    </Link>
+                  </DropdownMenuItem>
+                  <DropdownMenuItem asChild>
+                    <Link href="/settings">
+                      <Settings className="mr-2 h-4 w-4" />
+                      Settings
+                    </Link>
+                  </DropdownMenuItem>
+                  <DropdownMenuSeparator />
+                  <DropdownMenuItem asChild>
+                    <form action={signOut} className="w-full">
+                      <button type="submit" className="flex w-full items-center">
+                        <LogOut className="mr-2 h-4 w-4" />
+                        Log out
+                      </button>
+                    </form>
+                  </DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
+            </SidebarMenuItem>
+          </SidebarMenu>
         </SidebarFooter>
       </Sidebar>
 

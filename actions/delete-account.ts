@@ -21,18 +21,25 @@ export async function deleteAccount() {
 
   try {
     // Delete user from Prisma database (cascading deletes will handle related records)
-    await prisma.user.delete({
+    // Use deleteMany instead of delete to avoid error if user doesn't exist
+    const result = await prisma.user.deleteMany({
       where: {
         email: user.email,
       },
     })
+
+    if (result.count === 0) {
+      console.log('User not found in Prisma database, skipping database deletion')
+    } else {
+      console.log(`Deleted user ${user.email} from Prisma database`)
+    }
 
     // Note: Supabase user deletion from auth requires admin privileges
     // For now, we just delete from Prisma and sign out
     // In production, you'd want to set up a webhook or edge function to handle auth deletion
   } catch (error) {
     console.error('Error deleting user account:', error)
-    redirect('/error')
+    // Continue to sign out even if database deletion fails
   }
 
   // Sign out the user

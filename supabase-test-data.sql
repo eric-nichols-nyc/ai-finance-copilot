@@ -89,20 +89,30 @@ inserted_accounts AS (
   )
   RETURNING id, name, type
 ),
--- Get account IDs for recurring charges
+-- Get account IDs for recurring charges (combining newly inserted and existing accounts)
+all_accounts AS (
+  SELECT id, name, type FROM inserted_accounts
+  UNION ALL
+  SELECT id, name, type FROM public."Account"
+  WHERE "userId" = (SELECT user_id FROM user_data)
+),
 checking_account AS (
-  SELECT id FROM public."Account"
+  SELECT id FROM all_accounts
   WHERE name = 'Chase Checking'
-  AND "userId" = (SELECT user_id FROM user_data)
   LIMIT 1
 ),
 credit_card AS (
-  SELECT id FROM public."Account"
+  SELECT id FROM all_accounts
   WHERE type = 'CREDIT_CARD'
-  AND "userId" = (SELECT user_id FROM user_data)
   LIMIT 1
 ),
--- Get category IDs for recurring charges
+-- Get category IDs for recurring charges (combining newly inserted and existing categories)
+all_categories AS (
+  SELECT id, name FROM inserted_categories
+  UNION ALL
+  SELECT id, name FROM public."Category"
+  WHERE "userId" = (SELECT user_id FROM user_data)
+),
 categories AS (
   SELECT
     MAX(CASE WHEN name = 'Subscription' THEN id END) as subscription_id,
@@ -110,8 +120,7 @@ categories AS (
     MAX(CASE WHEN name = 'Utilities' THEN id END) as utilities_id,
     MAX(CASE WHEN name = 'Transportation' THEN id END) as transportation_id,
     MAX(CASE WHEN name = 'Shopping' THEN id END) as shopping_id
-  FROM public."Category"
-  WHERE "userId" = (SELECT user_id FROM user_data)
+  FROM all_categories
 )
 -- Insert Recurring Charges
 INSERT INTO public."RecurringCharge" (id, name, amount, frequency, "nextDueDate", "accountId", "categoryId", "userId", "createdAt", "updatedAt")

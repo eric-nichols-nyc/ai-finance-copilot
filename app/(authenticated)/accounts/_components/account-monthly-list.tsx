@@ -1,7 +1,12 @@
 'use client'
 
+import { useState } from 'react'
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
+import { Button } from '@/components/ui/button'
+import { Plus } from 'lucide-react'
+import { AddTransactionModal } from './add-transaction-modal'
+import { EditTransactionModal } from './edit-transaction-modal'
 
 type Transaction = {
   id: string
@@ -9,6 +14,9 @@ type Transaction = {
   description: string | null
   date: Date
   type: string
+  notes?: string | null
+  isRecurring?: boolean
+  categoryId?: string | null
 }
 
 type Account = {
@@ -24,6 +32,8 @@ type AccountMonthlyListProps = {
 }
 
 export function AccountMonthlyList({ account }: AccountMonthlyListProps) {
+  const [selectedTransaction, setSelectedTransaction] = useState<Transaction | null>(null)
+
   if (!account) {
     return (
       <Card>
@@ -80,114 +90,153 @@ export function AccountMonthlyList({ account }: AccountMonthlyListProps) {
     },
   ] : []
 
-  const displayMonths = months.length > 0 ? months : ['November 2025', 'October 2025']
-
   return (
-    <Card>
-      <CardHeader>
-        <CardTitle>Transaction History</CardTitle>
-      </CardHeader>
-      <CardContent>
-        <div className="space-y-6">
-          {months.length > 0 ? (
-            months.map((month) => {
-              const monthData = transactionsByMonth[month]
-              return (
-                <div key={month}>
-                  <div className="flex items-center justify-between mb-3">
-                    <h3 className="font-semibold">{month}</h3>
-                    <p className="font-bold">
-                      ${Math.abs(monthData.total).toLocaleString('en-US', {
-                        minimumFractionDigits: 2,
-                        maximumFractionDigits: 2,
-                      })}
-                    </p>
-                  </div>
-                  <div className="space-y-2">
-                    {monthData.transactions.map((transaction) => (
-                      <div key={transaction.id} className="flex items-center justify-between p-2 rounded hover:bg-accent/50">
-                        <div className="flex items-center gap-3">
-                          <div className="w-2 h-2 rounded-full bg-primary" />
-                          <div>
-                            <p className="font-medium text-sm">{transaction.description || 'Transaction'}</p>
-                            <p className="text-xs text-muted-foreground">
-                              {new Date(transaction.date).toLocaleDateString('en-US', {
-                                weekday: 'short',
-                                month: 'short',
-                                day: 'numeric',
+    <>
+      <Card>
+        <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-4">
+          <CardTitle>Transaction History</CardTitle>
+          <AddTransactionModal
+            accountId={account.id}
+            accountName={account.name}
+            accountType={account.type}
+            currentBalance={account.balance}
+          >
+            <Button size="sm" className="gap-2">
+              <Plus className="h-4 w-4" />
+              Add Transaction
+            </Button>
+          </AddTransactionModal>
+        </CardHeader>
+        <CardContent>
+          <div className="space-y-6">
+            {months.length > 0 ? (
+              months.map((month) => {
+                const monthData = transactionsByMonth[month]
+                return (
+                  <div key={month}>
+                    <div className="flex items-center justify-between mb-3">
+                      <h3 className="font-semibold">{month}</h3>
+                      <p className="font-bold">
+                        ${Math.abs(monthData.total).toLocaleString('en-US', {
+                          minimumFractionDigits: 2,
+                          maximumFractionDigits: 2,
+                        })}
+                      </p>
+                    </div>
+                    <div className="space-y-2">
+                      {monthData.transactions.map((transaction) => (
+                        <div
+                          key={transaction.id}
+                          className="flex items-center justify-between p-2 rounded hover:bg-accent/50 cursor-pointer transition-colors"
+                          onClick={() => setSelectedTransaction(transaction)}
+                        >
+                          <div className="flex items-center gap-3">
+                            <div className="w-2 h-2 rounded-full bg-primary" />
+                            <div>
+                              <p className="font-medium text-sm">{transaction.description || 'Transaction'}</p>
+                              <p className="text-xs text-muted-foreground">
+                                {new Date(transaction.date).toLocaleDateString('en-US', {
+                                  weekday: 'short',
+                                  month: 'short',
+                                  day: 'numeric',
+                                })}
+                              </p>
+                            </div>
+                          </div>
+                          <div className="flex items-center gap-2">
+                            <Badge variant="secondary" className="text-xs">
+                              {transaction.type}
+                            </Badge>
+                            <p className="font-semibold">
+                              ${Math.abs(transaction.amount).toLocaleString('en-US', {
+                                minimumFractionDigits: 2,
+                                maximumFractionDigits: 2,
                               })}
                             </p>
                           </div>
                         </div>
-                        <div className="flex items-center gap-2">
-                          <Badge variant="secondary" className="text-xs">
-                            {transaction.type}
-                          </Badge>
-                          <p className="font-semibold">
-                            ${Math.abs(transaction.amount).toLocaleString('en-US', {
-                              minimumFractionDigits: 2,
-                              maximumFractionDigits: 2,
-                            })}
-                          </p>
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              )
-            })
-          ) : (
-            // Display mock data
-            mockMonths.map((month) => (
-              <div key={month.name}>
-                <div className="flex items-center justify-between mb-3">
-                  <h3 className="font-semibold">{month.name}</h3>
-                  <p className="font-bold">
-                    ${Math.abs(month.total).toLocaleString('en-US', {
-                      minimumFractionDigits: 2,
-                      maximumFractionDigits: 2,
-                    })}
-                  </p>
-                </div>
-                <div className="space-y-2">
-                  {month.transactions.map((transaction: any) => (
-                    <div key={transaction.id} className="flex items-center justify-between p-2 rounded hover:bg-accent/50">
-                      <div className="flex items-center gap-3">
-                        <div className="w-2 h-2 rounded-full bg-primary" />
-                        <div>
-                          <p className="font-medium text-sm">{transaction.description || 'Transaction'}</p>
-                          <p className="text-xs text-muted-foreground">
-                            {new Date(transaction.date).toLocaleDateString('en-US', {
-                              weekday: 'short',
-                              month: 'short',
-                              day: 'numeric',
-                            })}
-                          </p>
-                        </div>
-                      </div>
-                      <div className="flex items-center gap-2">
-                        <Badge
-                          variant={transaction.category === 'SUBSCRIPTIONS' ? 'default' : 'secondary'}
-                          className="text-xs"
-                        >
-                          {transaction.category}
-                        </Badge>
-                        <p className="font-semibold">
-                          {transaction.amount < 0 ? '-' : ''}
-                          ${Math.abs(transaction.amount).toLocaleString('en-US', {
-                            minimumFractionDigits: 2,
-                            maximumFractionDigits: 2,
-                          })}
-                        </p>
-                      </div>
+                      ))}
                     </div>
-                  ))}
-                </div>
+                  </div>
+                )
+              })
+            ) : (
+              // Display mock data
+              <div className="space-y-4">
+                <p className="text-sm text-muted-foreground text-center py-4">
+                  No transactions yet. Click "Add Transaction" to get started.
+                </p>
+                {mockMonths.map((month) => (
+                  <div key={month.name}>
+                    <div className="flex items-center justify-between mb-3">
+                      <h3 className="font-semibold text-muted-foreground">{month.name} (Example)</h3>
+                      <p className="font-bold text-muted-foreground">
+                        ${Math.abs(month.total).toLocaleString('en-US', {
+                          minimumFractionDigits: 2,
+                          maximumFractionDigits: 2,
+                        })}
+                      </p>
+                    </div>
+                    <div className="space-y-2 opacity-50">
+                      {month.transactions.map((transaction: any) => (
+                        <div key={transaction.id} className="flex items-center justify-between p-2 rounded bg-muted/30">
+                          <div className="flex items-center gap-3">
+                            <div className="w-2 h-2 rounded-full bg-muted-foreground" />
+                            <div>
+                              <p className="font-medium text-sm text-muted-foreground">{transaction.description || 'Transaction'}</p>
+                              <p className="text-xs text-muted-foreground">
+                                {new Date(transaction.date).toLocaleDateString('en-US', {
+                                  weekday: 'short',
+                                  month: 'short',
+                                  day: 'numeric',
+                                })}
+                              </p>
+                            </div>
+                          </div>
+                          <div className="flex items-center gap-2">
+                            <Badge
+                              variant="outline"
+                              className="text-xs"
+                            >
+                              {transaction.category}
+                            </Badge>
+                            <p className="font-semibold text-muted-foreground">
+                              {transaction.amount < 0 ? '-' : ''}
+                              ${Math.abs(transaction.amount).toLocaleString('en-US', {
+                                minimumFractionDigits: 2,
+                                maximumFractionDigits: 2,
+                              })}
+                            </p>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                ))}
               </div>
-            ))
-          )}
-        </div>
-      </CardContent>
-    </Card>
+            )}
+          </div>
+        </CardContent>
+      </Card>
+
+      {/* Edit Transaction Modal */}
+      {selectedTransaction && (
+        <EditTransactionModal
+          transaction={{
+            id: selectedTransaction.id,
+            amount: selectedTransaction.amount,
+            description: selectedTransaction.description,
+            date: selectedTransaction.date,
+            type: selectedTransaction.type,
+            notes: selectedTransaction.notes || null,
+            isRecurring: selectedTransaction.isRecurring || false,
+            categoryId: selectedTransaction.categoryId || null,
+          }}
+          accountType={account.type}
+          currentBalance={account.balance}
+          onClose={() => setSelectedTransaction(null)}
+        />
+      )}
+    </>
   )
 }

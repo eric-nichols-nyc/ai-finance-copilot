@@ -8,6 +8,7 @@ import { AccountDetailChart } from './account-detail-chart'
 import { AccountMonthlyList } from './account-monthly-list'
 import { AccountsDebugger } from './accounts-debugger'
 import { AddAccountModal } from './add-account-modal'
+import { EditAccountModal } from './edit-account-modal'
 import { Button } from '@/components/ui/button'
 
 type Transaction = {
@@ -23,8 +24,12 @@ type Account = {
   name: string
   type: string
   balance: number
-  creditLimit?: number
-  apr?: number
+  creditLimit?: number | null
+  apr?: number | null
+  loanAmount?: number | null
+  remainingBalance?: number | null
+  loanTerm?: number | null
+  monthlyPayment?: number | null
   transactions: Transaction[]
 }
 
@@ -87,6 +92,7 @@ export function AccountsPageClient({ accounts }: AccountsPageClientProps) {
           {/* Account Actions */}
           {selectedAccount && (
             <div className="flex gap-2 justify-end">
+              <EditAccountModal account={selectedAccount} />
               <Button
                 variant="outline"
                 size="sm"

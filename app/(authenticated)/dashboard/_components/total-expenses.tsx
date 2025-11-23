@@ -12,8 +12,9 @@ export function TotalExpenses({ accounts }: TotalExpensesProps) {
   )
 
   // Calculate total expenses from remaining accounts (CREDIT_CARD, LOAN, INVESTMENT)
+  // Use absolute value since debts are stored as negative numbers
   const totalExpenses = expenseAccounts.reduce((sum, account) => {
-    return sum + account.balance
+    return sum + Math.abs(account.balance)
   }, 0)
 
   return (

@@ -12,8 +12,9 @@ export function LoanPayment({ accounts }: LoanPaymentProps) {
   )
 
   // Calculate total loan balances
+  // Use absolute value since loans are stored as negative numbers (debts)
   const totalLoanPayments = loanAccounts.reduce((sum, account) => {
-    return sum + account.balance
+    return sum + Math.abs(account.balance)
   }, 0)
 
   return (

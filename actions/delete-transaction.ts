@@ -158,9 +158,15 @@ export async function deleteTransaction(
       }
     })
 
-    // Revalidate accounts page
+    // Revalidate all pages that depend on transaction data
     revalidatePath('/accounts')
     revalidatePath('/(authenticated)/accounts', 'page')
+    revalidatePath('/dashboard')
+    revalidatePath('/(authenticated)/dashboard', 'page')
+    revalidatePath('/transactions')
+    revalidatePath('/(authenticated)/transactions', 'page')
+    // Also revalidate layout to update sidebar
+    revalidatePath('/(authenticated)', 'layout')
 
     return {
       success: true,

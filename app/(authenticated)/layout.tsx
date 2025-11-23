@@ -42,6 +42,8 @@ import { Input } from "@/components/ui/input"
 import { createClient } from "@/utils/supabase/server"
 import { ThemeSwitcher } from "@/components/theme-switcher"
 import { SettingsButton } from "@/components/SettingsButton"
+import { Providers } from "@/app/providers"
+import { SidebarAccounts } from "@/components/sidebar-accounts"
 
 const navigationItems = [
   {
@@ -87,13 +89,6 @@ const navigationItems = [
   },
 ]
 
-const accountsData = {
-  creditCards: [
-    { name: "Chase Credit Card", balance: 7244 },
-    { name: "Cash Rewards", balance: 4995 },
-  ],
-}
-
 const bottomItems = [
   {
     title: "Explore",
@@ -127,8 +122,9 @@ export default async function AuthenticatedLayout({
   }
 
   return (
-    <SidebarProvider>
-      <Sidebar>
+    <Providers>
+      <SidebarProvider>
+        <Sidebar>
         <SidebarHeader className="border-b border-sidebar-border p-4">
           <div className="relative">
             <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
@@ -164,66 +160,8 @@ export default async function AuthenticatedLayout({
             </SidebarGroupContent>
           </SidebarGroup>
 
-          <SidebarGroup>
-            <SidebarGroupLabel className="text-xs font-semibold text-muted-foreground uppercase tracking-wider px-2">
-              MY ACCOUNTS
-            </SidebarGroupLabel>
-            <SidebarGroupContent>
-              <SidebarMenu>
-                <Collapsible defaultOpen className="group/collapsible">
-                  <SidebarMenuItem>
-                    <CollapsibleTrigger asChild>
-                      <SidebarMenuButton className="w-full">
-                        <CreditCard className="h-4 w-4" />
-                        <span>Credit cards</span>
-                        <ChevronRight className="ml-auto h-4 w-4 transition-transform group-data-[state=open]/collapsible:rotate-90" />
-                      </SidebarMenuButton>
-                    </CollapsibleTrigger>
-                    <CollapsibleContent>
-                      <SidebarMenu className="ml-4 mt-1">
-                        {accountsData.creditCards.map((card) => (
-                          <SidebarMenuItem key={card.name}>
-                            <SidebarMenuButton asChild size="sm">
-                              <Link href={`/accounts/${card.name.toLowerCase().replace(/\s+/g, "-")}`} className="flex items-center justify-between">
-                                <span className="text-sm">{card.name}</span>
-                                <span className="text-xs text-muted-foreground">
-                                  ${card.balance.toLocaleString()}
-                                </span>
-                              </Link>
-                            </SidebarMenuButton>
-                          </SidebarMenuItem>
-                        ))}
-                      </SidebarMenu>
-                    </CollapsibleContent>
-                  </SidebarMenuItem>
-                </Collapsible>
-
-                <Collapsible className="group/collapsible">
-                  <SidebarMenuItem>
-                    <CollapsibleTrigger asChild>
-                      <SidebarMenuButton className="w-full">
-                        <Wallet className="h-4 w-4" />
-                        <span>Depository</span>
-                        <ChevronRight className="ml-auto h-4 w-4 transition-transform group-data-[state=open]/collapsible:rotate-90" />
-                      </SidebarMenuButton>
-                    </CollapsibleTrigger>
-                  </SidebarMenuItem>
-                </Collapsible>
-
-                <Collapsible className="group/collapsible">
-                  <SidebarMenuItem>
-                    <CollapsibleTrigger asChild>
-                      <SidebarMenuButton className="w-full">
-                        <TrendingUp className="h-4 w-4" />
-                        <span>Investment</span>
-                        <ChevronRight className="ml-auto h-4 w-4 transition-transform group-data-[state=open]/collapsible:rotate-90" />
-                      </SidebarMenuButton>
-                    </CollapsibleTrigger>
-                  </SidebarMenuItem>
-                </Collapsible>
-              </SidebarMenu>
-            </SidebarGroupContent>
-          </SidebarGroup>
+          {/* Dynamic accounts loaded from database */}
+          <SidebarAccounts />
 
           <div className="mt-auto">
             <SidebarGroup>
@@ -271,6 +209,7 @@ export default async function AuthenticatedLayout({
         </div>
       </SidebarInset>
     </SidebarProvider>
+    </Providers>
   )
 }
 

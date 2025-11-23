@@ -1,11 +1,14 @@
 'use client'
 
 import { useState } from 'react'
+import { Plus } from 'lucide-react'
 import { TotalAccountsChart } from './total-accounts-chart'
 import { AccountsAccordion } from './accounts-accordion'
 import { AccountDetailChart } from './account-detail-chart'
 import { AccountMonthlyList } from './account-monthly-list'
 import { AccountsDebugger } from './accounts-debugger'
+import { AddAccountModal } from './add-account-modal'
+import { Button } from '@/components/ui/button'
 
 type Transaction = {
   id: string
@@ -39,11 +42,19 @@ export function AccountsPageClient({ accounts }: AccountsPageClientProps) {
   return (
     <div className="flex flex-col gap-6">
       {/* Page Title */}
-      <div>
-        <h1 className="text-3xl font-bold">Accounts</h1>
-        <p className="text-muted-foreground mt-1">
-          View and manage all your financial accounts
-        </p>
+      <div className="flex items-start justify-between">
+        <div>
+          <h1 className="text-3xl font-bold">Accounts</h1>
+          <p className="text-muted-foreground mt-1">
+            View and manage all your financial accounts
+          </p>
+        </div>
+        <AddAccountModal>
+          <Button size="default" className="gap-2">
+            <Plus className="h-4 w-4" />
+            Add Account
+          </Button>
+        </AddAccountModal>
       </div>
 
       {/* Split Layout */}

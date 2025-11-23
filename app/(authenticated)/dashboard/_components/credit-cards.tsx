@@ -12,8 +12,9 @@ export function CreditCards({ accounts }: CreditCardsProps) {
   )
 
   // Calculate total credit card balances
+  // Use absolute value since credit card balances are stored as negative numbers (debts)
   const totalCreditCards = creditCardAccounts.reduce((sum, account) => {
-    return sum + account.balance
+    return sum + Math.abs(account.balance)
   }, 0)
 
   return (

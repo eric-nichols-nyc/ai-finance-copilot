@@ -2,6 +2,10 @@ import { TotalExpenses } from "./_components/total-expenses";
 import { RecurringPayments } from "./_components/recurring-payments";
 import { LoanPayment } from "./_components/loan-payment";
 import { CreditCards } from "./_components/credit-cards";
+import { CreditCardsList } from "./_components/CreditCardsList";
+import { RecurringAccountsList } from "./_components/RecurringAccountsList";
+import { LoanAccountsList } from "./_components/LoanAccountsList";
+import { UpcomingPaymentsList } from "./_components/UpcomingPaymentsList";
 import { DashboardDebugger } from "./_components/DashboardDebugger";
 import { getDashboardData } from "@/actions/get-dashboard-data";
 
@@ -49,11 +53,30 @@ export default async function DashboardPage() {
 
   // Success case - render dashboard with data
   return (
-    <div className="grid gap-6 md:grid-cols-4">
-      <TotalExpenses accounts={result.accounts} />
-      <CreditCards accounts={result.accounts} />
-      <LoanPayment accounts={result.accounts} />
-      <RecurringPayments upcomingRecurring={result.upcomingRecurring} />
+    <div className="flex flex-col gap-6">
+      {/* Summary Cards */}
+      <div className="grid gap-6 md:grid-cols-4">
+        <TotalExpenses accounts={result.accounts} />
+        <CreditCards accounts={result.accounts} />
+        <LoanPayment accounts={result.accounts} />
+        <RecurringPayments upcomingRecurring={result.upcomingRecurring} />
+      </div>
+
+      {/* Detailed Lists - 2 Column Grid */}
+      <div className="grid gap-6 md:grid-cols-2">
+        {/* Column 1 */}
+        <div className="flex flex-col gap-6">
+          <CreditCardsList accounts={result.accounts} />
+          <RecurringAccountsList upcomingRecurring={result.upcomingRecurring} />
+        </div>
+
+        {/* Column 2 */}
+        <div className="flex flex-col gap-6">
+          <LoanAccountsList accounts={result.accounts} />
+          <UpcomingPaymentsList upcomingRecurring={result.upcomingRecurring} />
+        </div>
+      </div>
+
       {/* Debug Component (Development Only) */}
       <DashboardDebugger data={result} />
     </div>

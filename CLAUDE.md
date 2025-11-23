@@ -186,7 +186,7 @@ Uses the new Tailwind CSS v4 syntax:
 
 ### File Naming
 
-- **Components:** PascalCase (e.g., `UserProfile.tsx`, `TransactionList.tsx`)
+- **Components:** kebab-case (e.g., `user-profile.tsx`, `transaction-list.tsx`)
 - **Pages (App Router):** lowercase (e.g., `page.tsx`, `layout.tsx`)
 - **Utilities:** camelCase (e.g., `formatCurrency.ts`, `dateHelpers.ts`)
 - **Types:** PascalCase (e.g., `Transaction.ts`, `UserTypes.ts`)

@@ -1,3 +1,4 @@
+import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card'
 import { Account } from '@/types'
 
 type CreditCardsProps = {
@@ -16,11 +17,17 @@ export function CreditCards({ accounts }: CreditCardsProps) {
   }, 0)
 
   return (
-    <div className="space-y-2">
-      <h3 className="text-sm font-medium text-muted-foreground">Credit Cards</h3>
-      <p className="text-3xl font-bold">
-        ${totalCreditCards.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
-      </p>
-    </div>
+    <Card>
+      <CardHeader>
+        <CardTitle className="text-sm font-medium text-muted-foreground">
+          Credit Cards
+        </CardTitle>
+      </CardHeader>
+      <CardContent>
+        <p className="text-3xl font-bold">
+          ${totalCreditCards.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+        </p>
+      </CardContent>
+    </Card>
   )
 }

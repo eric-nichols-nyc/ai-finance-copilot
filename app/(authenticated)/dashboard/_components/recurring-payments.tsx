@@ -1,3 +1,5 @@
+import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card'
+
 type UpcomingRecurring = {
   id: string
   name: string
@@ -23,11 +25,17 @@ export function RecurringPayments({ upcomingRecurring }: RecurringPaymentsProps)
   }, 0)
 
   return (
-    <div className="space-y-2">
-      <h3 className="text-sm font-medium text-muted-foreground">Recurring Payments</h3>
-      <p className="text-3xl font-bold">
-        ${totalRecurring.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
-      </p>
-    </div>
+    <Card>
+      <CardHeader>
+        <CardTitle className="text-sm font-medium text-muted-foreground">
+          Recurring Payments
+        </CardTitle>
+      </CardHeader>
+      <CardContent>
+        <p className="text-3xl font-bold">
+          ${totalRecurring.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+        </p>
+      </CardContent>
+    </Card>
   )
 }

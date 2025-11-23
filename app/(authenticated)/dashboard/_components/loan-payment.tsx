@@ -1,3 +1,4 @@
+import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card'
 import { Account } from '@/types'
 
 type LoanPaymentProps = {
@@ -16,11 +17,17 @@ export function LoanPayment({ accounts }: LoanPaymentProps) {
   }, 0)
 
   return (
-    <div className="space-y-2">
-      <h3 className="text-sm font-medium text-muted-foreground">Loan Payments</h3>
-      <p className="text-3xl font-bold">
-        ${totalLoanPayments.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
-      </p>
-    </div>
+    <Card>
+      <CardHeader>
+        <CardTitle className="text-sm font-medium text-muted-foreground">
+          Loan Payments
+        </CardTitle>
+      </CardHeader>
+      <CardContent>
+        <p className="text-3xl font-bold">
+          ${totalLoanPayments.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+        </p>
+      </CardContent>
+    </Card>
   )
 }

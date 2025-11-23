@@ -1,3 +1,4 @@
+import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card'
 import { Account } from '@/types'
 
 type TotalExpensesProps = {
@@ -16,11 +17,17 @@ export function TotalExpenses({ accounts }: TotalExpensesProps) {
   }, 0)
 
   return (
-    <div className="space-y-2">
-      <h3 className="text-sm font-medium text-muted-foreground">Total Expenses</h3>
-      <p className="text-3xl font-bold">
-        ${totalExpenses.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
-      </p>
-    </div>
+    <Card>
+      <CardHeader>
+        <CardTitle className="text-sm font-medium text-muted-foreground">
+          Total Expenses
+        </CardTitle>
+      </CardHeader>
+      <CardContent>
+        <p className="text-3xl font-bold">
+          ${totalExpenses.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+        </p>
+      </CardContent>
+    </Card>
   )
 }

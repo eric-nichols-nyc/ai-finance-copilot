@@ -143,9 +143,13 @@ export async function updateAccount(
       data: updateData,
     })
 
-    // Revalidate accounts page
+    // Revalidate all pages that depend on account data
     revalidatePath('/accounts')
     revalidatePath('/(authenticated)/accounts', 'page')
+    revalidatePath('/dashboard')
+    revalidatePath('/(authenticated)/dashboard', 'page')
+    // Also revalidate layout to update sidebar
+    revalidatePath('/(authenticated)', 'layout')
 
     return {
       success: true,

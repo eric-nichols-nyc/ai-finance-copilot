@@ -3,6 +3,7 @@
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { cn } from '@/lib/utils'
+import { AIChatPanel } from '@/components/ai-chat-panel'
 
 const navItems = [
   { name: 'Dashboard', href: '/', icon: '📊' },
@@ -19,8 +20,13 @@ export function Navigation() {
   return (
     <nav className="w-64 bg-zinc-900 text-white h-screen fixed left-0 top-0 flex flex-col">
       <div className="p-6">
-        <h1 className="text-2xl font-bold">💼 Finance AI</h1>
-        <p className="text-sm text-zinc-400 mt-1">demo@example.com</p>
+        <div className="flex items-center justify-between mb-4">
+          <div>
+            <h1 className="text-2xl font-bold">💼 Finance AI</h1>
+            <p className="text-sm text-zinc-400 mt-1">demo@example.com</p>
+          </div>
+          <AIChatPanel />
+        </div>
       </div>
 
       <div className="flex-1 px-3">

@@ -1,8 +1,12 @@
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card'
-import { Account } from '@/types'
 
 type LoanPaymentProps = {
-  accounts: Account[]
+  accounts: {
+    id:string;
+    name:string;
+    type:string;
+    balance:number;
+  }[]
 }
 
 export function LoanPayment({ accounts }: LoanPaymentProps) {

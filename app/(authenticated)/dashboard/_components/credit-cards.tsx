@@ -2,7 +2,12 @@ import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card'
 import { Account } from '@/types'
 
 type CreditCardsProps = {
-  accounts: Account[]
+  accounts: {
+    id:string;
+    name:string;
+    type:string;
+    balance:number;
+  }[]
 }
 
 export function CreditCards({ accounts }: CreditCardsProps) {

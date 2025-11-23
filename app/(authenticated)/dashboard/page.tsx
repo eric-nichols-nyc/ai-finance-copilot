@@ -1,15 +1,12 @@
-import { MonthlySpendingCard } from "./_components/MonthlySpendingCard"
-import { AssetsDebtCard } from "./_components/AssetsDebtCard"
-import { TransactionsToReviewCard } from "./_components/TransactionsToReviewCard"
-import { TopCategoriesCard } from "./_components/TopCategoriesCard"
-import { NetThisMonthCard } from "./_components/NetThisMonthCard"
-import { NextTwoWeeksCard } from "./_components/NextTwoWeeksCard"
-import { GoalsCard } from "./_components/GoalsCard"
-import { DashboardDebugger } from "./_components/DashboardDebugger"
-import { getDashboardData } from "@/actions/get-dashboard-data"
+import { TotalExpenses } from "./_components/total-expenses";
+import { RecurringPayments } from "./_components/recurring-payments";
+import { LoanPayment } from "./_components/loan-payment";
+import { CreditCards } from "./_components/credit-cards";
+import { DashboardDebugger } from "./_components/DashboardDebugger";
+import { getDashboardData } from "@/actions/get-dashboard-data";
 
 export default async function DashboardPage() {
-  const result = await getDashboardData()
+  const result = await getDashboardData();
 
   // Handle error case
   if (!result.success) {
@@ -23,7 +20,7 @@ export default async function DashboardPage() {
         {/* Error Message */}
         <div className="rounded-lg border border-red-200 bg-red-50 p-6">
           <div className="flex items-start gap-3">
-            <div className="flex-shrink-0">
+            <div className="shrink-0">
               <svg
                 className="h-6 w-6 text-red-600"
                 fill="none"
@@ -39,48 +36,26 @@ export default async function DashboardPage() {
               </svg>
             </div>
             <div>
-              <h3 className="text-lg font-semibold text-red-900">User Not Found</h3>
+              <h3 className="text-lg font-semibold text-red-900">
+                User Not Found
+              </h3>
               <p className="mt-1 text-sm text-red-700">{result.error}</p>
             </div>
           </div>
         </div>
       </div>
-    )
+    );
   }
 
   // Success case - render dashboard with data
   return (
-    <div className="space-y-6">
-      {/* Page Title */}
-      <div>
-        <h1 className="text-3xl font-bold">Dashboard</h1>
-      </div>
-
-      {/* First Row: Monthly Spending */}
-      <div className="grid gap-6">
-        <MonthlySpendingCard metrics={result.expenseMetrics} />
-      </div>
-
-      {/* Second Row: Assets/Debt */}
-      <div className="grid gap-6 md:grid-cols-3">
-        <AssetsDebtCard />
-      </div>
-
-      {/* Third Row: Transactions to Review & Top Categories */}
-      <div className="grid gap-6 md:grid-cols-3">
-        <TransactionsToReviewCard />
-        <TopCategoriesCard />
-      </div>
-
-      {/* Fourth Row: Net This Month, Next Two Weeks, Goals */}
-      <div className="grid gap-6 md:grid-cols-3">
-        <NetThisMonthCard />
-        <NextTwoWeeksCard />
-        <GoalsCard />
-      </div>
-
+    <div className="grid gap-6 md:grid-cols-4">
+      <TotalExpenses accounts={result.accounts} />
+      <CreditCards accounts={result.accounts} />
+      <LoanPayment accounts={result.accounts} />
+      <RecurringPayments upcomingRecurring={result.upcomingRecurring} />
       {/* Debug Component (Development Only) */}
       <DashboardDebugger data={result} />
     </div>
-  )
+  );
 }

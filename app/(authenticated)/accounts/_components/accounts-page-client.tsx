@@ -5,6 +5,7 @@ import { TotalAccountsChart } from './total-accounts-chart'
 import { AccountsAccordion } from './accounts-accordion'
 import { AccountDetailChart } from './account-detail-chart'
 import { AccountMonthlyList } from './account-monthly-list'
+import { AccountsDebugger } from './accounts-debugger'
 
 type Transaction = {
   id: string
@@ -69,6 +70,9 @@ export function AccountsPageClient({ accounts }: AccountsPageClientProps) {
           <AccountMonthlyList account={selectedAccount} />
         </div>
       </div>
+
+      {/* Debug Component (Development Only) */}
+      <AccountsDebugger data={{ accounts }} />
     </div>
   )
 }

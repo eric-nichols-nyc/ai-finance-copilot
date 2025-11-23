@@ -44,6 +44,7 @@ import { ThemeSwitcher } from "@/components/theme-switcher"
 import { SettingsButton } from "@/components/SettingsButton"
 import { Providers } from "@/app/providers"
 import { SidebarAccounts } from "@/components/sidebar-accounts"
+import { AIChatPanel } from "@/components/ai-chat-panel"
 
 const navigationItems = [
   {
@@ -201,7 +202,10 @@ export default async function AuthenticatedLayout({
           <Separator orientation="vertical" className="h-6" />
           <div className="flex flex-1 items-center justify-between">
             <h1 className="text-lg font-semibold">AI Finance Manager</h1>
-            <ThemeSwitcher />
+            <div className="flex items-center gap-2">
+              <AIChatPanel />
+              <ThemeSwitcher />
+            </div>
           </div>
         </header>
         <div className="flex flex-1 flex-col gap-4 p-4 md:p-6 lg:p-8">

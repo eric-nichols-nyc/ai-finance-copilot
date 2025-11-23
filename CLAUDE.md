@@ -24,11 +24,12 @@ This is a **freshly initialized Next.js 16 project** with modern web technologie
 - **TypeScript 5** - Strict mode enabled
 - **Node.js** - Target ES2017
 
-### Styling
+### Styling & UI Components
 - **Tailwind CSS v4** - Latest major version with new @import syntax
 - **PostCSS** - With @tailwindcss/postcss plugin
 - **CSS Custom Properties** - For theming (light/dark mode)
 - **Geist & Geist Mono fonts** - Optimized via next/font/google
+- **shadcn/ui** - Component library for building consistent, accessible UI components
 
 ### Development Tools
 - **ESLint 9** - With Next.js config presets and flat config format
@@ -182,6 +183,141 @@ Uses the new Tailwind CSS v4 syntax:
 
 **Important:** Tailwind v4 uses `@import` instead of `@tailwind` directives.
 
+### shadcn/ui Components
+
+**Location:** `components/ui/`
+
+shadcn/ui is the **primary UI component library** for this project. All UI components should be built using shadcn components.
+
+**Key Principles:**
+- **Always use shadcn components** for UI elements (Card, Button, Dialog, etc.)
+- Components are located in `components/ui/` directory
+- Built on top of Radix UI primitives for accessibility
+- Fully customizable with Tailwind CSS
+- Type-safe with TypeScript
+
+**Available Components:**
+The project includes pre-installed shadcn components:
+- **Layout:** Card, Separator, Aspect Ratio, Breadcrumb
+- **Forms:** Button, Input, Checkbox, Select, Radio Group, Switch, Slider, Textarea, Label
+- **Navigation:** Tabs, Accordion, Collapsible, Dropdown Menu, Context Menu, Navigation Menu
+- **Feedback:** Alert, Alert Dialog, Dialog, Toast, Tooltip, Popover, Hover Card
+- **Data Display:** Table, Avatar, Badge, Calendar, Chart, Progress, Skeleton
+- **Utility:** Command, Carousel, Scroll Area, Resizable, Toggle, Toggle Group
+
+**Component Structure:**
+All shadcn components follow a consistent pattern:
+```typescript
+import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from '@/components/ui/card'
+
+export function MyComponent() {
+  return (
+    <Card>
+      <CardHeader>
+        <CardTitle>Title</CardTitle>
+        <CardDescription>Description</CardDescription>
+      </CardHeader>
+      <CardContent>
+        {/* Main content */}
+      </CardContent>
+      <CardFooter>
+        {/* Footer content */}
+      </CardFooter>
+    </Card>
+  )
+}
+```
+
+**Common Usage Patterns:**
+
+1. **Card Components** (most common for dashboard/finance UI):
+```typescript
+import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card'
+
+export function MetricCard({ title, value }: { title: string; value: string }) {
+  return (
+    <Card>
+      <CardHeader>
+        <CardTitle className="text-sm font-medium text-muted-foreground">
+          {title}
+        </CardTitle>
+      </CardHeader>
+      <CardContent>
+        <p className="text-3xl font-bold">{value}</p>
+      </CardContent>
+    </Card>
+  )
+}
+```
+
+2. **Buttons**:
+```typescript
+import { Button } from '@/components/ui/button'
+
+<Button variant="default">Primary Action</Button>
+<Button variant="outline">Secondary Action</Button>
+<Button variant="ghost">Tertiary Action</Button>
+<Button variant="destructive">Delete</Button>
+```
+
+3. **Dialogs/Modals**:
+```typescript
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from '@/components/ui/dialog'
+
+<Dialog>
+  <DialogTrigger asChild>
+    <Button>Open Dialog</Button>
+  </DialogTrigger>
+  <DialogContent>
+    <DialogHeader>
+      <DialogTitle>Title</DialogTitle>
+      <DialogDescription>Description</DialogDescription>
+    </DialogHeader>
+    {/* Content */}
+  </DialogContent>
+</Dialog>
+```
+
+4. **Forms**:
+```typescript
+import { Input } from '@/components/ui/input'
+import { Label } from '@/components/ui/label'
+import { Button } from '@/components/ui/button'
+
+<div className="space-y-4">
+  <div className="space-y-2">
+    <Label htmlFor="email">Email</Label>
+    <Input id="email" type="email" placeholder="email@example.com" />
+  </div>
+  <Button type="submit">Submit</Button>
+</div>
+```
+
+**Important Guidelines:**
+- **DO NOT** create custom UI components from scratch if a shadcn component exists
+- **DO** use shadcn components as the base and customize with Tailwind classes
+- **DO** compose shadcn components together for complex UIs
+- **DO** use the `cn()` utility function from `@/lib/utils` for conditional classes
+
+**Installing New Components:**
+If a shadcn component is not yet installed:
+```bash
+npx shadcn@latest add [component-name]
+```
+
+Example:
+```bash
+npx shadcn@latest add form
+npx shadcn@latest add data-table
+```
+
 ## Key Conventions & Patterns
 
 ### File Naming
@@ -320,7 +456,8 @@ const transactions = await prisma.transaction.findMany({
    - Example: `import { Component } from '@/components/Component'`
 
 6. **Styling Approach**
-   - Use Tailwind CSS utility classes
+   - **Always use shadcn/ui components** as the foundation for UI elements
+   - Use Tailwind CSS utility classes for customization and layout
    - Follow the existing color scheme (CSS custom properties in globals.css)
    - Support both light and dark modes
    - Use the Geist fonts (already configured)
@@ -358,6 +495,8 @@ export default function DashboardPage() {
 
 ```typescript
 // components/TransactionCard.tsx
+import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card'
+
 interface TransactionCardProps {
   amount: number
   category: string
@@ -366,10 +505,19 @@ interface TransactionCardProps {
 
 export function TransactionCard({ amount, category, date }: TransactionCardProps) {
   return (
-    <div className="rounded-lg border p-4">
-      <p className="text-lg font-semibold">${amount}</p>
-      <p className="text-sm text-zinc-600">{category}</p>
-    </div>
+    <Card>
+      <CardHeader>
+        <CardTitle className="text-sm font-medium text-muted-foreground">
+          {category}
+        </CardTitle>
+      </CardHeader>
+      <CardContent>
+        <p className="text-2xl font-bold">${amount.toFixed(2)}</p>
+        <p className="text-sm text-muted-foreground">
+          {date.toLocaleDateString()}
+        </p>
+      </CardContent>
+    </Card>
   )
 }
 ```

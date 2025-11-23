@@ -2,10 +2,10 @@ import { TotalExpenses } from "./_components/total-expenses";
 import { RecurringPayments } from "./_components/recurring-payments";
 import { LoanPayment } from "./_components/loan-payment";
 import { CreditCards } from "./_components/credit-cards";
-import { CreditCardsList } from "./_components/CreditCardsList";
-import { RecurringAccountsList } from "./_components/RecurringAccountsList";
-import { LoanAccountsList } from "./_components/LoanAccountsList";
-import { UpcomingPaymentsList } from "./_components/UpcomingPaymentsList";
+import { CreditCardsList } from "./_components/credit-cards-list";
+import { RecurringAccountsList } from "./_components/recurring-accounts-list";
+import { LoanAccountsList } from "./_components/loan-accounts-list";
+import { UpcomingPaymentsList } from "./_components/upcoming-payments-list";
 import { DashboardDebugger } from "./_components/DashboardDebugger";
 import { getDashboardData } from "@/actions/get-dashboard-data";
 

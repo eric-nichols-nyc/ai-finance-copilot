@@ -28,10 +28,31 @@ export function AccountsAccordion({
   onAccountSelect,
   selectedAccountId,
 }: AccountsAccordionProps) {
-  // Group accounts by category
-  const creditCards = accounts.filter((a) => a.type === 'CREDIT_CARD')
-  const depository = accounts.filter((a) => ['CHECKING', 'SAVINGS'].includes(a.type))
-  const investments = accounts.filter((a) => a.type === 'INVESTMENT')
+  // Helper function to format account type for display
+  const formatAccountType = (type: string): string => {
+    const typeMap: Record<string, string> = {
+      CREDIT_CARD: 'Credit Cards',
+      LOAN: 'Loans',
+      INVESTMENT: 'Investments',
+      MORTGAGE: 'Mortgages',
+    }
+    return typeMap[type] || type.toLowerCase().replace(/_/g, ' ').replace(/\b\w/g, l => l.toUpperCase())
+  }
+
+  // Filter out checking and savings accounts, then group by type
+  const filteredAccounts = accounts.filter((a) => !['CHECKING', 'SAVINGS'].includes(a.type))
+
+  // Group accounts by type dynamically
+  const accountsByType = filteredAccounts.reduce((acc, account) => {
+    if (!acc[account.type]) {
+      acc[account.type] = []
+    }
+    acc[account.type].push(account)
+    return acc
+  }, {} as Record<string, Account[]>)
+
+  // Get all unique types for default open values
+  const accountTypes = Object.keys(accountsByType)
 
   // Mock sparkline data - in a real app, this would be historical data
   const generateSparklineData = (balance: number, trend: 'up' | 'down') => {
@@ -114,60 +135,27 @@ export function AccountsAccordion({
   return (
     <Card>
       <CardContent className="pt-6">
-        <Accordion type="multiple" defaultValue={['credit-cards', 'depository', 'investments']} className="w-full">
-          {creditCards.length > 0 && (
-            <AccordionItem value="credit-cards">
-              <AccordionTrigger className="text-lg font-semibold">
-                <div className="flex items-center justify-between w-full pr-4">
-                  <span>Credit cards</span>
-                  <span className="text-sm text-muted-foreground">{creditCards.length} accounts</span>
-                </div>
-              </AccordionTrigger>
-              <AccordionContent>
-                <div className="space-y-2">
-                  {creditCards.map((account, index) => (
-                    <AccountItem key={account.id} account={account} index={index} />
-                  ))}
-                </div>
-              </AccordionContent>
-            </AccordionItem>
-          )}
-
-          {depository.length > 0 && (
-            <AccordionItem value="depository">
-              <AccordionTrigger className="text-lg font-semibold">
-                <div className="flex items-center justify-between w-full pr-4">
-                  <span>Depository</span>
-                  <span className="text-sm text-muted-foreground">{depository.length} accounts</span>
-                </div>
-              </AccordionTrigger>
-              <AccordionContent>
-                <div className="space-y-2">
-                  {depository.map((account, index) => (
-                    <AccountItem key={account.id} account={account} index={index} />
-                  ))}
-                </div>
-              </AccordionContent>
-            </AccordionItem>
-          )}
-
-          {investments.length > 0 && (
-            <AccordionItem value="investments">
-              <AccordionTrigger className="text-lg font-semibold">
-                <div className="flex items-center justify-between w-full pr-4">
-                  <span>Investments</span>
-                  <span className="text-sm text-muted-foreground">{investments.length} accounts</span>
-                </div>
-              </AccordionTrigger>
-              <AccordionContent>
-                <div className="space-y-2">
-                  {investments.map((account, index) => (
-                    <AccountItem key={account.id} account={account} index={index} />
-                  ))}
-                </div>
-              </AccordionContent>
-            </AccordionItem>
-          )}
+        <Accordion type="multiple" defaultValue={accountTypes} className="w-full">
+          {accountTypes.map((type) => {
+            const typeAccounts = accountsByType[type]
+            return (
+              <AccordionItem key={type} value={type}>
+                <AccordionTrigger className="text-lg font-semibold">
+                  <div className="flex items-center justify-between w-full pr-4">
+                    <span>{formatAccountType(type)}</span>
+                    <span className="text-sm text-muted-foreground">{typeAccounts.length} {typeAccounts.length === 1 ? 'account' : 'accounts'}</span>
+                  </div>
+                </AccordionTrigger>
+                <AccordionContent>
+                  <div className="space-y-2">
+                    {typeAccounts.map((account, index) => (
+                      <AccountItem key={account.id} account={account} index={index} />
+                    ))}
+                  </div>
+                </AccordionContent>
+              </AccordionItem>
+            )
+          })}
         </Accordion>
       </CardContent>
     </Card>

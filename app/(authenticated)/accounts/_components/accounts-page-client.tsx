@@ -1,7 +1,7 @@
 'use client'
 
 import { useState } from 'react'
-import { Plus } from 'lucide-react'
+import { Plus, Trash2, XCircle } from 'lucide-react'
 import { TotalAccountsChart } from './total-accounts-chart'
 import { AccountsAccordion } from './accounts-accordion'
 import { AccountDetailChart } from './account-detail-chart'
@@ -39,32 +39,42 @@ export function AccountsPageClient({ accounts }: AccountsPageClientProps) {
 
   const selectedAccount = accounts.find((a) => a.id === selectedAccountId) || null
 
+  const handleDeleteAccount = (accountId: string) => {
+    // TODO: Implement delete account functionality
+    console.log('Delete account:', accountId)
+  }
+
+  const handleCloseAccount = (accountId: string) => {
+    // TODO: Implement close account functionality
+    console.log('Close account:', accountId)
+  }
+
   return (
     <div className="flex flex-col gap-6">
       {/* Page Title */}
-      <div className="flex items-start justify-between">
-        <div>
-          <h1 className="text-3xl font-bold">Accounts</h1>
-          <p className="text-muted-foreground mt-1">
-            View and manage all your financial accounts
-          </p>
-        </div>
-        <AddAccountModal>
-          <Button size="default" className="gap-2">
-            <Plus className="h-4 w-4" />
-            Add Account
-          </Button>
-        </AddAccountModal>
+      <div>
+        <h1 className="text-3xl font-bold">Accounts</h1>
+        <p className="text-muted-foreground mt-1">
+          View and manage all your financial accounts
+        </p>
       </div>
 
-      {/* Split Layout */}
+      {/* Split Layout with Center Border */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         {/* Left Panel */}
         <div className="flex flex-col gap-6">
-          {/* Top: Total Accounts Chart */}
+          {/* Add Account Button */}
+          <AddAccountModal>
+            <Button size="default" className="gap-2 w-full lg:w-auto">
+              <Plus className="h-4 w-4" />
+              Add Account
+            </Button>
+          </AddAccountModal>
+
+          {/* Total Accounts Chart */}
           <TotalAccountsChart accounts={accounts} />
 
-          {/* Bottom: Accounts Accordion */}
+          {/* Accounts Accordion */}
           <AccountsAccordion
             accounts={accounts}
             onAccountSelect={setSelectedAccountId}
@@ -72,12 +82,36 @@ export function AccountsPageClient({ accounts }: AccountsPageClientProps) {
           />
         </div>
 
-        {/* Right Panel */}
-        <div className="flex flex-col gap-6">
-          {/* Top: Account Detail Chart */}
+        {/* Right Panel with Left Border */}
+        <div className="flex flex-col gap-6 lg:border-l lg:pl-6">
+          {/* Account Actions */}
+          {selectedAccount && (
+            <div className="flex gap-2 justify-end">
+              <Button
+                variant="outline"
+                size="sm"
+                className="gap-2"
+                onClick={() => handleCloseAccount(selectedAccount.id)}
+              >
+                <XCircle className="h-4 w-4" />
+                Close Account
+              </Button>
+              <Button
+                variant="destructive"
+                size="sm"
+                className="gap-2"
+                onClick={() => handleDeleteAccount(selectedAccount.id)}
+              >
+                <Trash2 className="h-4 w-4" />
+                Delete
+              </Button>
+            </div>
+          )}
+
+          {/* Account Detail Chart */}
           <AccountDetailChart account={selectedAccount} />
 
-          {/* Bottom: Monthly Transactions List */}
+          {/* Monthly Transactions List */}
           <AccountMonthlyList account={selectedAccount} />
         </div>
       </div>

@@ -3,6 +3,7 @@
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
 import { useState } from 'react'
+import { SearchProvider } from '@/lib/search-context'
 
 export function Providers({ children }: { children: React.ReactNode }) {
   // Create a new QueryClient instance for each user session
@@ -31,11 +32,13 @@ export function Providers({ children }: { children: React.ReactNode }) {
 
   return (
     <QueryClientProvider client={queryClient}>
-      {children}
-      {/* DevTools only in development */}
-      {process.env.NODE_ENV === 'development' && (
-        <ReactQueryDevtools initialIsOpen={false} />
-      )}
+      <SearchProvider>
+        {children}
+        {/* DevTools only in development */}
+        {process.env.NODE_ENV === 'development' && (
+          <ReactQueryDevtools initialIsOpen={false} />
+        )}
+      </SearchProvider>
     </QueryClientProvider>
   )
 }

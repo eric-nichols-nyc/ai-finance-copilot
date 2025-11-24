@@ -244,7 +244,7 @@ export type UserScalarWhereWithAggregatesInput = {
 }
 
 export type UserCreateInput = {
-  id?: string
+  id: string
   email: string
   name?: string | null
   createdAt?: Date | string
@@ -258,7 +258,7 @@ export type UserCreateInput = {
 }
 
 export type UserUncheckedCreateInput = {
-  id?: string
+  id: string
   email: string
   name?: string | null
   createdAt?: Date | string
@@ -300,7 +300,7 @@ export type UserUncheckedUpdateInput = {
 }
 
 export type UserCreateManyInput = {
-  id?: string
+  id: string
   email: string
   name?: string | null
   createdAt?: Date | string
@@ -449,7 +449,7 @@ export type UserUpdateOneRequiredWithoutInterestPaymentsNestedInput = {
 }
 
 export type UserCreateWithoutAccountsInput = {
-  id?: string
+  id: string
   email: string
   name?: string | null
   createdAt?: Date | string
@@ -462,7 +462,7 @@ export type UserCreateWithoutAccountsInput = {
 }
 
 export type UserUncheckedCreateWithoutAccountsInput = {
-  id?: string
+  id: string
   email: string
   name?: string | null
   createdAt?: Date | string
@@ -517,7 +517,7 @@ export type UserUncheckedUpdateWithoutAccountsInput = {
 }
 
 export type UserCreateWithoutTransactionsInput = {
-  id?: string
+  id: string
   email: string
   name?: string | null
   createdAt?: Date | string
@@ -530,7 +530,7 @@ export type UserCreateWithoutTransactionsInput = {
 }
 
 export type UserUncheckedCreateWithoutTransactionsInput = {
-  id?: string
+  id: string
   email: string
   name?: string | null
   createdAt?: Date | string
@@ -585,7 +585,7 @@ export type UserUncheckedUpdateWithoutTransactionsInput = {
 }
 
 export type UserCreateWithoutCategoriesInput = {
-  id?: string
+  id: string
   email: string
   name?: string | null
   createdAt?: Date | string
@@ -598,7 +598,7 @@ export type UserCreateWithoutCategoriesInput = {
 }
 
 export type UserUncheckedCreateWithoutCategoriesInput = {
-  id?: string
+  id: string
   email: string
   name?: string | null
   createdAt?: Date | string
@@ -653,7 +653,7 @@ export type UserUncheckedUpdateWithoutCategoriesInput = {
 }
 
 export type UserCreateWithoutBudgetsInput = {
-  id?: string
+  id: string
   email: string
   name?: string | null
   createdAt?: Date | string
@@ -666,7 +666,7 @@ export type UserCreateWithoutBudgetsInput = {
 }
 
 export type UserUncheckedCreateWithoutBudgetsInput = {
-  id?: string
+  id: string
   email: string
   name?: string | null
   createdAt?: Date | string
@@ -721,7 +721,7 @@ export type UserUncheckedUpdateWithoutBudgetsInput = {
 }
 
 export type UserCreateWithoutRecurringInput = {
-  id?: string
+  id: string
   email: string
   name?: string | null
   createdAt?: Date | string
@@ -734,7 +734,7 @@ export type UserCreateWithoutRecurringInput = {
 }
 
 export type UserUncheckedCreateWithoutRecurringInput = {
-  id?: string
+  id: string
   email: string
   name?: string | null
   createdAt?: Date | string
@@ -789,7 +789,7 @@ export type UserUncheckedUpdateWithoutRecurringInput = {
 }
 
 export type UserCreateWithoutInterestPaymentsInput = {
-  id?: string
+  id: string
   email: string
   name?: string | null
   createdAt?: Date | string
@@ -802,7 +802,7 @@ export type UserCreateWithoutInterestPaymentsInput = {
 }
 
 export type UserUncheckedCreateWithoutInterestPaymentsInput = {
-  id?: string
+  id: string
   email: string
   name?: string | null
   createdAt?: Date | string

@@ -10,8 +10,6 @@ import {
   DollarSign,
   PieChart,
   Repeat,
-  Search,
-  ChevronRight,
   HelpCircle,
   Compass,
   ExternalLink,
@@ -29,23 +27,17 @@ import {
   SidebarInset,
   SidebarGroup,
   SidebarGroupContent,
-  SidebarGroupLabel,
 } from "@/components/ui/sidebar";
-import {
-  Collapsible,
-  CollapsibleContent,
-  CollapsibleTrigger,
-} from "@/components/ui/collapsible";
 import { Separator } from "@/components/ui/separator";
 import { Badge } from "@/components/ui/badge";
-import { Input } from "@/components/ui/input";
 import { createClient } from "@/utils/supabase/server";
 import { ThemeSwitcher } from "@/components/theme-switcher";
 import { SettingsButton } from "@/components/SettingsButton";
 import { Providers } from "@/app/providers";
 import { SidebarAccounts } from "@/components/sidebar-accounts";
 import { AIChatPanel } from "@/components/ai-chat-panel";
-
+import { SearchTrigger } from "@/components/search-trigger";
+import { GlobalSearch } from "@/components/global-search";
 const navigationItems = [
   {
     title: "Dashboard",
@@ -126,15 +118,9 @@ export default async function AuthenticatedLayout({
     <Providers>
       <SidebarProvider>
         <Sidebar>
-          <SidebarHeader className="border-b border-sidebar-border p-4">
-            <div className="relative">
-              <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
-              <Input
-                placeholder="Search"
-                className="pl-9 h-9 bg-sidebar-accent/50"
-              />
-            </div>
-          </SidebarHeader>
+        <SidebarHeader className="border-b border-sidebar-border p-4">
+          <SearchTrigger variant="ghost" className="w-full justify-start bg-sidebar-accent/50" />
+        </SidebarHeader>
 
           <SidebarContent>
             <SidebarGroup>
@@ -212,7 +198,6 @@ export default async function AuthenticatedLayout({
               <h1 className="text-lg font-semibold">AI Finance Manager</h1>
               <div className="flex items-center gap-2">
                 <AIChatPanel />
-
                 <ThemeSwitcher />
               </div>
             </div>
@@ -221,7 +206,8 @@ export default async function AuthenticatedLayout({
             {children}
           </div>
         </SidebarInset>
-      </SidebarProvider>
+    </SidebarProvider>
+    <GlobalSearch />
     </Providers>
   );
 }

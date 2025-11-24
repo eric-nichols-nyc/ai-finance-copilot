@@ -1,9 +1,10 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card'
 import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { Area, AreaChart, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts'
+import { getAccountBalanceHistory, type TimePeriod } from '@/actions/get-account-balance-history'
 
 type Account = {
   id: string
@@ -18,7 +19,45 @@ type AccountDetailChartProps = {
 }
 
 export function AccountDetailChart({ account }: AccountDetailChartProps) {
-  const [timePeriod, setTimePeriod] = useState('1M')
+  const [timePeriod, setTimePeriod] = useState<TimePeriod>('1M')
+  const [chartData, setChartData] = useState<Array<{ date: string; balance: number }>>([])
+  const [loading, setLoading] = useState(true)
+  const [error, setError] = useState<string | null>(null)
+
+  // Fetch balance history when account or time period changes
+  useEffect(() => {
+    if (!account) {
+      setLoading(false)
+      return
+    }
+
+    async function loadBalanceHistory() {
+      setLoading(true)
+      setError(null)
+
+      const result = await getAccountBalanceHistory(account.id, timePeriod)
+
+      if (result.success) {
+        setChartData(result.data)
+      } else {
+        setError(result.error)
+        // Fallback to showing current balance as single data point
+        setChartData([
+          {
+            date: new Date().toLocaleDateString('en-US', {
+              month: 'short',
+              day: 'numeric',
+            }),
+            balance: account.balance,
+          },
+        ])
+      }
+
+      setLoading(false)
+    }
+
+    loadBalanceHistory()
+  }, [account?.id, timePeriod])
 
   if (!account) {
     return (
@@ -29,17 +68,6 @@ export function AccountDetailChart({ account }: AccountDetailChartProps) {
       </Card>
     )
   }
-
-  // Mock chart data - in a real app, this would be based on selected time period
-  const chartData = [
-    { date: 'Oct 1', balance: 6500 },
-    { date: 'Oct 5', balance: 6700 },
-    { date: 'Oct 10', balance: 6900 },
-    { date: 'Oct 15', balance: 7100 },
-    { date: 'Oct 20', balance: 7000 },
-    { date: 'Oct 25', balance: 7200 },
-    { date: 'Nov 1', balance: account.balance },
-  ]
 
   const utilizationPercentage = account.creditLimit
     ? ((Math.abs(account.balance) / account.creditLimit) * 100).toFixed(2)
@@ -94,8 +122,21 @@ export function AccountDetailChart({ account }: AccountDetailChartProps) {
         </div>
       </CardHeader>
       <CardContent>
-        <ResponsiveContainer width="100%" height={300}>
-          <AreaChart data={chartData}>
+        {loading ? (
+          <div className="flex items-center justify-center h-[300px]">
+            <p className="text-muted-foreground">Loading balance history...</p>
+          </div>
+        ) : error ? (
+          <div className="flex items-center justify-center h-[300px]">
+            <p className="text-muted-foreground">No balance history available yet</p>
+          </div>
+        ) : chartData.length === 0 ? (
+          <div className="flex items-center justify-center h-[300px]">
+            <p className="text-muted-foreground">No data available for this period</p>
+          </div>
+        ) : (
+          <ResponsiveContainer width="100%" height={300}>
+            <AreaChart data={chartData}>
             <defs>
               <linearGradient id="colorBalance" x1="0" y1="0" x2="0" y2="1">
                 <stop offset="5%" stopColor="#f97316" stopOpacity={0.3} />
@@ -144,6 +185,7 @@ export function AccountDetailChart({ account }: AccountDetailChartProps) {
             />
           </AreaChart>
         </ResponsiveContainer>
+        )}
       </CardContent>
     </Card>
   )

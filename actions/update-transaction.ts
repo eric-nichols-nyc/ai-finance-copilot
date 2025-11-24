@@ -7,6 +7,7 @@ import {
   updateTransactionSchema,
   type UpdateTransactionInput,
 } from '@/lib/validations/transaction'
+import { recordBalanceSnapshot } from './record-balance-snapshot'
 
 type UpdateTransactionSuccess = {
   success: true
@@ -229,6 +230,10 @@ export async function updateTransaction(
 
       return updatedTransaction
     })
+
+    // Record a balance snapshot for this account after the transaction update
+    // This allows us to track balance history over time
+    await recordBalanceSnapshot(existingTransaction.accountId)
 
     // Revalidate all pages that depend on transaction data
     revalidatePath('/accounts')

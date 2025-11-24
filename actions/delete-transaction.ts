@@ -7,6 +7,7 @@ import {
   deleteTransactionSchema,
   type DeleteTransactionInput,
 } from '@/lib/validations/transaction'
+import { recordBalanceSnapshot } from './record-balance-snapshot'
 
 type DeleteTransactionSuccess = {
   success: true
@@ -157,6 +158,10 @@ export async function deleteTransaction(
         })
       }
     })
+
+    // Record a balance snapshot for this account after the transaction deletion
+    // This allows us to track balance history over time
+    await recordBalanceSnapshot(existingTransaction.accountId)
 
     // Revalidate all pages that depend on transaction data
     revalidatePath('/accounts')

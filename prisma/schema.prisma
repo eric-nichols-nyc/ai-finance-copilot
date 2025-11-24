@@ -19,12 +19,13 @@ model User {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  accounts        Account[]
-  transactions    Transaction[]
-  categories      Category[]
-  budgets         Budget[]
-  recurring       RecurringCharge[]
+  accounts         Account[]
+  transactions     Transaction[]
+  categories       Category[]
+  budgets          Budget[]
+  recurring        RecurringCharge[]
   interestPayments InterestPayment[]
+  balanceSnapshots AccountBalanceSnapshot[]
 }
 
 // Financial Account (bank account, credit card, loan, etc.)
@@ -49,10 +50,11 @@ model Account {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  user             User              @relation(fields: [userId], references: [id], onDelete: Cascade)
+  user             User                     @relation(fields: [userId], references: [id], onDelete: Cascade)
   transactions     Transaction[]
   recurring        RecurringCharge[]
   interestPayments InterestPayment[]
+  balanceSnapshots AccountBalanceSnapshot[]
 
   @@index([userId])
   @@index([type])
@@ -169,4 +171,26 @@ model InterestPayment {
   @@index([userId])
   @@index([accountId])
   @@index([year, month])
+}
+
+// Account Balance Snapshots for historical balance tracking
+// Records the balance of an account at a specific point in time
+// Used for charting account balances over time
+model AccountBalanceSnapshot {
+  id      String   @id @default(cuid())
+  balance Decimal  // The account balance at this point in time
+  date    DateTime // The date/time this balance was recorded (typically start or end of day)
+
+  accountId String
+  userId    String
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  account Account @relation(fields: [accountId], references: [id], onDelete: Cascade)
+  user    User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([accountId, date]) // One snapshot per account per date
+  @@index([userId])
+  @@index([accountId, date])
 }

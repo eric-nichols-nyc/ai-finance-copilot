@@ -390,7 +390,8 @@ export const ModelName = {
   Category: 'Category',
   Budget: 'Budget',
   RecurringCharge: 'RecurringCharge',
-  InterestPayment: 'InterestPayment'
+  InterestPayment: 'InterestPayment',
+  AccountBalanceSnapshot: 'AccountBalanceSnapshot'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -406,7 +407,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "user" | "account" | "transaction" | "category" | "budget" | "recurringCharge" | "interestPayment"
+    modelProps: "user" | "account" | "transaction" | "category" | "budget" | "recurringCharge" | "interestPayment" | "accountBalanceSnapshot"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -928,6 +929,80 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         }
       }
     }
+    AccountBalanceSnapshot: {
+      payload: Prisma.$AccountBalanceSnapshotPayload<ExtArgs>
+      fields: Prisma.AccountBalanceSnapshotFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.AccountBalanceSnapshotFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AccountBalanceSnapshotPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.AccountBalanceSnapshotFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AccountBalanceSnapshotPayload>
+        }
+        findFirst: {
+          args: Prisma.AccountBalanceSnapshotFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AccountBalanceSnapshotPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.AccountBalanceSnapshotFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AccountBalanceSnapshotPayload>
+        }
+        findMany: {
+          args: Prisma.AccountBalanceSnapshotFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AccountBalanceSnapshotPayload>[]
+        }
+        create: {
+          args: Prisma.AccountBalanceSnapshotCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AccountBalanceSnapshotPayload>
+        }
+        createMany: {
+          args: Prisma.AccountBalanceSnapshotCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.AccountBalanceSnapshotCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AccountBalanceSnapshotPayload>[]
+        }
+        delete: {
+          args: Prisma.AccountBalanceSnapshotDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AccountBalanceSnapshotPayload>
+        }
+        update: {
+          args: Prisma.AccountBalanceSnapshotUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AccountBalanceSnapshotPayload>
+        }
+        deleteMany: {
+          args: Prisma.AccountBalanceSnapshotDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.AccountBalanceSnapshotUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.AccountBalanceSnapshotUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AccountBalanceSnapshotPayload>[]
+        }
+        upsert: {
+          args: Prisma.AccountBalanceSnapshotUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AccountBalanceSnapshotPayload>
+        }
+        aggregate: {
+          args: Prisma.AccountBalanceSnapshotAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateAccountBalanceSnapshot>
+        }
+        groupBy: {
+          args: Prisma.AccountBalanceSnapshotGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AccountBalanceSnapshotGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.AccountBalanceSnapshotCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AccountBalanceSnapshotCountAggregateOutputType> | number
+        }
+      }
+    }
   }
 } & {
   other: {
@@ -1074,6 +1149,19 @@ export const InterestPaymentScalarFieldEnum = {
 } as const
 
 export type InterestPaymentScalarFieldEnum = (typeof InterestPaymentScalarFieldEnum)[keyof typeof InterestPaymentScalarFieldEnum]
+
+
+export const AccountBalanceSnapshotScalarFieldEnum = {
+  id: 'id',
+  balance: 'balance',
+  date: 'date',
+  accountId: 'accountId',
+  userId: 'userId',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type AccountBalanceSnapshotScalarFieldEnum = (typeof AccountBalanceSnapshotScalarFieldEnum)[keyof typeof AccountBalanceSnapshotScalarFieldEnum]
 
 
 export const SortOrder = {
@@ -1268,6 +1356,7 @@ export type GlobalOmitConfig = {
   budget?: Prisma.BudgetOmit
   recurringCharge?: Prisma.RecurringChargeOmit
   interestPayment?: Prisma.InterestPaymentOmit
+  accountBalanceSnapshot?: Prisma.AccountBalanceSnapshotOmit
 }
 
 /* Types for Logging */

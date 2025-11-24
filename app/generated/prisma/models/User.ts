@@ -188,6 +188,7 @@ export type UserWhereInput = {
   budgets?: Prisma.BudgetListRelationFilter
   recurring?: Prisma.RecurringChargeListRelationFilter
   interestPayments?: Prisma.InterestPaymentListRelationFilter
+  balanceSnapshots?: Prisma.AccountBalanceSnapshotListRelationFilter
 }
 
 export type UserOrderByWithRelationInput = {
@@ -202,6 +203,7 @@ export type UserOrderByWithRelationInput = {
   budgets?: Prisma.BudgetOrderByRelationAggregateInput
   recurring?: Prisma.RecurringChargeOrderByRelationAggregateInput
   interestPayments?: Prisma.InterestPaymentOrderByRelationAggregateInput
+  balanceSnapshots?: Prisma.AccountBalanceSnapshotOrderByRelationAggregateInput
 }
 
 export type UserWhereUniqueInput = Prisma.AtLeast<{
@@ -219,6 +221,7 @@ export type UserWhereUniqueInput = Prisma.AtLeast<{
   budgets?: Prisma.BudgetListRelationFilter
   recurring?: Prisma.RecurringChargeListRelationFilter
   interestPayments?: Prisma.InterestPaymentListRelationFilter
+  balanceSnapshots?: Prisma.AccountBalanceSnapshotListRelationFilter
 }, "id" | "email">
 
 export type UserOrderByWithAggregationInput = {
@@ -255,6 +258,7 @@ export type UserCreateInput = {
   budgets?: Prisma.BudgetCreateNestedManyWithoutUserInput
   recurring?: Prisma.RecurringChargeCreateNestedManyWithoutUserInput
   interestPayments?: Prisma.InterestPaymentCreateNestedManyWithoutUserInput
+  balanceSnapshots?: Prisma.AccountBalanceSnapshotCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateInput = {
@@ -269,6 +273,7 @@ export type UserUncheckedCreateInput = {
   budgets?: Prisma.BudgetUncheckedCreateNestedManyWithoutUserInput
   recurring?: Prisma.RecurringChargeUncheckedCreateNestedManyWithoutUserInput
   interestPayments?: Prisma.InterestPaymentUncheckedCreateNestedManyWithoutUserInput
+  balanceSnapshots?: Prisma.AccountBalanceSnapshotUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserUpdateInput = {
@@ -283,6 +288,7 @@ export type UserUpdateInput = {
   budgets?: Prisma.BudgetUpdateManyWithoutUserNestedInput
   recurring?: Prisma.RecurringChargeUpdateManyWithoutUserNestedInput
   interestPayments?: Prisma.InterestPaymentUpdateManyWithoutUserNestedInput
+  balanceSnapshots?: Prisma.AccountBalanceSnapshotUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateInput = {
@@ -297,6 +303,7 @@ export type UserUncheckedUpdateInput = {
   budgets?: Prisma.BudgetUncheckedUpdateManyWithoutUserNestedInput
   recurring?: Prisma.RecurringChargeUncheckedUpdateManyWithoutUserNestedInput
   interestPayments?: Prisma.InterestPaymentUncheckedUpdateManyWithoutUserNestedInput
+  balanceSnapshots?: Prisma.AccountBalanceSnapshotUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateManyInput = {
@@ -448,6 +455,20 @@ export type UserUpdateOneRequiredWithoutInterestPaymentsNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutInterestPaymentsInput, Prisma.UserUpdateWithoutInterestPaymentsInput>, Prisma.UserUncheckedUpdateWithoutInterestPaymentsInput>
 }
 
+export type UserCreateNestedOneWithoutBalanceSnapshotsInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutBalanceSnapshotsInput, Prisma.UserUncheckedCreateWithoutBalanceSnapshotsInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutBalanceSnapshotsInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserUpdateOneRequiredWithoutBalanceSnapshotsNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutBalanceSnapshotsInput, Prisma.UserUncheckedCreateWithoutBalanceSnapshotsInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutBalanceSnapshotsInput
+  upsert?: Prisma.UserUpsertWithoutBalanceSnapshotsInput
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutBalanceSnapshotsInput, Prisma.UserUpdateWithoutBalanceSnapshotsInput>, Prisma.UserUncheckedUpdateWithoutBalanceSnapshotsInput>
+}
+
 export type UserCreateWithoutAccountsInput = {
   id: string
   email: string
@@ -459,6 +480,7 @@ export type UserCreateWithoutAccountsInput = {
   budgets?: Prisma.BudgetCreateNestedManyWithoutUserInput
   recurring?: Prisma.RecurringChargeCreateNestedManyWithoutUserInput
   interestPayments?: Prisma.InterestPaymentCreateNestedManyWithoutUserInput
+  balanceSnapshots?: Prisma.AccountBalanceSnapshotCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutAccountsInput = {
@@ -472,6 +494,7 @@ export type UserUncheckedCreateWithoutAccountsInput = {
   budgets?: Prisma.BudgetUncheckedCreateNestedManyWithoutUserInput
   recurring?: Prisma.RecurringChargeUncheckedCreateNestedManyWithoutUserInput
   interestPayments?: Prisma.InterestPaymentUncheckedCreateNestedManyWithoutUserInput
+  balanceSnapshots?: Prisma.AccountBalanceSnapshotUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutAccountsInput = {
@@ -501,6 +524,7 @@ export type UserUpdateWithoutAccountsInput = {
   budgets?: Prisma.BudgetUpdateManyWithoutUserNestedInput
   recurring?: Prisma.RecurringChargeUpdateManyWithoutUserNestedInput
   interestPayments?: Prisma.InterestPaymentUpdateManyWithoutUserNestedInput
+  balanceSnapshots?: Prisma.AccountBalanceSnapshotUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutAccountsInput = {
@@ -514,6 +538,7 @@ export type UserUncheckedUpdateWithoutAccountsInput = {
   budgets?: Prisma.BudgetUncheckedUpdateManyWithoutUserNestedInput
   recurring?: Prisma.RecurringChargeUncheckedUpdateManyWithoutUserNestedInput
   interestPayments?: Prisma.InterestPaymentUncheckedUpdateManyWithoutUserNestedInput
+  balanceSnapshots?: Prisma.AccountBalanceSnapshotUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateWithoutTransactionsInput = {
@@ -527,6 +552,7 @@ export type UserCreateWithoutTransactionsInput = {
   budgets?: Prisma.BudgetCreateNestedManyWithoutUserInput
   recurring?: Prisma.RecurringChargeCreateNestedManyWithoutUserInput
   interestPayments?: Prisma.InterestPaymentCreateNestedManyWithoutUserInput
+  balanceSnapshots?: Prisma.AccountBalanceSnapshotCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutTransactionsInput = {
@@ -540,6 +566,7 @@ export type UserUncheckedCreateWithoutTransactionsInput = {
   budgets?: Prisma.BudgetUncheckedCreateNestedManyWithoutUserInput
   recurring?: Prisma.RecurringChargeUncheckedCreateNestedManyWithoutUserInput
   interestPayments?: Prisma.InterestPaymentUncheckedCreateNestedManyWithoutUserInput
+  balanceSnapshots?: Prisma.AccountBalanceSnapshotUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutTransactionsInput = {
@@ -569,6 +596,7 @@ export type UserUpdateWithoutTransactionsInput = {
   budgets?: Prisma.BudgetUpdateManyWithoutUserNestedInput
   recurring?: Prisma.RecurringChargeUpdateManyWithoutUserNestedInput
   interestPayments?: Prisma.InterestPaymentUpdateManyWithoutUserNestedInput
+  balanceSnapshots?: Prisma.AccountBalanceSnapshotUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutTransactionsInput = {
@@ -582,6 +610,7 @@ export type UserUncheckedUpdateWithoutTransactionsInput = {
   budgets?: Prisma.BudgetUncheckedUpdateManyWithoutUserNestedInput
   recurring?: Prisma.RecurringChargeUncheckedUpdateManyWithoutUserNestedInput
   interestPayments?: Prisma.InterestPaymentUncheckedUpdateManyWithoutUserNestedInput
+  balanceSnapshots?: Prisma.AccountBalanceSnapshotUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateWithoutCategoriesInput = {
@@ -595,6 +624,7 @@ export type UserCreateWithoutCategoriesInput = {
   budgets?: Prisma.BudgetCreateNestedManyWithoutUserInput
   recurring?: Prisma.RecurringChargeCreateNestedManyWithoutUserInput
   interestPayments?: Prisma.InterestPaymentCreateNestedManyWithoutUserInput
+  balanceSnapshots?: Prisma.AccountBalanceSnapshotCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutCategoriesInput = {
@@ -608,6 +638,7 @@ export type UserUncheckedCreateWithoutCategoriesInput = {
   budgets?: Prisma.BudgetUncheckedCreateNestedManyWithoutUserInput
   recurring?: Prisma.RecurringChargeUncheckedCreateNestedManyWithoutUserInput
   interestPayments?: Prisma.InterestPaymentUncheckedCreateNestedManyWithoutUserInput
+  balanceSnapshots?: Prisma.AccountBalanceSnapshotUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutCategoriesInput = {
@@ -637,6 +668,7 @@ export type UserUpdateWithoutCategoriesInput = {
   budgets?: Prisma.BudgetUpdateManyWithoutUserNestedInput
   recurring?: Prisma.RecurringChargeUpdateManyWithoutUserNestedInput
   interestPayments?: Prisma.InterestPaymentUpdateManyWithoutUserNestedInput
+  balanceSnapshots?: Prisma.AccountBalanceSnapshotUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutCategoriesInput = {
@@ -650,6 +682,7 @@ export type UserUncheckedUpdateWithoutCategoriesInput = {
   budgets?: Prisma.BudgetUncheckedUpdateManyWithoutUserNestedInput
   recurring?: Prisma.RecurringChargeUncheckedUpdateManyWithoutUserNestedInput
   interestPayments?: Prisma.InterestPaymentUncheckedUpdateManyWithoutUserNestedInput
+  balanceSnapshots?: Prisma.AccountBalanceSnapshotUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateWithoutBudgetsInput = {
@@ -663,6 +696,7 @@ export type UserCreateWithoutBudgetsInput = {
   categories?: Prisma.CategoryCreateNestedManyWithoutUserInput
   recurring?: Prisma.RecurringChargeCreateNestedManyWithoutUserInput
   interestPayments?: Prisma.InterestPaymentCreateNestedManyWithoutUserInput
+  balanceSnapshots?: Prisma.AccountBalanceSnapshotCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutBudgetsInput = {
@@ -676,6 +710,7 @@ export type UserUncheckedCreateWithoutBudgetsInput = {
   categories?: Prisma.CategoryUncheckedCreateNestedManyWithoutUserInput
   recurring?: Prisma.RecurringChargeUncheckedCreateNestedManyWithoutUserInput
   interestPayments?: Prisma.InterestPaymentUncheckedCreateNestedManyWithoutUserInput
+  balanceSnapshots?: Prisma.AccountBalanceSnapshotUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutBudgetsInput = {
@@ -705,6 +740,7 @@ export type UserUpdateWithoutBudgetsInput = {
   categories?: Prisma.CategoryUpdateManyWithoutUserNestedInput
   recurring?: Prisma.RecurringChargeUpdateManyWithoutUserNestedInput
   interestPayments?: Prisma.InterestPaymentUpdateManyWithoutUserNestedInput
+  balanceSnapshots?: Prisma.AccountBalanceSnapshotUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutBudgetsInput = {
@@ -718,6 +754,7 @@ export type UserUncheckedUpdateWithoutBudgetsInput = {
   categories?: Prisma.CategoryUncheckedUpdateManyWithoutUserNestedInput
   recurring?: Prisma.RecurringChargeUncheckedUpdateManyWithoutUserNestedInput
   interestPayments?: Prisma.InterestPaymentUncheckedUpdateManyWithoutUserNestedInput
+  balanceSnapshots?: Prisma.AccountBalanceSnapshotUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateWithoutRecurringInput = {
@@ -731,6 +768,7 @@ export type UserCreateWithoutRecurringInput = {
   categories?: Prisma.CategoryCreateNestedManyWithoutUserInput
   budgets?: Prisma.BudgetCreateNestedManyWithoutUserInput
   interestPayments?: Prisma.InterestPaymentCreateNestedManyWithoutUserInput
+  balanceSnapshots?: Prisma.AccountBalanceSnapshotCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutRecurringInput = {
@@ -744,6 +782,7 @@ export type UserUncheckedCreateWithoutRecurringInput = {
   categories?: Prisma.CategoryUncheckedCreateNestedManyWithoutUserInput
   budgets?: Prisma.BudgetUncheckedCreateNestedManyWithoutUserInput
   interestPayments?: Prisma.InterestPaymentUncheckedCreateNestedManyWithoutUserInput
+  balanceSnapshots?: Prisma.AccountBalanceSnapshotUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutRecurringInput = {
@@ -773,6 +812,7 @@ export type UserUpdateWithoutRecurringInput = {
   categories?: Prisma.CategoryUpdateManyWithoutUserNestedInput
   budgets?: Prisma.BudgetUpdateManyWithoutUserNestedInput
   interestPayments?: Prisma.InterestPaymentUpdateManyWithoutUserNestedInput
+  balanceSnapshots?: Prisma.AccountBalanceSnapshotUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutRecurringInput = {
@@ -786,6 +826,7 @@ export type UserUncheckedUpdateWithoutRecurringInput = {
   categories?: Prisma.CategoryUncheckedUpdateManyWithoutUserNestedInput
   budgets?: Prisma.BudgetUncheckedUpdateManyWithoutUserNestedInput
   interestPayments?: Prisma.InterestPaymentUncheckedUpdateManyWithoutUserNestedInput
+  balanceSnapshots?: Prisma.AccountBalanceSnapshotUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateWithoutInterestPaymentsInput = {
@@ -799,6 +840,7 @@ export type UserCreateWithoutInterestPaymentsInput = {
   categories?: Prisma.CategoryCreateNestedManyWithoutUserInput
   budgets?: Prisma.BudgetCreateNestedManyWithoutUserInput
   recurring?: Prisma.RecurringChargeCreateNestedManyWithoutUserInput
+  balanceSnapshots?: Prisma.AccountBalanceSnapshotCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutInterestPaymentsInput = {
@@ -812,6 +854,7 @@ export type UserUncheckedCreateWithoutInterestPaymentsInput = {
   categories?: Prisma.CategoryUncheckedCreateNestedManyWithoutUserInput
   budgets?: Prisma.BudgetUncheckedCreateNestedManyWithoutUserInput
   recurring?: Prisma.RecurringChargeUncheckedCreateNestedManyWithoutUserInput
+  balanceSnapshots?: Prisma.AccountBalanceSnapshotUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutInterestPaymentsInput = {
@@ -841,6 +884,7 @@ export type UserUpdateWithoutInterestPaymentsInput = {
   categories?: Prisma.CategoryUpdateManyWithoutUserNestedInput
   budgets?: Prisma.BudgetUpdateManyWithoutUserNestedInput
   recurring?: Prisma.RecurringChargeUpdateManyWithoutUserNestedInput
+  balanceSnapshots?: Prisma.AccountBalanceSnapshotUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutInterestPaymentsInput = {
@@ -854,6 +898,79 @@ export type UserUncheckedUpdateWithoutInterestPaymentsInput = {
   categories?: Prisma.CategoryUncheckedUpdateManyWithoutUserNestedInput
   budgets?: Prisma.BudgetUncheckedUpdateManyWithoutUserNestedInput
   recurring?: Prisma.RecurringChargeUncheckedUpdateManyWithoutUserNestedInput
+  balanceSnapshots?: Prisma.AccountBalanceSnapshotUncheckedUpdateManyWithoutUserNestedInput
+}
+
+export type UserCreateWithoutBalanceSnapshotsInput = {
+  id: string
+  email: string
+  name?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
+  transactions?: Prisma.TransactionCreateNestedManyWithoutUserInput
+  categories?: Prisma.CategoryCreateNestedManyWithoutUserInput
+  budgets?: Prisma.BudgetCreateNestedManyWithoutUserInput
+  recurring?: Prisma.RecurringChargeCreateNestedManyWithoutUserInput
+  interestPayments?: Prisma.InterestPaymentCreateNestedManyWithoutUserInput
+}
+
+export type UserUncheckedCreateWithoutBalanceSnapshotsInput = {
+  id: string
+  email: string
+  name?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
+  transactions?: Prisma.TransactionUncheckedCreateNestedManyWithoutUserInput
+  categories?: Prisma.CategoryUncheckedCreateNestedManyWithoutUserInput
+  budgets?: Prisma.BudgetUncheckedCreateNestedManyWithoutUserInput
+  recurring?: Prisma.RecurringChargeUncheckedCreateNestedManyWithoutUserInput
+  interestPayments?: Prisma.InterestPaymentUncheckedCreateNestedManyWithoutUserInput
+}
+
+export type UserCreateOrConnectWithoutBalanceSnapshotsInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutBalanceSnapshotsInput, Prisma.UserUncheckedCreateWithoutBalanceSnapshotsInput>
+}
+
+export type UserUpsertWithoutBalanceSnapshotsInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutBalanceSnapshotsInput, Prisma.UserUncheckedUpdateWithoutBalanceSnapshotsInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutBalanceSnapshotsInput, Prisma.UserUncheckedCreateWithoutBalanceSnapshotsInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutBalanceSnapshotsInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutBalanceSnapshotsInput, Prisma.UserUncheckedUpdateWithoutBalanceSnapshotsInput>
+}
+
+export type UserUpdateWithoutBalanceSnapshotsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
+  transactions?: Prisma.TransactionUpdateManyWithoutUserNestedInput
+  categories?: Prisma.CategoryUpdateManyWithoutUserNestedInput
+  budgets?: Prisma.BudgetUpdateManyWithoutUserNestedInput
+  recurring?: Prisma.RecurringChargeUpdateManyWithoutUserNestedInput
+  interestPayments?: Prisma.InterestPaymentUpdateManyWithoutUserNestedInput
+}
+
+export type UserUncheckedUpdateWithoutBalanceSnapshotsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
+  transactions?: Prisma.TransactionUncheckedUpdateManyWithoutUserNestedInput
+  categories?: Prisma.CategoryUncheckedUpdateManyWithoutUserNestedInput
+  budgets?: Prisma.BudgetUncheckedUpdateManyWithoutUserNestedInput
+  recurring?: Prisma.RecurringChargeUncheckedUpdateManyWithoutUserNestedInput
+  interestPayments?: Prisma.InterestPaymentUncheckedUpdateManyWithoutUserNestedInput
 }
 
 
@@ -868,6 +985,7 @@ export type UserCountOutputType = {
   budgets: number
   recurring: number
   interestPayments: number
+  balanceSnapshots: number
 }
 
 export type UserCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -877,6 +995,7 @@ export type UserCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.I
   budgets?: boolean | UserCountOutputTypeCountBudgetsArgs
   recurring?: boolean | UserCountOutputTypeCountRecurringArgs
   interestPayments?: boolean | UserCountOutputTypeCountInterestPaymentsArgs
+  balanceSnapshots?: boolean | UserCountOutputTypeCountBalanceSnapshotsArgs
 }
 
 /**
@@ -931,6 +1050,13 @@ export type UserCountOutputTypeCountInterestPaymentsArgs<ExtArgs extends runtime
   where?: Prisma.InterestPaymentWhereInput
 }
 
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeCountBalanceSnapshotsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.AccountBalanceSnapshotWhereInput
+}
+
 
 export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
@@ -944,6 +1070,7 @@ export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = r
   budgets?: boolean | Prisma.User$budgetsArgs<ExtArgs>
   recurring?: boolean | Prisma.User$recurringArgs<ExtArgs>
   interestPayments?: boolean | Prisma.User$interestPaymentsArgs<ExtArgs>
+  balanceSnapshots?: boolean | Prisma.User$balanceSnapshotsArgs<ExtArgs>
   _count?: boolean | Prisma.UserCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["user"]>
 
@@ -979,6 +1106,7 @@ export type UserInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = 
   budgets?: boolean | Prisma.User$budgetsArgs<ExtArgs>
   recurring?: boolean | Prisma.User$recurringArgs<ExtArgs>
   interestPayments?: boolean | Prisma.User$interestPaymentsArgs<ExtArgs>
+  balanceSnapshots?: boolean | Prisma.User$balanceSnapshotsArgs<ExtArgs>
   _count?: boolean | Prisma.UserCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type UserIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {}
@@ -993,6 +1121,7 @@ export type $UserPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs =
     budgets: Prisma.$BudgetPayload<ExtArgs>[]
     recurring: Prisma.$RecurringChargePayload<ExtArgs>[]
     interestPayments: Prisma.$InterestPaymentPayload<ExtArgs>[]
+    balanceSnapshots: Prisma.$AccountBalanceSnapshotPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -1400,6 +1529,7 @@ export interface Prisma__UserClient<T, Null = never, ExtArgs extends runtime.Typ
   budgets<T extends Prisma.User$budgetsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$budgetsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$BudgetPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   recurring<T extends Prisma.User$recurringArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$recurringArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$RecurringChargePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   interestPayments<T extends Prisma.User$interestPaymentsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$interestPaymentsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$InterestPaymentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  balanceSnapshots<T extends Prisma.User$balanceSnapshotsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$balanceSnapshotsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$AccountBalanceSnapshotPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -1963,6 +2093,30 @@ export type User$interestPaymentsArgs<ExtArgs extends runtime.Types.Extensions.I
   take?: number
   skip?: number
   distinct?: Prisma.InterestPaymentScalarFieldEnum | Prisma.InterestPaymentScalarFieldEnum[]
+}
+
+/**
+ * User.balanceSnapshots
+ */
+export type User$balanceSnapshotsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the AccountBalanceSnapshot
+   */
+  select?: Prisma.AccountBalanceSnapshotSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the AccountBalanceSnapshot
+   */
+  omit?: Prisma.AccountBalanceSnapshotOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.AccountBalanceSnapshotInclude<ExtArgs> | null
+  where?: Prisma.AccountBalanceSnapshotWhereInput
+  orderBy?: Prisma.AccountBalanceSnapshotOrderByWithRelationInput | Prisma.AccountBalanceSnapshotOrderByWithRelationInput[]
+  cursor?: Prisma.AccountBalanceSnapshotWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.AccountBalanceSnapshotScalarFieldEnum | Prisma.AccountBalanceSnapshotScalarFieldEnum[]
 }
 
 /**

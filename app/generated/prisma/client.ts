@@ -74,3 +74,8 @@ export type RecurringCharge = Prisma.RecurringChargeModel
  * 
  */
 export type InterestPayment = Prisma.InterestPaymentModel
+/**
+ * Model AccountBalanceSnapshot
+ * 
+ */
+export type AccountBalanceSnapshot = Prisma.AccountBalanceSnapshotModel

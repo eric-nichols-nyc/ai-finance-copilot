@@ -5,7 +5,7 @@ import { prisma } from '@/lib/prisma'
 export interface SearchResult {
   transactions: Array<{
     id: string
-    amount: number
+    amount: string // Prisma Decimal returned as string
     description: string | null
     date: Date
     type: string
@@ -16,15 +16,15 @@ export interface SearchResult {
     id: string
     name: string
     type: string
-    balance: number
+    balance: string // Prisma Decimal returned as string
     currency: string
-    creditLimit?: number | null
-    apr?: number | null
+    creditLimit?: string | null // Prisma Decimal returned as string
+    apr?: string | null // Prisma Decimal returned as string
   }>
   recurring: Array<{
     id: string
     name: string
-    amount: number
+    amount: string // Prisma Decimal returned as string
     frequency: string
     nextDueDate: Date
     category: { id: string; name: string }
@@ -39,7 +39,7 @@ export interface SearchResult {
   }>
   budgets: Array<{
     id: string
-    amount: number
+    amount: string // Prisma Decimal returned as string
     period: string
     startDate: Date
     endDate: Date | null
@@ -47,7 +47,7 @@ export interface SearchResult {
   }>
   interestPayments: Array<{
     id: string
-    amount: number
+    amount: string // Prisma Decimal returned as string
     date: Date
     month: number
     year: number

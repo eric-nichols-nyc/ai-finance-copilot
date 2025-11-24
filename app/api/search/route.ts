@@ -136,6 +136,19 @@ export async function GET(request: NextRequest) {
 
     // Search accounts
     if (entities.includes('accounts')) {
+      console.log('Searching accounts with query:', query, 'userId:', user.id)
+
+      // Debug: Check total accounts for this user
+      const totalAccounts = await prisma.account.count({ where: { userId: user.id } })
+      console.log('Total accounts for user:', totalAccounts)
+
+      // Debug: Get all account names for this user
+      const allAccounts = await prisma.account.findMany({
+        where: { userId: user.id },
+        select: { name: true },
+      })
+      console.log('All account names:', allAccounts.map(a => a.name))
+
       results.accounts = await prisma.account.findMany({
         where: {
           userId: user.id,
@@ -156,6 +169,7 @@ export async function GET(request: NextRequest) {
         },
         take: limit,
       })
+      console.log('Found accounts:', results.accounts.length)
     }
 
     // Search recurring charges
@@ -212,19 +226,20 @@ export async function GET(request: NextRequest) {
     }
 
     // Search interest payments
-    if (entities.includes('interestPayments')) {
-      results.interestPayments = await prisma.interestPayment.findMany({
-        where: {
-          userId: user.id,
-          account: { name: { contains: query, mode: 'insensitive' } },
-        },
-        include: {
-          account: { select: { id: true, name: true } },
-        },
-        orderBy: { date: 'desc' },
-        take: limit,
-      })
-    }
+    // TEMP: Disabled until Prisma client is regenerated with InterestPayment model
+    // if (entities.includes('interestPayments')) {
+    //   results.interestPayments = await prisma.interestPayment.findMany({
+    //     where: {
+    //       userId: user.id,
+    //       account: { name: { contains: query, mode: 'insensitive' } },
+    //     },
+    //     include: {
+    //       account: { select: { id: true, name: true } },
+    //     },
+    //     orderBy: { date: 'desc' },
+    //     take: limit,
+    //   })
+    // }
 
     return NextResponse.json(results)
   } catch (error) {

@@ -85,7 +85,7 @@ export function SidebarAccounts() {
                       <SidebarMenuItem key={card.id}>
                         <SidebarMenuButton asChild size="sm">
                           <Link
-                            href={`/accounts?id=${card.id}`}
+                            href={`/accounts/${card.id}`}
                             className="flex items-center justify-between"
                           >
                             <span className="text-sm">{card.name}</span>
@@ -119,7 +119,7 @@ export function SidebarAccounts() {
                       <SidebarMenuItem key={account.id}>
                         <SidebarMenuButton asChild size="sm">
                           <Link
-                            href={`/accounts?id=${account.id}`}
+                            href={`/accounts/${account.id}`}
                             className="flex items-center justify-between"
                           >
                             <span className="text-sm">{account.name}</span>
@@ -134,7 +134,7 @@ export function SidebarAccounts() {
                       <SidebarMenuItem key={account.id}>
                         <SidebarMenuButton asChild size="sm">
                           <Link
-                            href={`/accounts?id=${account.id}`}
+                            href={`/accounts/${account.id}`}
                             className="flex items-center justify-between"
                           >
                             <span className="text-sm">{account.name}</span>
@@ -168,7 +168,7 @@ export function SidebarAccounts() {
                       <SidebarMenuItem key={account.id}>
                         <SidebarMenuButton asChild size="sm">
                           <Link
-                            href={`/accounts?id=${account.id}`}
+                            href={`/accounts/${account.id}`}
                             className="flex items-center justify-between"
                           >
                             <span className="text-sm">{account.name}</span>
@@ -202,7 +202,7 @@ export function SidebarAccounts() {
                       <SidebarMenuItem key={account.id}>
                         <SidebarMenuButton asChild size="sm">
                           <Link
-                            href={`/accounts?id=${account.id}`}
+                            href={`/accounts/${account.id}`}
                             className="flex items-center justify-between"
                           >
                             <span className="text-sm">{account.name}</span>

@@ -60,11 +60,20 @@ export async function GET(request: NextRequest) {
     // Authenticate user
     const supabase = await createClient()
     const {
-      data: { user },
+      data: { user: supabaseUser },
     } = await supabase.auth.getUser()
 
-    if (!user) {
+    if (!supabaseUser?.email) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+    }
+
+    // Get Prisma user by email (Supabase user ID ≠ Prisma user ID)
+    const user = await prisma.user.findUnique({
+      where: { email: supabaseUser.email },
+    })
+
+    if (!user) {
+      return NextResponse.json({ error: 'User not found in database' }, { status: 404 })
     }
 
     // Get search parameters

@@ -136,6 +136,19 @@ export async function GET(request: NextRequest) {
 
     // Search accounts
     if (entities.includes('accounts')) {
+      console.log('Searching accounts with query:', query, 'userId:', user.id)
+
+      // Debug: Check total accounts for this user
+      const totalAccounts = await prisma.account.count({ where: { userId: user.id } })
+      console.log('Total accounts for user:', totalAccounts)
+
+      // Debug: Get all account names for this user
+      const allAccounts = await prisma.account.findMany({
+        where: { userId: user.id },
+        select: { name: true },
+      })
+      console.log('All account names:', allAccounts.map(a => a.name))
+
       results.accounts = await prisma.account.findMany({
         where: {
           userId: user.id,
@@ -156,6 +169,7 @@ export async function GET(request: NextRequest) {
         },
         take: limit,
       })
+      console.log('Found accounts:', results.accounts.length)
     }
 
     // Search recurring charges

@@ -139,6 +139,99 @@ test.describe('My Feature', () => {
 })
 ```
 
+### Authentication Testing
+
+#### Environment Setup
+
+Authentication tests require valid test user credentials. Set these environment variables:
+
+```bash
+# .env.test or .env.local
+TEST_USER_EMAIL=test@example.com
+TEST_USER_PASSWORD=testpassword123
+```
+
+**IMPORTANT:** The test user must exist in your Supabase project. Create it manually via:
+- Supabase Dashboard → Authentication → Users → Add User
+- Or run a setup script to create test users
+
+#### Using Auth Helpers
+
+The project includes reusable authentication helpers in `e2e/helpers/auth.ts`:
+
+```typescript
+import { signIn, signOut, isAuthenticated, getTestUser } from './helpers/auth'
+
+test('should access protected route after login', async ({ page }) => {
+  // Sign in using the helper
+  await signIn(page)
+
+  // Navigate to protected route
+  await page.goto('/dashboard')
+
+  // Verify access granted
+  await expect(page).toHaveURL('/dashboard')
+})
+
+test('should redirect unauthenticated users', async ({ page, context }) => {
+  // Clear any existing auth
+  await context.clearCookies()
+
+  // Try to access protected route
+  await page.goto('/dashboard')
+
+  // Should redirect to sign-in
+  await expect(page).toHaveURL(/\/sign-in/)
+})
+```
+
+#### Available Auth Helpers
+
+- `signIn(page, credentials?)` - Sign in via UI
+- `signUp(page, credentials)` - Create new account via UI
+- `signOut(page)` - Sign out current user
+- `clearAuth(context)` - Clear all auth cookies
+- `isAuthenticated(page)` - Check if user is logged in
+- `setupAuthenticatedSession(page, credentials?)` - Setup auth for test suite
+- `getTestUser()` - Get test credentials from env vars
+- `generateTestEmail(prefix?)` - Generate unique test email
+- `fillLoginForm(page, email, password)` - Fill form without submitting
+- `waitForAuthRedirect(page, path?, timeout?)` - Wait for post-auth redirect
+
+#### Example: Testing Protected Routes
+
+```typescript
+import { test, expect } from '@playwright/test'
+import { signIn, clearAuth } from './helpers/auth'
+
+test.describe('Protected Routes', () => {
+  test('authenticated user can access dashboard', async ({ page }) => {
+    await signIn(page)
+    await page.goto('/dashboard')
+    await expect(page).toHaveURL('/dashboard')
+  })
+
+  test('unauthenticated user redirected to sign-in', async ({ page, context }) => {
+    await clearAuth(context)
+    await page.goto('/dashboard')
+    await expect(page).toHaveURL(/\/sign-in/)
+  })
+})
+```
+
+#### Running Auth Tests
+
+```bash
+# Run all auth tests
+npx playwright test auth
+
+# Run with specific test user
+TEST_USER_EMAIL=custom@test.com TEST_USER_PASSWORD=custom123 npm run test:e2e
+
+# Debug auth tests
+npm run test:e2e:debug auth-sign-in.spec.ts
+```
+
 ### Best Practices
 
 1. **Use data-testid attributes** for stable selectors:
@@ -162,6 +255,12 @@ test.describe('My Feature', () => {
 4. **Use auto-waiting assertions**:
    ```typescript
    await expect(page.locator('.status')).toHaveText('Success')
+   ```
+
+5. **Use auth helpers for authentication**:
+   ```typescript
+   import { signIn } from './helpers/auth'
+   await signIn(page) // Instead of manually filling forms
    ```
 
 ### Debugging E2E Tests
@@ -255,6 +354,9 @@ ai-finance-copilot/
 │       └── example.test.ts
 │
 ├── e2e/                    # E2E tests
+│   ├── helpers/            # Test utilities
+│   │   └── auth.ts         # Authentication helpers
+│   ├── auth-sign-in.spec.ts # Auth tests
 │   ├── home.spec.ts
 │   ├── error-pages.spec.ts
 │   └── example.spec.ts

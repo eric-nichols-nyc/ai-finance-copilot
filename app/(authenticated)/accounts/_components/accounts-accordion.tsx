@@ -8,6 +8,7 @@ import {
   AccordionTrigger,
 } from '@/components/ui/accordion'
 import { Line, LineChart, ResponsiveContainer } from 'recharts'
+import Link from 'next/link'
 
 type Account = {
   id: string
@@ -79,8 +80,9 @@ export function AccountsAccordion({
       : null
 
     return (
-      <div
+      <Link
         key={account.id}
+        href={`/accounts/${account.id}`}
         className={`flex items-center justify-between p-3 rounded-lg cursor-pointer transition-colors ${
           isSelected ? 'bg-accent' : 'hover:bg-accent/50'
         }`}
@@ -128,7 +130,7 @@ export function AccountsAccordion({
             </p>
           </div>
         </div>
-      </div>
+      </Link>
     )
   }
 

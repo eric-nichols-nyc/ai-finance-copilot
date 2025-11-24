@@ -205,7 +205,7 @@ export function GlobalSearch() {
                 <CommandItem
                   key={account.id}
                   value={`account-${account.id}`}
-                  onSelect={() => handleNavigate(`/accounts?id=${account.id}`)}
+                  onSelect={() => handleNavigate(`/accounts/${account.id}`)}
                 >
                   <Wallet className="mr-2 h-4 w-4" />
                   <div className="flex flex-1 items-center justify-between">

@@ -31,7 +31,7 @@ import {
   Calendar,
   Loader2,
 } from 'lucide-react'
-import { formatCurrency, formatDate } from '@/lib/expenseUtils'
+import { formatCurrency, formatDate } from '@/lib/utils'
 
 // Quick navigation actions
 const navigationActions = [

@@ -56,7 +56,8 @@ export const ModelName = {
   Transaction: 'Transaction',
   Category: 'Category',
   Budget: 'Budget',
-  RecurringCharge: 'RecurringCharge'
+  RecurringCharge: 'RecurringCharge',
+  InterestPayment: 'InterestPayment'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -94,6 +95,10 @@ export const AccountScalarFieldEnum = {
   currency: 'currency',
   creditLimit: 'creditLimit',
   apr: 'apr',
+  loanAmount: 'loanAmount',
+  remainingBalance: 'remainingBalance',
+  loanTerm: 'loanTerm',
+  monthlyPayment: 'monthlyPayment',
   userId: 'userId',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
@@ -163,6 +168,21 @@ export const RecurringChargeScalarFieldEnum = {
 } as const
 
 export type RecurringChargeScalarFieldEnum = (typeof RecurringChargeScalarFieldEnum)[keyof typeof RecurringChargeScalarFieldEnum]
+
+
+export const InterestPaymentScalarFieldEnum = {
+  id: 'id',
+  amount: 'amount',
+  date: 'date',
+  month: 'month',
+  year: 'year',
+  accountId: 'accountId',
+  userId: 'userId',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type InterestPaymentScalarFieldEnum = (typeof InterestPaymentScalarFieldEnum)[keyof typeof InterestPaymentScalarFieldEnum]
 
 
 export const SortOrder = {

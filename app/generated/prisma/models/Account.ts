@@ -30,12 +30,20 @@ export type AccountAvgAggregateOutputType = {
   balance: runtime.Decimal | null
   creditLimit: runtime.Decimal | null
   apr: runtime.Decimal | null
+  loanAmount: runtime.Decimal | null
+  remainingBalance: runtime.Decimal | null
+  loanTerm: number | null
+  monthlyPayment: runtime.Decimal | null
 }
 
 export type AccountSumAggregateOutputType = {
   balance: runtime.Decimal | null
   creditLimit: runtime.Decimal | null
   apr: runtime.Decimal | null
+  loanAmount: runtime.Decimal | null
+  remainingBalance: runtime.Decimal | null
+  loanTerm: number | null
+  monthlyPayment: runtime.Decimal | null
 }
 
 export type AccountMinAggregateOutputType = {
@@ -46,6 +54,10 @@ export type AccountMinAggregateOutputType = {
   currency: string | null
   creditLimit: runtime.Decimal | null
   apr: runtime.Decimal | null
+  loanAmount: runtime.Decimal | null
+  remainingBalance: runtime.Decimal | null
+  loanTerm: number | null
+  monthlyPayment: runtime.Decimal | null
   userId: string | null
   createdAt: Date | null
   updatedAt: Date | null
@@ -59,6 +71,10 @@ export type AccountMaxAggregateOutputType = {
   currency: string | null
   creditLimit: runtime.Decimal | null
   apr: runtime.Decimal | null
+  loanAmount: runtime.Decimal | null
+  remainingBalance: runtime.Decimal | null
+  loanTerm: number | null
+  monthlyPayment: runtime.Decimal | null
   userId: string | null
   createdAt: Date | null
   updatedAt: Date | null
@@ -72,6 +88,10 @@ export type AccountCountAggregateOutputType = {
   currency: number
   creditLimit: number
   apr: number
+  loanAmount: number
+  remainingBalance: number
+  loanTerm: number
+  monthlyPayment: number
   userId: number
   createdAt: number
   updatedAt: number
@@ -83,12 +103,20 @@ export type AccountAvgAggregateInputType = {
   balance?: true
   creditLimit?: true
   apr?: true
+  loanAmount?: true
+  remainingBalance?: true
+  loanTerm?: true
+  monthlyPayment?: true
 }
 
 export type AccountSumAggregateInputType = {
   balance?: true
   creditLimit?: true
   apr?: true
+  loanAmount?: true
+  remainingBalance?: true
+  loanTerm?: true
+  monthlyPayment?: true
 }
 
 export type AccountMinAggregateInputType = {
@@ -99,6 +127,10 @@ export type AccountMinAggregateInputType = {
   currency?: true
   creditLimit?: true
   apr?: true
+  loanAmount?: true
+  remainingBalance?: true
+  loanTerm?: true
+  monthlyPayment?: true
   userId?: true
   createdAt?: true
   updatedAt?: true
@@ -112,6 +144,10 @@ export type AccountMaxAggregateInputType = {
   currency?: true
   creditLimit?: true
   apr?: true
+  loanAmount?: true
+  remainingBalance?: true
+  loanTerm?: true
+  monthlyPayment?: true
   userId?: true
   createdAt?: true
   updatedAt?: true
@@ -125,6 +161,10 @@ export type AccountCountAggregateInputType = {
   currency?: true
   creditLimit?: true
   apr?: true
+  loanAmount?: true
+  remainingBalance?: true
+  loanTerm?: true
+  monthlyPayment?: true
   userId?: true
   createdAt?: true
   updatedAt?: true
@@ -225,6 +265,10 @@ export type AccountGroupByOutputType = {
   currency: string
   creditLimit: runtime.Decimal | null
   apr: runtime.Decimal | null
+  loanAmount: runtime.Decimal | null
+  remainingBalance: runtime.Decimal | null
+  loanTerm: number | null
+  monthlyPayment: runtime.Decimal | null
   userId: string
   createdAt: Date
   updatedAt: Date
@@ -261,12 +305,17 @@ export type AccountWhereInput = {
   currency?: Prisma.StringFilter<"Account"> | string
   creditLimit?: Prisma.DecimalNullableFilter<"Account"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   apr?: Prisma.DecimalNullableFilter<"Account"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  loanAmount?: Prisma.DecimalNullableFilter<"Account"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  remainingBalance?: Prisma.DecimalNullableFilter<"Account"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  loanTerm?: Prisma.IntNullableFilter<"Account"> | number | null
+  monthlyPayment?: Prisma.DecimalNullableFilter<"Account"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   userId?: Prisma.StringFilter<"Account"> | string
   createdAt?: Prisma.DateTimeFilter<"Account"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Account"> | Date | string
   user?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
   transactions?: Prisma.TransactionListRelationFilter
   recurring?: Prisma.RecurringChargeListRelationFilter
+  interestPayments?: Prisma.InterestPaymentListRelationFilter
 }
 
 export type AccountOrderByWithRelationInput = {
@@ -277,12 +326,17 @@ export type AccountOrderByWithRelationInput = {
   currency?: Prisma.SortOrder
   creditLimit?: Prisma.SortOrderInput | Prisma.SortOrder
   apr?: Prisma.SortOrderInput | Prisma.SortOrder
+  loanAmount?: Prisma.SortOrderInput | Prisma.SortOrder
+  remainingBalance?: Prisma.SortOrderInput | Prisma.SortOrder
+  loanTerm?: Prisma.SortOrderInput | Prisma.SortOrder
+  monthlyPayment?: Prisma.SortOrderInput | Prisma.SortOrder
   userId?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   user?: Prisma.UserOrderByWithRelationInput
   transactions?: Prisma.TransactionOrderByRelationAggregateInput
   recurring?: Prisma.RecurringChargeOrderByRelationAggregateInput
+  interestPayments?: Prisma.InterestPaymentOrderByRelationAggregateInput
 }
 
 export type AccountWhereUniqueInput = Prisma.AtLeast<{
@@ -296,12 +350,17 @@ export type AccountWhereUniqueInput = Prisma.AtLeast<{
   currency?: Prisma.StringFilter<"Account"> | string
   creditLimit?: Prisma.DecimalNullableFilter<"Account"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   apr?: Prisma.DecimalNullableFilter<"Account"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  loanAmount?: Prisma.DecimalNullableFilter<"Account"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  remainingBalance?: Prisma.DecimalNullableFilter<"Account"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  loanTerm?: Prisma.IntNullableFilter<"Account"> | number | null
+  monthlyPayment?: Prisma.DecimalNullableFilter<"Account"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   userId?: Prisma.StringFilter<"Account"> | string
   createdAt?: Prisma.DateTimeFilter<"Account"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Account"> | Date | string
   user?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
   transactions?: Prisma.TransactionListRelationFilter
   recurring?: Prisma.RecurringChargeListRelationFilter
+  interestPayments?: Prisma.InterestPaymentListRelationFilter
 }, "id">
 
 export type AccountOrderByWithAggregationInput = {
@@ -312,6 +371,10 @@ export type AccountOrderByWithAggregationInput = {
   currency?: Prisma.SortOrder
   creditLimit?: Prisma.SortOrderInput | Prisma.SortOrder
   apr?: Prisma.SortOrderInput | Prisma.SortOrder
+  loanAmount?: Prisma.SortOrderInput | Prisma.SortOrder
+  remainingBalance?: Prisma.SortOrderInput | Prisma.SortOrder
+  loanTerm?: Prisma.SortOrderInput | Prisma.SortOrder
+  monthlyPayment?: Prisma.SortOrderInput | Prisma.SortOrder
   userId?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
@@ -333,6 +396,10 @@ export type AccountScalarWhereWithAggregatesInput = {
   currency?: Prisma.StringWithAggregatesFilter<"Account"> | string
   creditLimit?: Prisma.DecimalNullableWithAggregatesFilter<"Account"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   apr?: Prisma.DecimalNullableWithAggregatesFilter<"Account"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  loanAmount?: Prisma.DecimalNullableWithAggregatesFilter<"Account"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  remainingBalance?: Prisma.DecimalNullableWithAggregatesFilter<"Account"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  loanTerm?: Prisma.IntNullableWithAggregatesFilter<"Account"> | number | null
+  monthlyPayment?: Prisma.DecimalNullableWithAggregatesFilter<"Account"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   userId?: Prisma.StringWithAggregatesFilter<"Account"> | string
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"Account"> | Date | string
   updatedAt?: Prisma.DateTimeWithAggregatesFilter<"Account"> | Date | string
@@ -346,11 +413,16 @@ export type AccountCreateInput = {
   currency?: string
   creditLimit?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   apr?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  loanAmount?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  remainingBalance?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  loanTerm?: number | null
+  monthlyPayment?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   user: Prisma.UserCreateNestedOneWithoutAccountsInput
   transactions?: Prisma.TransactionCreateNestedManyWithoutAccountInput
   recurring?: Prisma.RecurringChargeCreateNestedManyWithoutAccountInput
+  interestPayments?: Prisma.InterestPaymentCreateNestedManyWithoutAccountInput
 }
 
 export type AccountUncheckedCreateInput = {
@@ -361,11 +433,16 @@ export type AccountUncheckedCreateInput = {
   currency?: string
   creditLimit?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   apr?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  loanAmount?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  remainingBalance?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  loanTerm?: number | null
+  monthlyPayment?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   userId: string
   createdAt?: Date | string
   updatedAt?: Date | string
   transactions?: Prisma.TransactionUncheckedCreateNestedManyWithoutAccountInput
   recurring?: Prisma.RecurringChargeUncheckedCreateNestedManyWithoutAccountInput
+  interestPayments?: Prisma.InterestPaymentUncheckedCreateNestedManyWithoutAccountInput
 }
 
 export type AccountUpdateInput = {
@@ -376,11 +453,16 @@ export type AccountUpdateInput = {
   currency?: Prisma.StringFieldUpdateOperationsInput | string
   creditLimit?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   apr?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  loanAmount?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  remainingBalance?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  loanTerm?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  monthlyPayment?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   user?: Prisma.UserUpdateOneRequiredWithoutAccountsNestedInput
   transactions?: Prisma.TransactionUpdateManyWithoutAccountNestedInput
   recurring?: Prisma.RecurringChargeUpdateManyWithoutAccountNestedInput
+  interestPayments?: Prisma.InterestPaymentUpdateManyWithoutAccountNestedInput
 }
 
 export type AccountUncheckedUpdateInput = {
@@ -391,11 +473,16 @@ export type AccountUncheckedUpdateInput = {
   currency?: Prisma.StringFieldUpdateOperationsInput | string
   creditLimit?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   apr?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  loanAmount?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  remainingBalance?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  loanTerm?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  monthlyPayment?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   userId?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   transactions?: Prisma.TransactionUncheckedUpdateManyWithoutAccountNestedInput
   recurring?: Prisma.RecurringChargeUncheckedUpdateManyWithoutAccountNestedInput
+  interestPayments?: Prisma.InterestPaymentUncheckedUpdateManyWithoutAccountNestedInput
 }
 
 export type AccountCreateManyInput = {
@@ -406,6 +493,10 @@ export type AccountCreateManyInput = {
   currency?: string
   creditLimit?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   apr?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  loanAmount?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  remainingBalance?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  loanTerm?: number | null
+  monthlyPayment?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   userId: string
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -419,6 +510,10 @@ export type AccountUpdateManyMutationInput = {
   currency?: Prisma.StringFieldUpdateOperationsInput | string
   creditLimit?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   apr?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  loanAmount?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  remainingBalance?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  loanTerm?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  monthlyPayment?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -431,6 +526,10 @@ export type AccountUncheckedUpdateManyInput = {
   currency?: Prisma.StringFieldUpdateOperationsInput | string
   creditLimit?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   apr?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  loanAmount?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  remainingBalance?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  loanTerm?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  monthlyPayment?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   userId?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -454,6 +553,10 @@ export type AccountCountOrderByAggregateInput = {
   currency?: Prisma.SortOrder
   creditLimit?: Prisma.SortOrder
   apr?: Prisma.SortOrder
+  loanAmount?: Prisma.SortOrder
+  remainingBalance?: Prisma.SortOrder
+  loanTerm?: Prisma.SortOrder
+  monthlyPayment?: Prisma.SortOrder
   userId?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
@@ -463,6 +566,10 @@ export type AccountAvgOrderByAggregateInput = {
   balance?: Prisma.SortOrder
   creditLimit?: Prisma.SortOrder
   apr?: Prisma.SortOrder
+  loanAmount?: Prisma.SortOrder
+  remainingBalance?: Prisma.SortOrder
+  loanTerm?: Prisma.SortOrder
+  monthlyPayment?: Prisma.SortOrder
 }
 
 export type AccountMaxOrderByAggregateInput = {
@@ -473,6 +580,10 @@ export type AccountMaxOrderByAggregateInput = {
   currency?: Prisma.SortOrder
   creditLimit?: Prisma.SortOrder
   apr?: Prisma.SortOrder
+  loanAmount?: Prisma.SortOrder
+  remainingBalance?: Prisma.SortOrder
+  loanTerm?: Prisma.SortOrder
+  monthlyPayment?: Prisma.SortOrder
   userId?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
@@ -486,6 +597,10 @@ export type AccountMinOrderByAggregateInput = {
   currency?: Prisma.SortOrder
   creditLimit?: Prisma.SortOrder
   apr?: Prisma.SortOrder
+  loanAmount?: Prisma.SortOrder
+  remainingBalance?: Prisma.SortOrder
+  loanTerm?: Prisma.SortOrder
+  monthlyPayment?: Prisma.SortOrder
   userId?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
@@ -495,6 +610,10 @@ export type AccountSumOrderByAggregateInput = {
   balance?: Prisma.SortOrder
   creditLimit?: Prisma.SortOrder
   apr?: Prisma.SortOrder
+  loanAmount?: Prisma.SortOrder
+  remainingBalance?: Prisma.SortOrder
+  loanTerm?: Prisma.SortOrder
+  monthlyPayment?: Prisma.SortOrder
 }
 
 export type AccountScalarRelationFilter = {
@@ -560,6 +679,14 @@ export type NullableDecimalFieldUpdateOperationsInput = {
   divide?: runtime.Decimal | runtime.DecimalJsLike | number | string
 }
 
+export type NullableIntFieldUpdateOperationsInput = {
+  set?: number | null
+  increment?: number
+  decrement?: number
+  multiply?: number
+  divide?: number
+}
+
 export type AccountCreateNestedOneWithoutTransactionsInput = {
   create?: Prisma.XOR<Prisma.AccountCreateWithoutTransactionsInput, Prisma.AccountUncheckedCreateWithoutTransactionsInput>
   connectOrCreate?: Prisma.AccountCreateOrConnectWithoutTransactionsInput
@@ -588,6 +715,20 @@ export type AccountUpdateOneRequiredWithoutRecurringNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.AccountUpdateToOneWithWhereWithoutRecurringInput, Prisma.AccountUpdateWithoutRecurringInput>, Prisma.AccountUncheckedUpdateWithoutRecurringInput>
 }
 
+export type AccountCreateNestedOneWithoutInterestPaymentsInput = {
+  create?: Prisma.XOR<Prisma.AccountCreateWithoutInterestPaymentsInput, Prisma.AccountUncheckedCreateWithoutInterestPaymentsInput>
+  connectOrCreate?: Prisma.AccountCreateOrConnectWithoutInterestPaymentsInput
+  connect?: Prisma.AccountWhereUniqueInput
+}
+
+export type AccountUpdateOneRequiredWithoutInterestPaymentsNestedInput = {
+  create?: Prisma.XOR<Prisma.AccountCreateWithoutInterestPaymentsInput, Prisma.AccountUncheckedCreateWithoutInterestPaymentsInput>
+  connectOrCreate?: Prisma.AccountCreateOrConnectWithoutInterestPaymentsInput
+  upsert?: Prisma.AccountUpsertWithoutInterestPaymentsInput
+  connect?: Prisma.AccountWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.AccountUpdateToOneWithWhereWithoutInterestPaymentsInput, Prisma.AccountUpdateWithoutInterestPaymentsInput>, Prisma.AccountUncheckedUpdateWithoutInterestPaymentsInput>
+}
+
 export type AccountCreateWithoutUserInput = {
   id?: string
   name: string
@@ -596,10 +737,15 @@ export type AccountCreateWithoutUserInput = {
   currency?: string
   creditLimit?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   apr?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  loanAmount?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  remainingBalance?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  loanTerm?: number | null
+  monthlyPayment?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   transactions?: Prisma.TransactionCreateNestedManyWithoutAccountInput
   recurring?: Prisma.RecurringChargeCreateNestedManyWithoutAccountInput
+  interestPayments?: Prisma.InterestPaymentCreateNestedManyWithoutAccountInput
 }
 
 export type AccountUncheckedCreateWithoutUserInput = {
@@ -610,10 +756,15 @@ export type AccountUncheckedCreateWithoutUserInput = {
   currency?: string
   creditLimit?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   apr?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  loanAmount?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  remainingBalance?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  loanTerm?: number | null
+  monthlyPayment?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   transactions?: Prisma.TransactionUncheckedCreateNestedManyWithoutAccountInput
   recurring?: Prisma.RecurringChargeUncheckedCreateNestedManyWithoutAccountInput
+  interestPayments?: Prisma.InterestPaymentUncheckedCreateNestedManyWithoutAccountInput
 }
 
 export type AccountCreateOrConnectWithoutUserInput = {
@@ -653,6 +804,10 @@ export type AccountScalarWhereInput = {
   currency?: Prisma.StringFilter<"Account"> | string
   creditLimit?: Prisma.DecimalNullableFilter<"Account"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   apr?: Prisma.DecimalNullableFilter<"Account"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  loanAmount?: Prisma.DecimalNullableFilter<"Account"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  remainingBalance?: Prisma.DecimalNullableFilter<"Account"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  loanTerm?: Prisma.IntNullableFilter<"Account"> | number | null
+  monthlyPayment?: Prisma.DecimalNullableFilter<"Account"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   userId?: Prisma.StringFilter<"Account"> | string
   createdAt?: Prisma.DateTimeFilter<"Account"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Account"> | Date | string
@@ -666,10 +821,15 @@ export type AccountCreateWithoutTransactionsInput = {
   currency?: string
   creditLimit?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   apr?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  loanAmount?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  remainingBalance?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  loanTerm?: number | null
+  monthlyPayment?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   user: Prisma.UserCreateNestedOneWithoutAccountsInput
   recurring?: Prisma.RecurringChargeCreateNestedManyWithoutAccountInput
+  interestPayments?: Prisma.InterestPaymentCreateNestedManyWithoutAccountInput
 }
 
 export type AccountUncheckedCreateWithoutTransactionsInput = {
@@ -680,10 +840,15 @@ export type AccountUncheckedCreateWithoutTransactionsInput = {
   currency?: string
   creditLimit?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   apr?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  loanAmount?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  remainingBalance?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  loanTerm?: number | null
+  monthlyPayment?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   userId: string
   createdAt?: Date | string
   updatedAt?: Date | string
   recurring?: Prisma.RecurringChargeUncheckedCreateNestedManyWithoutAccountInput
+  interestPayments?: Prisma.InterestPaymentUncheckedCreateNestedManyWithoutAccountInput
 }
 
 export type AccountCreateOrConnectWithoutTransactionsInput = {
@@ -710,10 +875,15 @@ export type AccountUpdateWithoutTransactionsInput = {
   currency?: Prisma.StringFieldUpdateOperationsInput | string
   creditLimit?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   apr?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  loanAmount?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  remainingBalance?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  loanTerm?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  monthlyPayment?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   user?: Prisma.UserUpdateOneRequiredWithoutAccountsNestedInput
   recurring?: Prisma.RecurringChargeUpdateManyWithoutAccountNestedInput
+  interestPayments?: Prisma.InterestPaymentUpdateManyWithoutAccountNestedInput
 }
 
 export type AccountUncheckedUpdateWithoutTransactionsInput = {
@@ -724,10 +894,15 @@ export type AccountUncheckedUpdateWithoutTransactionsInput = {
   currency?: Prisma.StringFieldUpdateOperationsInput | string
   creditLimit?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   apr?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  loanAmount?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  remainingBalance?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  loanTerm?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  monthlyPayment?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   userId?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   recurring?: Prisma.RecurringChargeUncheckedUpdateManyWithoutAccountNestedInput
+  interestPayments?: Prisma.InterestPaymentUncheckedUpdateManyWithoutAccountNestedInput
 }
 
 export type AccountCreateWithoutRecurringInput = {
@@ -738,10 +913,15 @@ export type AccountCreateWithoutRecurringInput = {
   currency?: string
   creditLimit?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   apr?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  loanAmount?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  remainingBalance?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  loanTerm?: number | null
+  monthlyPayment?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   user: Prisma.UserCreateNestedOneWithoutAccountsInput
   transactions?: Prisma.TransactionCreateNestedManyWithoutAccountInput
+  interestPayments?: Prisma.InterestPaymentCreateNestedManyWithoutAccountInput
 }
 
 export type AccountUncheckedCreateWithoutRecurringInput = {
@@ -752,10 +932,15 @@ export type AccountUncheckedCreateWithoutRecurringInput = {
   currency?: string
   creditLimit?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   apr?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  loanAmount?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  remainingBalance?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  loanTerm?: number | null
+  monthlyPayment?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   userId: string
   createdAt?: Date | string
   updatedAt?: Date | string
   transactions?: Prisma.TransactionUncheckedCreateNestedManyWithoutAccountInput
+  interestPayments?: Prisma.InterestPaymentUncheckedCreateNestedManyWithoutAccountInput
 }
 
 export type AccountCreateOrConnectWithoutRecurringInput = {
@@ -782,10 +967,15 @@ export type AccountUpdateWithoutRecurringInput = {
   currency?: Prisma.StringFieldUpdateOperationsInput | string
   creditLimit?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   apr?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  loanAmount?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  remainingBalance?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  loanTerm?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  monthlyPayment?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   user?: Prisma.UserUpdateOneRequiredWithoutAccountsNestedInput
   transactions?: Prisma.TransactionUpdateManyWithoutAccountNestedInput
+  interestPayments?: Prisma.InterestPaymentUpdateManyWithoutAccountNestedInput
 }
 
 export type AccountUncheckedUpdateWithoutRecurringInput = {
@@ -796,10 +986,107 @@ export type AccountUncheckedUpdateWithoutRecurringInput = {
   currency?: Prisma.StringFieldUpdateOperationsInput | string
   creditLimit?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   apr?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  loanAmount?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  remainingBalance?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  loanTerm?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  monthlyPayment?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   userId?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   transactions?: Prisma.TransactionUncheckedUpdateManyWithoutAccountNestedInput
+  interestPayments?: Prisma.InterestPaymentUncheckedUpdateManyWithoutAccountNestedInput
+}
+
+export type AccountCreateWithoutInterestPaymentsInput = {
+  id?: string
+  name: string
+  type: string
+  balance?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  currency?: string
+  creditLimit?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  apr?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  loanAmount?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  remainingBalance?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  loanTerm?: number | null
+  monthlyPayment?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  user: Prisma.UserCreateNestedOneWithoutAccountsInput
+  transactions?: Prisma.TransactionCreateNestedManyWithoutAccountInput
+  recurring?: Prisma.RecurringChargeCreateNestedManyWithoutAccountInput
+}
+
+export type AccountUncheckedCreateWithoutInterestPaymentsInput = {
+  id?: string
+  name: string
+  type: string
+  balance?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  currency?: string
+  creditLimit?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  apr?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  loanAmount?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  remainingBalance?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  loanTerm?: number | null
+  monthlyPayment?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  userId: string
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  transactions?: Prisma.TransactionUncheckedCreateNestedManyWithoutAccountInput
+  recurring?: Prisma.RecurringChargeUncheckedCreateNestedManyWithoutAccountInput
+}
+
+export type AccountCreateOrConnectWithoutInterestPaymentsInput = {
+  where: Prisma.AccountWhereUniqueInput
+  create: Prisma.XOR<Prisma.AccountCreateWithoutInterestPaymentsInput, Prisma.AccountUncheckedCreateWithoutInterestPaymentsInput>
+}
+
+export type AccountUpsertWithoutInterestPaymentsInput = {
+  update: Prisma.XOR<Prisma.AccountUpdateWithoutInterestPaymentsInput, Prisma.AccountUncheckedUpdateWithoutInterestPaymentsInput>
+  create: Prisma.XOR<Prisma.AccountCreateWithoutInterestPaymentsInput, Prisma.AccountUncheckedCreateWithoutInterestPaymentsInput>
+  where?: Prisma.AccountWhereInput
+}
+
+export type AccountUpdateToOneWithWhereWithoutInterestPaymentsInput = {
+  where?: Prisma.AccountWhereInput
+  data: Prisma.XOR<Prisma.AccountUpdateWithoutInterestPaymentsInput, Prisma.AccountUncheckedUpdateWithoutInterestPaymentsInput>
+}
+
+export type AccountUpdateWithoutInterestPaymentsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  type?: Prisma.StringFieldUpdateOperationsInput | string
+  balance?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  currency?: Prisma.StringFieldUpdateOperationsInput | string
+  creditLimit?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  apr?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  loanAmount?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  remainingBalance?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  loanTerm?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  monthlyPayment?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  user?: Prisma.UserUpdateOneRequiredWithoutAccountsNestedInput
+  transactions?: Prisma.TransactionUpdateManyWithoutAccountNestedInput
+  recurring?: Prisma.RecurringChargeUpdateManyWithoutAccountNestedInput
+}
+
+export type AccountUncheckedUpdateWithoutInterestPaymentsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  type?: Prisma.StringFieldUpdateOperationsInput | string
+  balance?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  currency?: Prisma.StringFieldUpdateOperationsInput | string
+  creditLimit?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  apr?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  loanAmount?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  remainingBalance?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  loanTerm?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  monthlyPayment?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  userId?: Prisma.StringFieldUpdateOperationsInput | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  transactions?: Prisma.TransactionUncheckedUpdateManyWithoutAccountNestedInput
+  recurring?: Prisma.RecurringChargeUncheckedUpdateManyWithoutAccountNestedInput
 }
 
 export type AccountCreateManyUserInput = {
@@ -810,6 +1097,10 @@ export type AccountCreateManyUserInput = {
   currency?: string
   creditLimit?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   apr?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  loanAmount?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  remainingBalance?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  loanTerm?: number | null
+  monthlyPayment?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
 }
@@ -822,10 +1113,15 @@ export type AccountUpdateWithoutUserInput = {
   currency?: Prisma.StringFieldUpdateOperationsInput | string
   creditLimit?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   apr?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  loanAmount?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  remainingBalance?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  loanTerm?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  monthlyPayment?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   transactions?: Prisma.TransactionUpdateManyWithoutAccountNestedInput
   recurring?: Prisma.RecurringChargeUpdateManyWithoutAccountNestedInput
+  interestPayments?: Prisma.InterestPaymentUpdateManyWithoutAccountNestedInput
 }
 
 export type AccountUncheckedUpdateWithoutUserInput = {
@@ -836,10 +1132,15 @@ export type AccountUncheckedUpdateWithoutUserInput = {
   currency?: Prisma.StringFieldUpdateOperationsInput | string
   creditLimit?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   apr?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  loanAmount?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  remainingBalance?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  loanTerm?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  monthlyPayment?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   transactions?: Prisma.TransactionUncheckedUpdateManyWithoutAccountNestedInput
   recurring?: Prisma.RecurringChargeUncheckedUpdateManyWithoutAccountNestedInput
+  interestPayments?: Prisma.InterestPaymentUncheckedUpdateManyWithoutAccountNestedInput
 }
 
 export type AccountUncheckedUpdateManyWithoutUserInput = {
@@ -850,6 +1151,10 @@ export type AccountUncheckedUpdateManyWithoutUserInput = {
   currency?: Prisma.StringFieldUpdateOperationsInput | string
   creditLimit?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   apr?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  loanAmount?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  remainingBalance?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  loanTerm?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  monthlyPayment?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -862,11 +1167,13 @@ export type AccountUncheckedUpdateManyWithoutUserInput = {
 export type AccountCountOutputType = {
   transactions: number
   recurring: number
+  interestPayments: number
 }
 
 export type AccountCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   transactions?: boolean | AccountCountOutputTypeCountTransactionsArgs
   recurring?: boolean | AccountCountOutputTypeCountRecurringArgs
+  interestPayments?: boolean | AccountCountOutputTypeCountInterestPaymentsArgs
 }
 
 /**
@@ -893,6 +1200,13 @@ export type AccountCountOutputTypeCountRecurringArgs<ExtArgs extends runtime.Typ
   where?: Prisma.RecurringChargeWhereInput
 }
 
+/**
+ * AccountCountOutputType without action
+ */
+export type AccountCountOutputTypeCountInterestPaymentsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.InterestPaymentWhereInput
+}
+
 
 export type AccountSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
@@ -902,12 +1216,17 @@ export type AccountSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs 
   currency?: boolean
   creditLimit?: boolean
   apr?: boolean
+  loanAmount?: boolean
+  remainingBalance?: boolean
+  loanTerm?: boolean
+  monthlyPayment?: boolean
   userId?: boolean
   createdAt?: boolean
   updatedAt?: boolean
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
   transactions?: boolean | Prisma.Account$transactionsArgs<ExtArgs>
   recurring?: boolean | Prisma.Account$recurringArgs<ExtArgs>
+  interestPayments?: boolean | Prisma.Account$interestPaymentsArgs<ExtArgs>
   _count?: boolean | Prisma.AccountCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["account"]>
 
@@ -919,6 +1238,10 @@ export type AccountSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Exten
   currency?: boolean
   creditLimit?: boolean
   apr?: boolean
+  loanAmount?: boolean
+  remainingBalance?: boolean
+  loanTerm?: boolean
+  monthlyPayment?: boolean
   userId?: boolean
   createdAt?: boolean
   updatedAt?: boolean
@@ -933,6 +1256,10 @@ export type AccountSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Exten
   currency?: boolean
   creditLimit?: boolean
   apr?: boolean
+  loanAmount?: boolean
+  remainingBalance?: boolean
+  loanTerm?: boolean
+  monthlyPayment?: boolean
   userId?: boolean
   createdAt?: boolean
   updatedAt?: boolean
@@ -947,16 +1274,21 @@ export type AccountSelectScalar = {
   currency?: boolean
   creditLimit?: boolean
   apr?: boolean
+  loanAmount?: boolean
+  remainingBalance?: boolean
+  loanTerm?: boolean
+  monthlyPayment?: boolean
   userId?: boolean
   createdAt?: boolean
   updatedAt?: boolean
 }
 
-export type AccountOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "name" | "type" | "balance" | "currency" | "creditLimit" | "apr" | "userId" | "createdAt" | "updatedAt", ExtArgs["result"]["account"]>
+export type AccountOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "name" | "type" | "balance" | "currency" | "creditLimit" | "apr" | "loanAmount" | "remainingBalance" | "loanTerm" | "monthlyPayment" | "userId" | "createdAt" | "updatedAt", ExtArgs["result"]["account"]>
 export type AccountInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
   transactions?: boolean | Prisma.Account$transactionsArgs<ExtArgs>
   recurring?: boolean | Prisma.Account$recurringArgs<ExtArgs>
+  interestPayments?: boolean | Prisma.Account$interestPaymentsArgs<ExtArgs>
   _count?: boolean | Prisma.AccountCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type AccountIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -972,6 +1304,7 @@ export type $AccountPayload<ExtArgs extends runtime.Types.Extensions.InternalArg
     user: Prisma.$UserPayload<ExtArgs>
     transactions: Prisma.$TransactionPayload<ExtArgs>[]
     recurring: Prisma.$RecurringChargePayload<ExtArgs>[]
+    interestPayments: Prisma.$InterestPaymentPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -981,6 +1314,10 @@ export type $AccountPayload<ExtArgs extends runtime.Types.Extensions.InternalArg
     currency: string
     creditLimit: runtime.Decimal | null
     apr: runtime.Decimal | null
+    loanAmount: runtime.Decimal | null
+    remainingBalance: runtime.Decimal | null
+    loanTerm: number | null
+    monthlyPayment: runtime.Decimal | null
     userId: string
     createdAt: Date
     updatedAt: Date
@@ -1381,6 +1718,7 @@ export interface Prisma__AccountClient<T, Null = never, ExtArgs extends runtime.
   user<T extends Prisma.UserDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.UserDefaultArgs<ExtArgs>>): Prisma.Prisma__UserClient<runtime.Types.Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   transactions<T extends Prisma.Account$transactionsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Account$transactionsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$TransactionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   recurring<T extends Prisma.Account$recurringArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Account$recurringArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$RecurringChargePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  interestPayments<T extends Prisma.Account$interestPaymentsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Account$interestPaymentsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$InterestPaymentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -1417,6 +1755,10 @@ export interface AccountFieldRefs {
   readonly currency: Prisma.FieldRef<"Account", 'String'>
   readonly creditLimit: Prisma.FieldRef<"Account", 'Decimal'>
   readonly apr: Prisma.FieldRef<"Account", 'Decimal'>
+  readonly loanAmount: Prisma.FieldRef<"Account", 'Decimal'>
+  readonly remainingBalance: Prisma.FieldRef<"Account", 'Decimal'>
+  readonly loanTerm: Prisma.FieldRef<"Account", 'Int'>
+  readonly monthlyPayment: Prisma.FieldRef<"Account", 'Decimal'>
   readonly userId: Prisma.FieldRef<"Account", 'String'>
   readonly createdAt: Prisma.FieldRef<"Account", 'DateTime'>
   readonly updatedAt: Prisma.FieldRef<"Account", 'DateTime'>
@@ -1861,6 +2203,30 @@ export type Account$recurringArgs<ExtArgs extends runtime.Types.Extensions.Inter
   take?: number
   skip?: number
   distinct?: Prisma.RecurringChargeScalarFieldEnum | Prisma.RecurringChargeScalarFieldEnum[]
+}
+
+/**
+ * Account.interestPayments
+ */
+export type Account$interestPaymentsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the InterestPayment
+   */
+  select?: Prisma.InterestPaymentSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the InterestPayment
+   */
+  omit?: Prisma.InterestPaymentOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.InterestPaymentInclude<ExtArgs> | null
+  where?: Prisma.InterestPaymentWhereInput
+  orderBy?: Prisma.InterestPaymentOrderByWithRelationInput | Prisma.InterestPaymentOrderByWithRelationInput[]
+  cursor?: Prisma.InterestPaymentWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.InterestPaymentScalarFieldEnum | Prisma.InterestPaymentScalarFieldEnum[]
 }
 
 /**

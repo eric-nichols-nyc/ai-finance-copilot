@@ -389,7 +389,8 @@ export const ModelName = {
   Transaction: 'Transaction',
   Category: 'Category',
   Budget: 'Budget',
-  RecurringCharge: 'RecurringCharge'
+  RecurringCharge: 'RecurringCharge',
+  InterestPayment: 'InterestPayment'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -405,7 +406,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "user" | "account" | "transaction" | "category" | "budget" | "recurringCharge"
+    modelProps: "user" | "account" | "transaction" | "category" | "budget" | "recurringCharge" | "interestPayment"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -853,6 +854,80 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         }
       }
     }
+    InterestPayment: {
+      payload: Prisma.$InterestPaymentPayload<ExtArgs>
+      fields: Prisma.InterestPaymentFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.InterestPaymentFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$InterestPaymentPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.InterestPaymentFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$InterestPaymentPayload>
+        }
+        findFirst: {
+          args: Prisma.InterestPaymentFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$InterestPaymentPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.InterestPaymentFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$InterestPaymentPayload>
+        }
+        findMany: {
+          args: Prisma.InterestPaymentFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$InterestPaymentPayload>[]
+        }
+        create: {
+          args: Prisma.InterestPaymentCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$InterestPaymentPayload>
+        }
+        createMany: {
+          args: Prisma.InterestPaymentCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.InterestPaymentCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$InterestPaymentPayload>[]
+        }
+        delete: {
+          args: Prisma.InterestPaymentDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$InterestPaymentPayload>
+        }
+        update: {
+          args: Prisma.InterestPaymentUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$InterestPaymentPayload>
+        }
+        deleteMany: {
+          args: Prisma.InterestPaymentDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.InterestPaymentUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.InterestPaymentUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$InterestPaymentPayload>[]
+        }
+        upsert: {
+          args: Prisma.InterestPaymentUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$InterestPaymentPayload>
+        }
+        aggregate: {
+          args: Prisma.InterestPaymentAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateInterestPayment>
+        }
+        groupBy: {
+          args: Prisma.InterestPaymentGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.InterestPaymentGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.InterestPaymentCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.InterestPaymentCountAggregateOutputType> | number
+        }
+      }
+    }
   }
 } & {
   other: {
@@ -911,6 +986,10 @@ export const AccountScalarFieldEnum = {
   currency: 'currency',
   creditLimit: 'creditLimit',
   apr: 'apr',
+  loanAmount: 'loanAmount',
+  remainingBalance: 'remainingBalance',
+  loanTerm: 'loanTerm',
+  monthlyPayment: 'monthlyPayment',
   userId: 'userId',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
@@ -980,6 +1059,21 @@ export const RecurringChargeScalarFieldEnum = {
 } as const
 
 export type RecurringChargeScalarFieldEnum = (typeof RecurringChargeScalarFieldEnum)[keyof typeof RecurringChargeScalarFieldEnum]
+
+
+export const InterestPaymentScalarFieldEnum = {
+  id: 'id',
+  amount: 'amount',
+  date: 'date',
+  month: 'month',
+  year: 'year',
+  accountId: 'accountId',
+  userId: 'userId',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type InterestPaymentScalarFieldEnum = (typeof InterestPaymentScalarFieldEnum)[keyof typeof InterestPaymentScalarFieldEnum]
 
 
 export const SortOrder = {
@@ -1055,13 +1149,6 @@ export type ListDecimalFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaMo
 
 
 /**
- * Reference to a field of type 'Boolean'
- */
-export type BooleanFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Boolean'>
-    
-
-
-/**
  * Reference to a field of type 'Int'
  */
 export type IntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Int'>
@@ -1072,6 +1159,27 @@ export type IntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'In
  * Reference to a field of type 'Int[]'
  */
 export type ListIntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Int[]'>
+    
+
+
+/**
+ * Reference to a field of type 'Boolean'
+ */
+export type BooleanFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Boolean'>
+    
+
+
+/**
+ * Reference to a field of type 'Float'
+ */
+export type FloatFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Float'>
+    
+
+
+/**
+ * Reference to a field of type 'Float[]'
+ */
+export type ListFloatFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Float[]'>
     
 
 /**
@@ -1159,6 +1267,7 @@ export type GlobalOmitConfig = {
   category?: Prisma.CategoryOmit
   budget?: Prisma.BudgetOmit
   recurringCharge?: Prisma.RecurringChargeOmit
+  interestPayment?: Prisma.InterestPaymentOmit
 }
 
 /* Types for Logging */

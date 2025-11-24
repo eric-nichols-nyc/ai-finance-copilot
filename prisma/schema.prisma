@@ -11,8 +11,9 @@ datasource db {
 }
 
 // User model
+// id should match Supabase auth user UUID
 model User {
-  id        String   @id @default(cuid())
+  id        String   @id // Supabase auth UUID (no default, must be provided)
   email     String   @unique
   name      String?
   createdAt DateTime @default(now())

@@ -71,6 +71,6 @@ export type Budget = Prisma.BudgetModel
 export type RecurringCharge = Prisma.RecurringChargeModel
 /**
  * Model InterestPayment
- *
+ * 
  */
 export type InterestPayment = Prisma.InterestPaymentModel

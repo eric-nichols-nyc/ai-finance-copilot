@@ -212,19 +212,20 @@ export async function GET(request: NextRequest) {
     }
 
     // Search interest payments
-    if (entities.includes('interestPayments')) {
-      results.interestPayments = await prisma.interestPayment.findMany({
-        where: {
-          userId: user.id,
-          account: { name: { contains: query, mode: 'insensitive' } },
-        },
-        include: {
-          account: { select: { id: true, name: true } },
-        },
-        orderBy: { date: 'desc' },
-        take: limit,
-      })
-    }
+    // TEMP: Disabled until Prisma client is regenerated with InterestPayment model
+    // if (entities.includes('interestPayments')) {
+    //   results.interestPayments = await prisma.interestPayment.findMany({
+    //     where: {
+    //       userId: user.id,
+    //       account: { name: { contains: query, mode: 'insensitive' } },
+    //     },
+    //     include: {
+    //       account: { select: { id: true, name: true } },
+    //     },
+    //     orderBy: { date: 'desc' },
+    //     take: limit,
+    //   })
+    // }
 
     return NextResponse.json(results)
   } catch (error) {

@@ -2,6 +2,19 @@
 
 This project uses **Vitest** for unit/integration testing and **Playwright** for end-to-end (e2e) testing.
 
+## Table of Contents
+
+- [Quick Start](#quick-start)
+- [Test Structure](#test-structure)
+- [Unit Testing](#unit-testing-with-vitest)
+- [Component Testing](#testing-react-components)
+- [E2E Testing](#e2e-testing-with-playwright)
+- [Test Fixtures & Mocks](#test-fixtures--mocks)
+- [Coverage Targets](#coverage-targets)
+- [Best Practices](#best-practices)
+- [CI/CD Integration](#cicd-integration)
+- [Troubleshooting](#troubleshooting)
+
 ## Quick Start
 
 ```bash
@@ -25,6 +38,58 @@ npm run test:e2e:debug
 
 # Run all tests (unit + e2e)
 npm run test:all
+```
+
+## Test Structure
+
+Our test suite follows a test pyramid approach:
+
+```
+      /\
+     /  \  E2E Tests (3%) - Critical user journeys
+    /____\
+   /      \
+  /        \ Integration Tests (7%) - API + DB
+ /          \
+/__________\
+/            \  Unit Tests (75%) - Business logic
+/              \
+/________________\
+        +
+   Component Tests (15%)
+```
+
+### Directory Organization
+
+```
+ai-finance-copilot/
+├── __tests__/              # Unit/integration tests
+│   ├── fixtures/           # Test data and mocks
+│   │   ├── mockData.ts     # Consistent test data
+│   │   ├── mockPrisma.ts   # Mock Prisma client
+│   │   └── testHelpers.ts  # Common test utilities
+│   ├── unit/               # Unit tests
+│   │   └── lib/
+│   │       ├── expenseUtils.test.ts
+│   │       ├── utils.test.ts
+│   │       └── validations/
+│   │           ├── transaction.test.ts
+│   │           └── account.test.ts
+│   ├── components/         # Component tests
+│   │   └── example.test.tsx
+│   └── integration/        # Integration tests (API + DB)
+│
+├── e2e/                    # E2E tests
+│   ├── helpers/            # Test utilities
+│   │   └── auth.ts         # Authentication helpers
+│   ├── auth-sign-in.spec.ts
+│   ├── home.spec.ts
+│   ├── error-pages.spec.ts
+│   └── example.spec.ts
+│
+├── vitest.config.ts        # Vitest configuration
+├── vitest.setup.ts         # Vitest global setup
+└── playwright.config.ts    # Playwright configuration
 ```
 
 ## Unit Testing with Vitest
@@ -232,7 +297,166 @@ TEST_USER_EMAIL=custom@test.com TEST_USER_PASSWORD=custom123 npm run test:e2e
 npm run test:e2e:debug auth-sign-in.spec.ts
 ```
 
-### Best Practices
+## Test Fixtures & Mocks
+
+### Mock Data
+
+The project includes comprehensive mock data in `__tests__/fixtures/mockData.ts` for consistent testing:
+
+```typescript
+import {
+  mockUsers,
+  mockAccounts,
+  mockTransactions,
+  mockCategories,
+  mockBudgets,
+  createMockTransaction,
+  createMockAccount
+} from '@/__tests__/fixtures/mockData'
+
+// Use predefined mock data
+const user = mockUsers.alice
+const account = mockAccounts.checking
+const transaction = mockTransactions.groceries1
+
+// Create custom mock data
+const customTransaction = createMockTransaction({
+  amount: 500,
+  description: 'Custom transaction',
+  type: 'INCOME'
+})
+```
+
+**Available Mock Data:**
+- `mockUsers` - Alice and Bob test users
+- `mockAccounts` - Checking, savings, credit card, and loan accounts
+- `mockTransactions` - Various transaction types (expenses, income, interest, loan payments)
+- `mockCategories` - Groceries, dining, utilities, salary
+- `mockBudgets` - Budget examples
+- `mockRecurringCharges` - Netflix, Spotify subscriptions
+
+### Mocking Prisma
+
+Use the mock Prisma client for database operations in tests:
+
+```typescript
+import { vi } from 'vitest'
+import { createMockPrisma } from '@/__tests__/fixtures/mockPrisma'
+
+// Mock the Prisma module
+vi.mock('@/lib/prisma', () => ({
+  prisma: createMockPrisma(),
+}))
+
+import { prisma } from '@/lib/prisma'
+
+// In your test
+describe('getMonthlyExpenseMetrics', () => {
+  it('should calculate total expenses', async () => {
+    vi.mocked(prisma.transaction.findMany).mockResolvedValue([
+      { amount: 100, type: 'EXPENSE' },
+      { amount: 50, type: 'EXPENSE' },
+    ])
+
+    const result = await getMonthlyExpenseMetrics('user-123', new Date())
+
+    expect(result.totalExpenses).toBe(150)
+  })
+})
+```
+
+### Test Helpers
+
+Common utilities are available in `__tests__/fixtures/testHelpers.ts`:
+
+```typescript
+import {
+  expectDecimalEqual,
+  createDate,
+  getFirstDayOfMonth,
+  getLastDayOfMonth,
+  mockEnv,
+  suppressConsole,
+} from '@/__tests__/fixtures/testHelpers'
+
+// Compare Decimal values
+expectDecimalEqual(account.balance, 1000)
+
+// Create consistent dates
+const testDate = createDate('2024-11-15')
+
+// Mock environment variables
+const restore = mockEnv({ API_KEY: 'test-key' })
+// ... run tests
+restore() // Restore original env
+
+// Suppress console output during tests
+const restoreConsole = suppressConsole()
+// ... run tests
+restoreConsole()
+```
+
+## Coverage Targets
+
+Different parts of the application have different coverage requirements:
+
+| Category | Target | Priority |
+|----------|--------|----------|
+| **Financial Calculations** | 95%+ | ⚠️ Critical |
+| **Data Validations (Zod)** | 95%+ | ⚠️ Critical |
+| **Transaction/Account CRUD** | 90%+ | High |
+| **Business Logic** | 80%+ | High |
+| **Utility Functions** | 80%+ | High |
+| **Components** | 60-70% | Medium |
+| **E2E Critical Paths** | 40-50% | Medium |
+
+### Why These Targets?
+
+- **Financial Calculations**: Must be 100% accurate - money is involved
+- **Data Validations**: Prevent bad data from entering the system
+- **Business Logic**: Core functionality should be well-tested
+- **Components**: Focus on behavior, not implementation details
+- **E2E**: Cover critical user journeys, not every interaction
+
+### Viewing Coverage
+
+```bash
+# Generate coverage report
+npm run test:coverage
+
+# Open HTML report in browser
+open coverage/index.html  # macOS
+xdg-open coverage/index.html  # Linux
+start coverage/index.html  # Windows
+```
+
+## Best Practices
+
+### General Testing Principles
+
+1. **Test behavior, not implementation** - Focus on what users see/experience
+2. **Follow AAA pattern** - Arrange, Act, Assert
+3. **Use descriptive test names** - Describe what should happen
+4. **Keep tests independent** - Tests shouldn't depend on each other
+5. **Use mock data from fixtures** - Ensure consistent test data
+
+### What to Test
+
+✅ **DO Test:**
+- User interactions (clicks, form submissions)
+- Business logic and financial calculations
+- Data validation (Zod schemas)
+- Error scenarios and edge cases
+- API routes and database operations
+
+❌ **DON'T Test:**
+- Implementation details (internal state, private methods)
+- Third-party library internals
+- Next.js framework behavior
+- Styling/CSS (unless functionality depends on it)
+- Trivial code (simple getters/setters)
+
+### Playwright Best Practices
 
 1. **Use data-testid attributes** for stable selectors:
    ```tsx
@@ -341,29 +565,6 @@ jobs:
         with:
           name: playwright-report
           path: playwright-report/
-```
-
-## Test Organization
-
-```
-ai-finance-copilot/
-├── __tests__/              # Unit/integration tests
-│   ├── components/         # Component tests
-│   │   └── example.test.tsx
-│   └── lib/                # Utility function tests
-│       └── example.test.ts
-│
-├── e2e/                    # E2E tests
-│   ├── helpers/            # Test utilities
-│   │   └── auth.ts         # Authentication helpers
-│   ├── auth-sign-in.spec.ts # Auth tests
-│   ├── home.spec.ts
-│   ├── error-pages.spec.ts
-│   └── example.spec.ts
-│
-├── vitest.config.ts        # Vitest configuration
-├── vitest.setup.ts         # Vitest global setup
-└── playwright.config.ts    # Playwright configuration
 ```
 
 ## Tips

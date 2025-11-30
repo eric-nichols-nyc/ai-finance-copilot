@@ -168,8 +168,34 @@ export function AccountDetailView({ accountId }: AccountDetailViewProps) {
     : null
 
   return (
-    <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-      {/* Left Panel */}
+    <div className="grid grid-cols-1 gap-6">
+              {/* Account Actions */}
+              <div className="flex gap-2 justify-end">
+          <EditAccountModal account={accountWithTransactions} />
+          <Button
+            variant="outline"
+            size="sm"
+            className="gap-2"
+            onClick={() => handleCloseAccount(account.id)}
+          >
+            <XCircle className="h-4 w-4" />
+            Close Account
+          </Button>
+          <Button
+            variant="destructive"
+            size="sm"
+            className="gap-2"
+            onClick={() => handleDeleteAccount(account.id)}
+          >
+            <Trash2 className="h-4 w-4" />
+            Delete
+          </Button>
+        </div>
+
+
+      {/* Right Panel with Left Border */}
+      <div className="flex flex-col gap-6 lg:border-l lg:pl-6">
+             {/* Left Panel */}
       <div className="flex flex-col gap-6">
         {/* Account Information Card */}
         <Card>
@@ -244,30 +270,6 @@ export function AccountDetailView({ accountId }: AccountDetailViewProps) {
         </Card>
       </div>
 
-      {/* Right Panel with Left Border */}
-      <div className="flex flex-col gap-6 lg:border-l lg:pl-6">
-        {/* Account Actions */}
-        <div className="flex gap-2 justify-end">
-          <EditAccountModal account={accountWithTransactions} />
-          <Button
-            variant="outline"
-            size="sm"
-            className="gap-2"
-            onClick={() => handleCloseAccount(account.id)}
-          >
-            <XCircle className="h-4 w-4" />
-            Close Account
-          </Button>
-          <Button
-            variant="destructive"
-            size="sm"
-            className="gap-2"
-            onClick={() => handleDeleteAccount(account.id)}
-          >
-            <Trash2 className="h-4 w-4" />
-            Delete
-          </Button>
-        </div>
 
         {/* Account Detail Chart - Show loading state while transactions are loading */}
         {isLoadingTransactions ? (

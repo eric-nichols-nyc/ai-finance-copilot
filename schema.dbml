@@ -1,0 +1,230 @@
+// AI Finance Copilot Database Schema
+// Use DBML to define your database structure
+// Docs: https://dbml.dbdiagram.io/docs
+// Visualize at: https://dbdiagram.io/
+
+// ============================================
+// USER & AUTHENTICATION
+// ============================================
+
+Table User {
+  id String [pk, note: 'Supabase auth UUID']
+  email String [unique, not null]
+  name String [null]
+  createdAt timestamp [default: `now()`]
+  updatedAt timestamp [default: `now()`]
+
+  Note: 'User profiles synced with Supabase authentication'
+}
+
+// ============================================
+// FINANCIAL ACCOUNTS
+// ============================================
+
+Table Account {
+  id String [pk, note: 'CUID']
+  name String [not null]
+  type String [not null, note: 'CHECKING, SAVINGS, CREDIT_CARD, LOAN, INVESTMENT']
+  balance Decimal [not null, default: 0]
+  currency String [not null, default: 'USD']
+
+  // Credit card specific fields
+  creditLimit Decimal [null, note: 'Credit card limit']
+  apr Decimal [null, note: 'Annual Percentage Rate']
+
+  // Loan specific fields
+  loanAmount Decimal [null, note: 'Original loan amount']
+  remainingBalance Decimal [null, note: 'Remaining balance on loan']
+  loanTerm integer [null, note: 'Term in months']
+  monthlyPayment Decimal [null, note: 'Fixed monthly payment amount']
+
+  userId String [not null, ref: > User.id]
+  createdAt timestamp [default: `now()`]
+  updatedAt timestamp [default: `now()`]
+
+  indexes {
+    userId
+    type
+  }
+
+  Note: 'Financial accounts: bank accounts, credit cards, loans, investments'
+}
+
+// ============================================
+// TRANSACTIONS
+// ============================================
+
+Table Transaction {
+  id String [pk, note: 'CUID']
+  amount Decimal [not null]
+  description String [null]
+  date timestamp [not null, default: `now()`]
+  type String [not null, note: 'INCOME, EXPENSE, TRANSFER, INTEREST_CHARGE, LOAN_PAYMENT']
+  notes String [null]
+  isRecurring Boolean [not null, default: false]
+
+  accountId String [not null, ref: > Account.id]
+  categoryId String [null, ref: > Category.id]
+  userId String [not null, ref: > User.id]
+  recurringId String [null, ref: > RecurringCharge.id]
+
+  createdAt timestamp [default: `now()`]
+  updatedAt timestamp [default: `now()`]
+
+  indexes {
+    userId
+    accountId
+    categoryId
+    date
+    type
+  }
+
+  Note: 'Financial transactions: income, expenses, transfers, interest charges, loan payments'
+}
+
+// ============================================
+// CATEGORIES
+// ============================================
+
+Table Category {
+  id String [pk, note: 'CUID']
+  name String [not null]
+  color String [null, note: 'Hex color code']
+  icon String [null, note: 'Icon identifier']
+  userId String [not null, ref: > User.id]
+  createdAt timestamp [default: `now()`]
+  updatedAt timestamp [default: `now()`]
+
+  indexes {
+    userId
+    (userId, name) [unique]
+  }
+
+  Note: 'User-defined transaction categories with colors and icons'
+}
+
+// ============================================
+// BUDGETS
+// ============================================
+
+Table Budget {
+  id String [pk, note: 'CUID']
+  amount Decimal [not null]
+  period String [not null, note: 'monthly, weekly, yearly']
+  startDate timestamp [not null]
+  endDate timestamp [null]
+
+  categoryId String [null, ref: > Category.id]
+  userId String [not null, ref: > User.id]
+
+  createdAt timestamp [default: `now()`]
+  updatedAt timestamp [default: `now()`]
+
+  indexes {
+    userId
+    categoryId
+  }
+
+  Note: 'Period-based budgets linked to categories'
+}
+
+// ============================================
+// RECURRING CHARGES
+// ============================================
+
+Table RecurringCharge {
+  id String [pk, note: 'CUID']
+  name String [not null]
+  amount Decimal [not null]
+  frequency String [not null, note: 'weekly, biweekly, monthly, quarterly, yearly']
+  nextDueDate timestamp [not null]
+
+  accountId String [not null, ref: > Account.id]
+  categoryId String [not null, ref: > Category.id]
+  userId String [not null, ref: > User.id]
+
+  createdAt timestamp [default: `now()`]
+  updatedAt timestamp [default: `now()`]
+
+  indexes {
+    (userId, nextDueDate)
+  }
+
+  Note: 'Recurring charges and subscriptions tracking'
+}
+
+// ============================================
+// INTEREST PAYMENTS
+// ============================================
+
+Table InterestPayment {
+  id String [pk, note: 'CUID']
+  amount Decimal [not null]
+  date timestamp [not null]
+  month integer [not null, note: 'Month number (1-12)']
+  year integer [not null, note: 'Year']
+
+  accountId String [not null, ref: > Account.id]
+  userId String [not null, ref: > User.id]
+
+  createdAt timestamp [default: `now()`]
+  updatedAt timestamp [default: `now()`]
+
+  indexes {
+    userId
+    accountId
+    (year, month)
+  }
+
+  Note: 'Interest payment tracking for credit cards and loans'
+}
+
+// ============================================
+// ACCOUNT BALANCE SNAPSHOTS
+// ============================================
+
+Table AccountBalanceSnapshot {
+  id String [pk, note: 'CUID']
+  balance Decimal [not null, note: 'Account balance at this point in time']
+  date timestamp [not null, note: 'Date/time when balance was recorded']
+
+  accountId String [not null, ref: > Account.id]
+  userId String [not null, ref: > User.id]
+
+  createdAt timestamp [default: `now()`]
+  updatedAt timestamp [default: `now()`]
+
+  indexes {
+    userId
+    (accountId, date) [unique, note: 'One snapshot per account per date']
+  }
+
+  Note: 'Historical balance tracking for charting account balances over time'
+}
+
+// ============================================
+// RELATIONSHIP SUMMARY
+// ============================================
+
+// User relationships (one-to-many):
+// - User → Accounts
+// - User → Transactions
+// - User → Categories
+// - User → Budgets
+// - User → RecurringCharges
+// - User → InterestPayments
+// - User → AccountBalanceSnapshots
+
+// Account relationships (one-to-many):
+// - Account → Transactions
+// - Account → RecurringCharges
+// - Account → InterestPayments
+// - Account → AccountBalanceSnapshots
+
+// Category relationships (one-to-many):
+// - Category → Transactions
+// - Category → Budgets
+// - Category → RecurringCharges
+
+// RecurringCharge relationships (one-to-many):
+// - RecurringCharge → Transactions

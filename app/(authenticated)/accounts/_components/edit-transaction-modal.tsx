@@ -101,7 +101,7 @@ export function EditTransactionModal({
   const [isLoadingCategories, setIsLoadingCategories] = useState(false)
 
   const form = useForm<UpdateTransactionInput>({
-    resolver: zodResolver(updateTransactionSchema),
+    resolver: zodResolver(updateTransactionSchema) as any,
     defaultValues: {
       id: transaction.id,
       amount: transaction.amount,

@@ -9,10 +9,17 @@ export type User = {
 export type Account = {
   id: string
   name: string
-  type: string // 'CREDIT_CARD' | 'BANK_ACCOUNT'
+  type: string // 'CREDIT_CARD' | 'BANK_ACCOUNT' | 'LOAN'
   balance: number
-  creditLimit: number | null
-  apr: number | null
+  currency?: string
+  creditLimit?: number
+  apr?: number
+  loanAmount?: number
+  accountNumber?: string
+  remainingBalance?: number
+  loanTerm?: number
+  monthlyPayment?: number
+  institution?: string | null
   userId: string
   createdAt: Date
   updatedAt: Date

@@ -11,6 +11,8 @@ import { AddAccountModal } from './add-account-modal'
 import { EditAccountModal } from './edit-account-modal'
 import { Button } from '@/components/ui/button'
 
+import { type Account } from '@/types'
+
 type Transaction = {
   id: string
   amount: number
@@ -19,22 +21,12 @@ type Transaction = {
   type: string
 }
 
-type Account = {
-  id: string
-  name: string
-  type: string
-  balance: number
-  creditLimit?: number | null
-  apr?: number | null
-  loanAmount?: number | null
-  remainingBalance?: number | null
-  loanTerm?: number | null
-  monthlyPayment?: number | null
+type AccountWithTransactions = Account & {
   transactions: Transaction[]
 }
 
 type AccountsPageClientProps = {
-  accounts: Account[]
+  accounts: AccountWithTransactions[]
 }
 
 export function AccountsPageClient({ accounts }: AccountsPageClientProps) {

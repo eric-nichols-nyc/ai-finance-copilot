@@ -2,25 +2,11 @@
 
 import { createClient } from '@/utils/supabase/server'
 import { prisma } from '@/lib/prisma'
-
-export type AccountBasicData = {
-  id: string
-  name: string
-  type: string
-  balance: number
-  creditLimit?: number
-  apr?: number
-  loanAmount?: number
-  remainingBalance?: number
-  loanTerm?: number
-  monthlyPayment?: number
-  createdAt: Date
-  updatedAt: Date
-}
+import { Account } from '@/types'
 
 type AccountsBasicDataSuccess = {
   success: true
-  accounts: AccountBasicData[]
+  accounts: Account[]
 }
 
 type AccountsBasicDataError = {
@@ -80,8 +66,10 @@ export async function getAccountsBasicData(): Promise<AccountsBasicDataResult> {
     success: true,
     accounts: accounts.map((account) => ({
       id: account.id,
+      userId: account.userId,
       name: account.name,
       type: account.type,
+      accountNumber: account.accountNumber ?? undefined,
       balance: Number(account.balance),
       creditLimit: account.creditLimit ? Number(account.creditLimit) : undefined,
       apr: account.apr ? Number(account.apr) : undefined,

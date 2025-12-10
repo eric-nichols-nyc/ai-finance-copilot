@@ -33,20 +33,8 @@ import {
 import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
 import { updateAccount } from '@/actions/update-account'
-import { updateAccountSchema, type UpdateAccountInput } from '@/lib/validations/account'
-
-type Account = {
-  id: string
-  name: string
-  type: string
-  balance: number
-  creditLimit?: number | null
-  apr?: number | null
-  loanAmount?: number | null
-  remainingBalance?: number | null
-  loanTerm?: number | null
-  monthlyPayment?: number | null
-}
+import { updateAccountSchema, type UpdateAccountInput, AccountType } from '@/lib/validations/account'
+import { type Account } from '@/types'
 
 type EditAccountModalProps = {
   account: Account
@@ -59,25 +47,30 @@ export function EditAccountModal({ account, children }: EditAccountModalProps) {
 
   // Prepare default values based on account type
   const getDefaultValues = (): Partial<UpdateAccountInput> => {
+    // Cast strict account type to ensure it matches the schema's expected string literals
+    const type = account.type as AccountType
+
     const base = {
       id: account.id,
       name: account.name,
-      type: account.type as any,
+      type: type,
       balance: account.balance,
       currency: 'USD',
     }
 
-    if (account.type === 'CREDIT_CARD') {
+    if (type === 'CREDIT_CARD') {
       return {
         ...base,
+        type: 'CREDIT_CARD',
         creditLimit: account.creditLimit ?? undefined,
         apr: account.apr ?? undefined,
       }
     }
 
-    if (account.type === 'LOAN') {
+    if (type === 'LOAN') {
       return {
         ...base,
+        type: 'LOAN',
         loanAmount: account.loanAmount ?? undefined,
         remainingBalance: account.remainingBalance ?? undefined,
         loanTerm: account.loanTerm ?? undefined,
@@ -86,11 +79,11 @@ export function EditAccountModal({ account, children }: EditAccountModalProps) {
       }
     }
 
-    return base
+    return base as Partial<UpdateAccountInput>
   }
 
   const form = useForm<UpdateAccountInput>({
-    resolver: zodResolver(updateAccountSchema),
+    resolver: zodResolver(updateAccountSchema) as any,
     defaultValues: getDefaultValues(),
   })
 

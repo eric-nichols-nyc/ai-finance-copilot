@@ -77,7 +77,7 @@ export function AddTransactionModal({
   const [isLoadingCategories, setIsLoadingCategories] = useState(false)
 
   const form = useForm<CreateTransactionInput>({
-    resolver: zodResolver(createTransactionSchema),
+    resolver: zodResolver(createTransactionSchema) as any,
     defaultValues: {
       accountId,
       amount: 0,

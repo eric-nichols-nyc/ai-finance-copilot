@@ -47,7 +47,7 @@ export function AddAccountModal({ children }: AddAccountModalProps) {
   const [isSubmitting, setIsSubmitting] = useState(false)
 
   const form = useForm<CreateAccountInput>({
-    resolver: zodResolver(createAccountSchema),
+    resolver: zodResolver(createAccountSchema) as any,
     defaultValues: {
       name: '',
       type: 'CHECKING',

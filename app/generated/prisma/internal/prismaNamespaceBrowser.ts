@@ -94,6 +94,7 @@ export const AccountScalarFieldEnum = {
   type: 'type',
   balance: 'balance',
   currency: 'currency',
+  accountNumber: 'accountNumber',
   creditLimit: 'creditLimit',
   apr: 'apr',
   loanAmount: 'loanAmount',

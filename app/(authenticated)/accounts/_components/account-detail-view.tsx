@@ -4,6 +4,7 @@ import { Trash2, XCircle } from 'lucide-react'
 import { AccountDetailChart } from './account-detail-chart'
 import { AccountMonthlyList } from './account-monthly-list'
 import { EditAccountModal } from './edit-account-modal'
+import { AccountDetails } from './account-details'
 import { Button } from '@/components/ui/button'
 import { Skeleton } from '@/components/ui/skeleton'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
@@ -136,139 +137,35 @@ export function AccountDetailView({ accountId }: AccountDetailViewProps) {
       : [],
   }
 
-  // Helper function to format account type for display
-  const formatAccountType = (type: string): string => {
-    const typeMap: Record<string, string> = {
-      CREDIT_CARD: 'Credit Card',
-      CHECKING: 'Checking',
-      SAVINGS: 'Savings',
-      LOAN: 'Loan',
-      INVESTMENT: 'Investment',
-      MORTGAGE: 'Mortgage',
-    }
-    return typeMap[type] || type.toLowerCase().replace(/_/g, ' ').replace(/\b\w/g, l => l.toUpperCase())
-  }
-
-  // Helper function to get account icon color
-  const getAccountColor = (type: string): string => {
-    const colorMap: Record<string, string> = {
-      CREDIT_CARD: 'bg-blue-500',
-      CHECKING: 'bg-emerald-500',
-      SAVINGS: 'bg-amber-500',
-      INVESTMENT: 'bg-purple-500',
-      LOAN: 'bg-orange-500',
-      MORTGAGE: 'bg-red-500',
-    }
-    return colorMap[type] || 'bg-gray-500'
-  }
-
-  const isCredit = account.type === 'CREDIT_CARD'
-  const utilization = isCredit && account.creditLimit
-    ? ((Math.abs(account.balance) / account.creditLimit) * 100).toFixed(2)
-    : null
-
   return (
     <div className="grid grid-cols-1 gap-6">
-              {/* Account Actions */}
-              <div className="flex gap-2 justify-end">
-          <EditAccountModal account={accountWithTransactions} />
-          <Button
-            variant="outline"
-            size="sm"
-            className="gap-2"
-            onClick={() => handleCloseAccount(account.id)}
-          >
-            <XCircle className="h-4 w-4" />
-            Close Account
-          </Button>
-          <Button
-            variant="destructive"
-            size="sm"
-            className="gap-2"
-            onClick={() => handleDeleteAccount(account.id)}
-          >
-            <Trash2 className="h-4 w-4" />
-            Delete
-          </Button>
-        </div>
+      {/* Account Actions */}
+      <div className="flex gap-2 justify-end">
+        <EditAccountModal account={accountWithTransactions} />
+        <Button
+          variant="outline"
+          size="sm"
+          className="gap-2"
+          onClick={() => handleCloseAccount(account.id)}
+        >
+          <XCircle className="h-4 w-4" />
+          Close Account
+        </Button>
+        <Button
+          variant="destructive"
+          size="sm"
+          className="gap-2"
+          onClick={() => handleDeleteAccount(account.id)}
+        >
+          <Trash2 className="h-4 w-4" />
+          Delete
+        </Button>
+      </div>
 
 
       {/* Right Panel with Left Border */}
       <div className="flex flex-col gap-6 lg:border-l lg:pl-6">
-             {/* Left Panel */}
-      <div className="flex flex-col gap-6">
-        {/* Account Information Card */}
-        <Card>
-          <CardHeader>
-            <CardTitle>Account Information</CardTitle>
-          </CardHeader>
-          <CardContent className="space-y-6">
-            {/* Account Header */}
-            <div className="flex items-center gap-4">
-              <div className={`w-12 h-12 rounded-full flex items-center justify-center text-white text-lg font-bold ${getAccountColor(account.type)}`}>
-                {account.name.charAt(0)}
-              </div>
-              <div>
-                <h3 className="text-xl font-bold">{account.name}</h3>
-                <p className="text-sm text-muted-foreground">{formatAccountType(account.type)}</p>
-              </div>
-            </div>
 
-            {/* Account Details */}
-            <div className="space-y-4">
-              <div>
-                <p className="text-sm text-muted-foreground">Current Balance</p>
-                <p className="text-3xl font-bold">
-                  ${Math.abs(account.balance).toLocaleString('en-US', {
-                    minimumFractionDigits: 2,
-                    maximumFractionDigits: 2,
-                  })}
-                </p>
-              </div>
-
-              {isCredit && account.creditLimit && (
-                <>
-                  <div>
-                    <p className="text-sm text-muted-foreground">Credit Limit</p>
-                    <p className="text-xl font-semibold">
-                      ${account.creditLimit.toLocaleString('en-US', {
-                        minimumFractionDigits: 2,
-                        maximumFractionDigits: 2,
-                      })}
-                    </p>
-                  </div>
-
-                  {utilization && (
-                    <div>
-                      <p className="text-sm text-muted-foreground">Credit Utilization</p>
-                      <div className="flex items-center gap-2">
-                        <p className="text-xl font-semibold">{utilization}%</p>
-                        <div className="flex-1 h-2 bg-muted rounded-full overflow-hidden">
-                          <div
-                            className={`h-full transition-all ${
-                              parseFloat(utilization) > 75
-                                ? 'bg-red-500'
-                                : parseFloat(utilization) > 50
-                                ? 'bg-yellow-500'
-                                : 'bg-green-500'
-                            }`}
-                            style={{ width: `${Math.min(parseFloat(utilization), 100)}%` }}
-                          />
-                        </div>
-                      </div>
-                    </div>
-                  )}
-                </>
-              )}
-
-              <div>
-                <p className="text-sm text-muted-foreground">Account ID</p>
-                <p className="text-xs font-mono text-muted-foreground">{account.id}</p>
-              </div>
-            </div>
-          </CardContent>
-        </Card>
-      </div>
 
 
         {/* Account Detail Chart - Show loading state while transactions are loading */}

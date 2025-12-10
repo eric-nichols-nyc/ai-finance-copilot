@@ -30,11 +30,12 @@ model User {
 
 // Financial Account (bank account, credit card, loan, etc.)
 model Account {
-  id        String      @id @default(cuid())
-  name      String
-  type      String      // CHECKING, SAVINGS, CREDIT_CARD, LOAN, INVESTMENT
-  balance   Decimal     @default(0)
-  currency  String      @default("USD")
+  id            String      @id @default(cuid())
+  name          String
+  type          String      // CHECKING, SAVINGS, CREDIT_CARD, LOAN, INVESTMENT
+  balance       Decimal     @default(0)
+  currency      String      @default("USD")
+  accountNumber String?     // Optional account number (masked in UI, last 4 digits shown)
 
   // Credit card specific fields
   creditLimit Decimal?
@@ -56,6 +57,7 @@ model Account {
   interestPayments InterestPayment[]
   balanceSnapshots AccountBalanceSnapshot[]
 
+  @@unique([userId, accountNumber]) // Ensure unique account numbers per user
   @@index([userId])
   @@index([type])
 }
